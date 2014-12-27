@@ -1,0 +1,65 @@
+package parking.business.logic;
+
+import parking.business.vehicles.*;
+
+/**
+ * Created by LesPatternsDuSwag on 27/12/14.
+ */
+public class Individual implements ParkingSpot {
+
+    Vehicle V = null;
+    Boolean booked = false;
+    Integer id = null;
+
+    @Override
+    public boolean empty() {
+        return (V == null);
+    }
+
+    @Override
+    public boolean canFit(Vehicle vehicle) {
+        return false;
+    }
+
+    public boolean canFit(Car vehicle) {
+        if (V == null) return true;
+        return false;
+    }
+
+    public boolean canFit(Motorcycle vehicle) {
+        if (V == null) return true;
+        return false;
+    }
+
+    @Override
+    public void park(Vehicle vehicle) {
+        V = vehicle;
+    }
+
+    @Override
+    public Vehicle unpark() {
+        Vehicle tmp = V;
+        V = null;
+        return tmp;
+    }
+
+    @Override
+    public Boolean getBooked() {
+        return booked;
+    }
+
+    @Override
+    public void setBooked(Boolean booked) {
+        this.booked = booked;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+}

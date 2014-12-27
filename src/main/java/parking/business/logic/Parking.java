@@ -11,11 +11,12 @@ import java.util.Map;
 public class Parking {
     private int id;
     private String name;
-    private Map<int, Vehicle> spotByPosition = new HashMap<int, Vehicle>();
+    private Map<Integer, ParkingSpot> spotByPosition;
 
-    public Parking(int id, String name) {
+    public Parking(int id, String name, int size) {
         this.id = id;
         this.name = name;
+        this.spotByPosition = new HashMap<Integer, ParkingSpot>(size);
     }
 
     public <T extends Vehicle> void addSpot() {
