@@ -1,10 +1,16 @@
 package parking.business;
 
+import org.joda.time.Interval;
+import parking.exceptions.NoSpotAvailableException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by SKNZ on 28/12/2014.
@@ -13,6 +19,7 @@ public class Parking {
     private final Integer id;
     private String name;
     private Map<Integer, ParkingSpot> parkingSpotsById = new HashMap<>();
+    private ParkingSpotSelector parkingSpotSelector;
 
     Parking(Integer id, String name) {
         this.id = id;
@@ -67,5 +74,14 @@ public class Parking {
         return parkingSpotsById.values().stream().filter(parkingSpot ->
                         parkingSpot.isVehicleParked() && parkingSpot.getVehicle().getPlate() == plate
         ).findFirst().orElse(null);
+    }
+
+    public void setParkingSpotSelector(ParkingSpotSelector parkingSpotSelector) {
+        this.parkingSpotSelector = parkingSpotSelector;
+    }
+
+    // Undefined behaviour if vehicle already parked
+    public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle, Interval interval) throws NoSpotAvailableException {
+        return parkingSpotSelector.select(parkingSpotsById.values().stream().filter(parkingSpot -> parkingSpot.fits(vehicle)).collect(Collectors.toList()));
     }
 }
