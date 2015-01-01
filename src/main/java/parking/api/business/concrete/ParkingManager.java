@@ -1,8 +1,8 @@
-package parking.business;
+package parking.api.business.concrete;
 
-import parking.exceptions.ParkingBookedSpotsExceptions;
-import parking.exceptions.ParkingExistsException;
-import parking.exceptions.ParkingNotPresentException;
+import parking.api.exceptions.ParkingBookedSpotsExceptions;
+import parking.api.exceptions.ParkingExistsException;
+import parking.api.exceptions.ParkingNotPresentException;
 
 import java.util.HashMap;
 import java.util.Map;

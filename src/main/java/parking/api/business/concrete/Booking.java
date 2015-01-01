@@ -1,4 +1,4 @@
-package parking.business;
+package parking.api.business.concrete;
 
 import org.joda.time.Interval;
 

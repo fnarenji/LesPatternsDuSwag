@@ -1,4 +1,4 @@
-package parking.business;
+package parking.api.business.concrete;
 
 /**
  * Created by SKNZ on 29/12/2014.
@@ -15,4 +15,6 @@ public interface Vehicle {
     String getModel();
 
     void setModel(String model);
+
+    VehicleType getType();
 }

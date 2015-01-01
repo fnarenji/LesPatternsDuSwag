@@ -1,8 +1,10 @@
-package parking.business;
+package parking.api.business.contract;
 
 import org.joda.time.Interval;
-import parking.exceptions.BookingAlreadyConsumedException;
-import parking.exceptions.BookingOverlapException;
+import parking.api.business.concrete.Booking;
+import parking.api.business.concrete.Vehicle;
+import parking.api.exceptions.BookingAlreadyConsumedException;
+import parking.api.exceptions.BookingOverlapException;
 
 /**
  * Created by SKNZ on 28/12/2014.

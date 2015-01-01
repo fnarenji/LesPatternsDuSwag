@@ -1,12 +1,14 @@
-package parking.business;
+package parking.api.business.concrete;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import parking.exceptions.ParkingBookedSpotsExceptions;
-import parking.exceptions.ParkingExistsException;
-import parking.exceptions.ParkingNotPresentException;
+import parking.api.business.concrete.Parking;
+import parking.api.business.concrete.ParkingManager;
+import parking.api.exceptions.ParkingBookedSpotsExceptions;
+import parking.api.exceptions.ParkingExistsException;
+import parking.api.exceptions.ParkingNotPresentException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

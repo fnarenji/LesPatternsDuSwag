@@ -1,6 +1,6 @@
-package parking.exceptions;
+package parking.api.exceptions;
 
-import parking.business.Parking;
+import parking.api.business.concrete.Parking;
 
 /**
  * Created by SKNZ on 28/12/2014.

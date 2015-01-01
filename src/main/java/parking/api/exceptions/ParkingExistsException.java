@@ -1,4 +1,4 @@
-package parking.exceptions;
+package parking.api.exceptions;
 
 /**
  * Created by SKNZ on 28/12/2014.

@@ -1,16 +1,14 @@
-package parking.business;
+package parking.api.business.concrete;
 
 import org.joda.time.Interval;
-import parking.exceptions.NoSpotAvailableException;
+import parking.api.business.contract.ParkingSpot;
+import parking.api.business.contract.ParkingSpotFactory;
+import parking.api.business.contract.ParkingSpotSelector;
+import parking.api.exceptions.NoSpotAvailableException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 /**
  * Created by SKNZ on 28/12/2014.
@@ -82,6 +80,11 @@ public class Parking {
 
     // Undefined behaviour if vehicle already parked
     public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle, Interval interval) throws NoSpotAvailableException {
-        return parkingSpotSelector.select(parkingSpotsById.values().stream().filter(parkingSpot -> parkingSpot.fits(vehicle)).collect(Collectors.toList()));
+        List<ParkingSpot> parkingSpots = parkingSpotsById.values().stream().filter(parkingSpot -> parkingSpot.fits(vehicle)).collect(Collectors.toList());
+
+        if (parkingSpots.isEmpty())
+            throw new NoSpotAvailableException();
+
+        return parkingSpotSelector.select(vehicle, parkingSpots);
     }
 }
