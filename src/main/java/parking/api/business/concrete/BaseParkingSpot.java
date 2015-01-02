@@ -1,11 +1,11 @@
 package parking.api.business.concrete;
 
 import org.joda.time.Interval;
-import parking.api.business.concrete.Booking;
-import parking.api.business.concrete.Vehicle;
+import parking.api.business.contract.Vehicle;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.BookingOverlapException;
 import parking.api.exceptions.BookingAlreadyConsumedException;
+import parking.api.exceptions.SpotNotEmptyOrBookedException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,8 +16,8 @@ import java.util.Map;
  * Created by SKNZ on 29/12/2014.
  */
 public abstract class BaseParkingSpot implements ParkingSpot {
-    private int id;
-    private Vehicle vehicle;
+    protected int id;
+    private Vehicle vehicle = null;
     private Collection<Booking> bookings = new HashSet<>();
     protected static Map<Class, Boolean> vehicleTypeFits = new HashMap<>();
 
@@ -37,7 +37,10 @@ public abstract class BaseParkingSpot implements ParkingSpot {
     }
 
     @Override
-    public void park(Vehicle vehicle) {
+    public void park(Vehicle vehicle) throws SpotNotEmptyOrBookedException {
+        if (this.vehicle != null)
+            throw new SpotNotEmptyOrBookedException(this);
+
         this.vehicle = vehicle;
     }
 
@@ -72,5 +75,34 @@ public abstract class BaseParkingSpot implements ParkingSpot {
     @Override
     public Boolean fits(Vehicle vehicle) {
         return vehicleTypeFits.getOrDefault(vehicle.getClass(), false);
+    }
+
+    @Override
+    public String toString() {
+        return "BaseParkingSpot{" +
+                "id=" + id +
+                ", vehicle=" + vehicle +
+                ", bookings=" + bookings +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BaseParkingSpot)) return false;
+
+        BaseParkingSpot that = (BaseParkingSpot) o;
+
+        if (id != that.id) return false;
+        if (bookings != null ? !bookings.equals(that.bookings) : that.bookings != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (bookings != null ? bookings.hashCode() : 0);
+        return result;
     }
 }

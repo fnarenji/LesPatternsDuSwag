@@ -10,8 +10,7 @@ import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class ParkingManagerTest {
     @Rule
@@ -52,9 +51,25 @@ public class ParkingManagerTest {
         // @todo Add booking tests.
         parkingManager.deleteParking(parking.getId());
 
-        thrown.expect(ParkingNotPresentException.class);
-        parkingManager.getParkingById(parking.getId());
-        parkingManager.deleteParking(parking.getId());
+        try {
+            parkingManager.getParkingById(parking.getId());
+            fail("Exception not thrown");
+        } catch (ParkingNotPresentException e) { }
+
+        try {
+            parkingManager.deleteParking(parking.getId());
+            fail("Exception not thrown");
+        } catch (ParkingNotPresentException e) { }
+
+        parking = parkingManager.newParking(1, "Prk GAP");
+        assertEquals(parkingManager.getParkingById(1), parking);
+    }
+
+    @Test
+    public void testContainsParking() throws Exception {
+        assertFalse(parkingManager.containsParking(1));
+        Parking parking = parkingManager.newParking(1, "Prk AIX-EN-PCE");
+        assertTrue(parkingManager.containsParking(1));
     }
 
     @Test

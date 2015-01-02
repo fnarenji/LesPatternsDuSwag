@@ -1,7 +1,5 @@
 package parking.api.business.contract;
 
-import parking.api.business.concrete.Vehicle;
-
 import java.util.Collection;
 
 /**

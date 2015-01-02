@@ -57,6 +57,10 @@ public class ParkingManager {
         parkingsById.remove(parking.getId());
     }
 
+    public Boolean containsParking(Integer id) {
+        return parkingsById.containsKey(id);
+    }
+
     public Parking getParkingById(Integer id) throws ParkingNotPresentException {
         if (!parkingsById.containsKey(id))
             throw new ParkingNotPresentException(id);

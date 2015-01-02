@@ -4,6 +4,7 @@ import org.joda.time.Interval;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.business.contract.ParkingSpotFactory;
 import parking.api.business.contract.ParkingSpotSelector;
+import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.NoSpotAvailableException;
 
 import java.util.*;
@@ -36,12 +37,12 @@ public class Parking {
         this.name = name;
     }
 
-    public Long countParkingSpots() {
-        return Long.valueOf(parkingSpotsById.size());
+    public Integer countParkingSpots() {
+        return parkingSpotsById.size();
     }
 
-    public Long countParkingSpots(Predicate<ParkingSpot> predicate) {
-        return parkingSpotsById.values().stream().filter(predicate).count();
+    public Integer countParkingSpots(Predicate<ParkingSpot> predicate) {
+        return new Long(parkingSpotsById.values().stream().filter(predicate).count()).intValue();
     }
 
     public ParkingSpot newParkingSpot(ParkingSpotFactory parkingSpotFactory) {
@@ -70,7 +71,7 @@ public class Parking {
 
     public ParkingSpot getSpotByVehiclePlate(String plate) {
         return parkingSpotsById.values().stream().filter(parkingSpot ->
-                        parkingSpot.isVehicleParked() && parkingSpot.getVehicle().getPlate() == plate
+                        parkingSpot.isVehicleParked() && parkingSpot.getVehicle().getPlate().equals(plate)
         ).findFirst().orElse(null);
     }
 
@@ -87,4 +88,5 @@ public class Parking {
 
         return parkingSpotSelector.select(vehicle, parkingSpots);
     }
+
 }

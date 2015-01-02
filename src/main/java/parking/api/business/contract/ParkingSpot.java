@@ -2,9 +2,9 @@ package parking.api.business.contract;
 
 import org.joda.time.Interval;
 import parking.api.business.concrete.Booking;
-import parking.api.business.concrete.Vehicle;
 import parking.api.exceptions.BookingAlreadyConsumedException;
 import parking.api.exceptions.BookingOverlapException;
+import parking.api.exceptions.SpotNotEmptyOrBookedException;
 
 /**
  * Created by SKNZ on 28/12/2014.
@@ -16,7 +16,7 @@ public interface ParkingSpot {
 
     public Vehicle getVehicle();
 
-    public void park(Vehicle vehicle);
+    public void park(Vehicle vehicle) throws SpotNotEmptyOrBookedException, SpotNotEmptyOrBookedException;
 
     public Vehicle unpark();
 
