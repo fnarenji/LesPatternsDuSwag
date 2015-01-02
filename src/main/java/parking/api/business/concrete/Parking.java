@@ -78,7 +78,7 @@ public class Parking {
         this.parkingSpotSelector = parkingSpotSelector;
     }
 
-    // Undefined behaviour if vehicle already parked
+    // Undefined behaviour if buildFor already parked
     public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle, Interval interval) throws NoSpotAvailableException {
         List<ParkingSpot> parkingSpots = parkingSpotsById.values().stream().filter(parkingSpot -> parkingSpot.fits(vehicle)).collect(Collectors.toList());
 

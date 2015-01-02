@@ -15,6 +15,4 @@ public interface Vehicle {
     String getModel();
 
     void setModel(String model);
-
-    VehicleType getType();
 }
