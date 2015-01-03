@@ -81,7 +81,7 @@ public class Parking {
 
     // Undefined behaviour if buildFor already parked
     public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle, Interval interval) throws NoSpotAvailableException {
-        List<ParkingSpot> parkingSpots = parkingSpotsById.values().stream().filter(parkingSpot -> parkingSpot.fits(vehicle)).collect(Collectors.toList());
+        List<ParkingSpot> parkingSpots = parkingSpotsById.values().stream().filter(parkingSpot -> parkingSpot.fits(vehicle) && !parkingSpot.isBooked(interval)).collect(Collectors.toList());
 
         if (parkingSpots.isEmpty())
             throw new NoSpotAvailableException();
