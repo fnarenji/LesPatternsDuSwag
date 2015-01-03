@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="92bc7dd6-74af-4371-bec4-23fa7256a1a0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/parking/implementation/SimpleParkingSpotIdProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/parking/api/business/concrete/BaseParkingSpotTest.java" afterPath="$PROJECT_DIR$/src/test/java/parking/api/business/concrete/BaseParkingSpotTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/parking/api/business/concrete/BaseVehicle.java" afterPath="$PROJECT_DIR$/src/main/java/parking/api/business/concrete/BaseVehicle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/parking/api/business/contract/ParkingSpot.java" afterPath="$PROJECT_DIR$/src/main/java/parking/api/business/contract/ParkingSpot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/parking/implementation/SimpleParkingSpotIdProvider.java" afterPath="$PROJECT_DIR$/src/main/java/parking/implementation/SimpleParkingSpotIdProvider.java" />
     </list>
     <ignored path="LesPatternsDuSwag.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -115,7 +111,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/parking/implementation/SimpleParkingSpotIdProvider.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.28333333" vertical-offset="0" max-vertical-offset="900">
-              <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
+              <caret line="15" column="38" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding>
                 <element signature="e#278#279#0" expanded="true" />
                 <element signature="e#304#305#0" expanded="true" />
@@ -948,12 +944,12 @@
       <workItem from="1420135757120" duration="9440000" />
       <workItem from="1420154424399" duration="3350000" />
       <workItem from="1420199195829" duration="28705000" />
-      <workItem from="1420284803865" duration="3730000" />
+      <workItem from="1420284803865" duration="3768000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="100290000" />
+    <option name="totallyTimeSpent" value="100328000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="960" y="0" width="960" height="1050" extended-state="0" />
@@ -1211,6 +1207,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33273703" vertical-offset="13669" max-vertical-offset="26010">
           <caret line="848" column="11" selection-start-line="848" selection-start-column="11" selection-end-line="848" selection-end-column="11" />
+          <folding>
+            <element signature="e#32532#32533#0" expanded="false" />
+            <element signature="e#32566#32567#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1410,7 +1410,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/parking/implementation/SimpleParkingSpotIdProvider.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.28333333" vertical-offset="0" max-vertical-offset="900">
-          <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
+          <caret line="15" column="38" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding>
             <element signature="e#278#279#0" expanded="true" />
             <element signature="e#304#305#0" expanded="true" />

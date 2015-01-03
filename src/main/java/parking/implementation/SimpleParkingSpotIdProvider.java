@@ -13,4 +13,3 @@ public class SimpleParkingSpotIdProvider implements ParkingSpotIdProvider {
         return ++i;
     }
 }
-                                      git comm
