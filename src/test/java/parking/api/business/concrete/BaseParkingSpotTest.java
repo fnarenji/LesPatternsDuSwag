@@ -98,6 +98,6 @@ public class BaseParkingSpotTest {
 
     @Test
     public void testFits() {
-        // @todo Find if possible to be done using mockito or anything else...
+        // @todo Find if possible mock...
     }
 }

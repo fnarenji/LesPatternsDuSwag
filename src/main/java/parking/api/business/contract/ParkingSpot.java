@@ -16,7 +16,7 @@ public interface ParkingSpot {
 
     public Vehicle getVehicle();
 
-    public void park(Vehicle vehicle) throws SpotNotEmptyOrBookedException, SpotNotEmptyOrBookedException;
+    public void park(Vehicle vehicle) throws SpotNotEmptyOrBookedException;
 
     public Vehicle unpark();
 

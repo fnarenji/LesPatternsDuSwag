@@ -39,7 +39,6 @@ public class BaseVehicle implements Vehicle {
 
     @Override
     public void setModel(String model) {
-
         this.model = model;
     }
 
