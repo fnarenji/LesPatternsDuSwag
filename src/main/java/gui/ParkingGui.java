@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Created by loicpauletto on 30/12/14.
+ * Created by ? on 30/12/14.
  */
 public class ParkingGui extends Application{
 
