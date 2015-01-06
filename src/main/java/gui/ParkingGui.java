@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Created by loicpauletto on 30/12/14.
+ * Created by on 30/12/14.
  */
 public class ParkingGui extends Application{
 
@@ -46,6 +46,7 @@ public class ParkingGui extends Application{
 
         GridPane lol = new GridPane();
 
+        int count = 0;
         Button[][] matrix = new Button[width][length];
         ColumnConstraints column = new ColumnConstraints(50);
         RowConstraints row = new RowConstraints(30);
@@ -59,7 +60,7 @@ public class ParkingGui extends Application{
             {
                 lol.getRowConstraints().add(row);
 
-                matrix[x][y] = new Button();
+                matrix[x][y] = new Button(Integer.toString(count++));
                 matrix[x][y].setStyle("-fx-background-color: #60ff05");
                 Button lel = matrix[x][y];
                 matrix[x][y].setOnAction(new EventHandler<ActionEvent>() {
@@ -107,7 +108,7 @@ public class ParkingGui extends Application{
                                     comment.setPromptText("Entrer une remarque.");
                                     GridPane.setConstraints(comment, 0, 2);
                                     grid.getChildren().add(comment);
-//Defining the Submit button
+
                                     Button submit = new Button("Submit");
                                     GridPane.setConstraints(submit, 1, 0);
                                     grid.getChildren().add(submit);
@@ -117,11 +118,6 @@ public class ParkingGui extends Application{
                                             System.out.println(name.getText() + " " + lastName.getText());
                                         }
                                     });
-//Defining the Clear button
-                                    Button clear = new Button("Clear");
-                                    GridPane.setConstraints(clear, 1, 1);
-                                    grid.getChildren().add(clear);
-
 
                                     Scene ze = new Scene(grid);
                                     a.setScene(ze);
@@ -134,14 +130,29 @@ public class ParkingGui extends Application{
                             Action response = Dialogs.create()
                                     .owner(primaryStage)
                                     .title("Confirm Dialog")
-                                    .message("Etes vous sûr?")
+                                    .message("Etes vous sûr de vouloir modifier cette place ?")
                                     .showConfirm();
 
                             if (response == Dialog.ACTION_YES) {
                                 Stage price = new Stage();
-                                price.setScene(new Scene(new Label("Ici le prix")));
+                                BorderPane Paned = new BorderPane();
+
+                                Text exemple = new Text("Ici le prix et autres infos");
+                                Button quit = new Button("Liberer");
+                                quit.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent e) {
+                                        lel.setStyle("-fx-background-color: #60ff05");
+                                        // DO TRAITEMENT EX PAIEMENT
+                                        price.close();
+                                    }
+                                });
+                                Paned.setCenter(exemple);
+                                Paned.setBottom(quit);
+                                Scene n = new Scene(Paned);
+                                price.setScene(n);
                                 price.show();
-                                lel.setStyle("-fx-background-color: #60ff05");
+
                             }
                         }
                     }
