@@ -25,7 +25,11 @@ import java.util.*;
 import java.util.List;
 
 /**
+<<<<<<< HEAD
  * Created by on 30/12/14.
+=======
+ * Created by ? on 30/12/14.
+>>>>>>> FETCH_HEAD
  */
 public class ParkingGui extends Application{
 
