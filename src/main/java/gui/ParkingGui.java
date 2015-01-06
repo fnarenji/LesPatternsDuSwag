@@ -24,13 +24,10 @@ import org.controlsfx.dialog.Dialogs;
 import java.util.*;
 import java.util.List;
 
-/**
-<<<<<<< HEAD
- * Created by on 30/12/14.
-=======
- * Created by ? on 30/12/14.
->>>>>>> FETCH_HEAD
- */
+
+
+//Created by on 30/12/14.
+
 public class ParkingGui extends Application{
 
 
