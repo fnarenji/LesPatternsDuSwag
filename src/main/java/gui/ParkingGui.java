@@ -18,16 +18,16 @@ import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import java.util.*;
 
 
 //Created by on 30/12/14.
 
+
 public class ParkingGui extends Application {
 
+
+    private Map<Integer,Client> listCl = new HashMap<Integer,Client>();
 
     private void changecolor(Button A)
     {
@@ -52,21 +52,21 @@ public class ParkingGui extends Application {
 
         if (response.isPresent()) {
             if (response.get() == "Voiture") {
+                Client client = new Client();
                 Stage a = new Stage();
                 GridPane grid = new GridPane();
                 grid.setPadding(new Insets(10, 10, 10, 10));
 
-                final TextField name = new TextField();
-                name.setPromptText("Entrer le nom du proprio.");
-                name.setPrefColumnCount(10);
-                name.getText();
-                GridPane.setConstraints(name, 0, 0);
-                grid.getChildren().add(name);
+                final TextField firstName = new TextField();
+                firstName.setPromptText("Entrer le prenom du propriétaire");
+                firstName.setPrefColumnCount(10);
+                GridPane.setConstraints(firstName, 0, 0);
+                grid.getChildren().add(firstName);
 
-                final TextField carName = new TextField();
-                carName.setPromptText("Entrer le nom de la Voiture");
-                GridPane.setConstraints(carName, 0, 1);
-                grid.getChildren().add(carName);
+                final TextField lastName = new TextField();
+                lastName.setPromptText("Entrer le nom de propriétaire");
+                GridPane.setConstraints(lastName, 0, 1);
+                grid.getChildren().add(lastName);
 
                 final TextField comment = new TextField();
                 comment.setPrefColumnCount(15);
@@ -80,8 +80,10 @@ public class ParkingGui extends Application {
                 submit.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent e) {
-                        System.out.println("name :" + name.getText() + "\n" + "carName " +carName.getText());
-                        if(!name.getText().equals("")){
+                        if(!firstName.getText().equals("") && !lastName.getText().equals("")){
+                            client.setFirstName(firstName.getText());
+                            client.setLastName(lastName.getText());
+                            listCl.put(Integer.parseInt(A.getText()), client);
                             A.setStyle("-fx-background-color: #ff0030");
                             a.close();
                         }
@@ -93,6 +95,12 @@ public class ParkingGui extends Application {
                 a.setTitle("Inserer voiture");
                 a.show();
 
+            }
+            else if (response.get() == "Camion"){
+
+            }
+            else {
+                A.setStyle("-fx-background-color: #fcff00");
             }
         }
     }
@@ -108,7 +116,9 @@ public class ParkingGui extends Application {
             Stage price = new Stage();
             BorderPane Paned = new BorderPane();
 
-            Text exemple = new Text("Ici le prix et autres infos");
+            Client temp = listCl.get(Integer.parseInt(current.getText()));
+            Text text = new Text("Prénom : " +  temp.getFirstName() + "\n" + "Nom : " + temp.getLastName() + "\n" + "Prix: ");
+
             Button quit = new Button("Liberer");
             BorderPane.setAlignment(quit, Pos.BOTTOM_RIGHT);
             BorderPane.setMargin(quit, new Insets(12,12,12,12));
@@ -120,7 +130,7 @@ public class ParkingGui extends Application {
                     price.close();
                 }
             });
-            Paned.setCenter(exemple);
+            Paned.setCenter(text);
             Paned.setBottom(quit);
             Scene n = new Scene(Paned);
             price.setScene(n);
@@ -191,6 +201,7 @@ public class ParkingGui extends Application {
         MenuItem newCl = new MenuItem("Nouveau");
         MenuItem changeCl = new MenuItem("Modifier");
         Menu conf = new Menu("Config");
+        MenuItem changePark = new MenuItem("Modifier Parking");
         Menu help = new Menu("Help");
 
         newCl.setOnAction(new EventHandler<ActionEvent>() {
@@ -217,9 +228,10 @@ public class ParkingGui extends Application {
         client.getItems().add(changeCl);
         mainMenu.getMenus().addAll(client, conf, help);
 
-        Scene sc = new Scene(root);
+        Scene sc = new Scene(root,500,500);
 
         primaryStage.setScene(sc);
+        primaryStage.sizeToScene();
         primaryStage.setTitle("SWAG-- GUI");
         primaryStage.show();
 
