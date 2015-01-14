@@ -1,4 +1,19 @@
 package gui;
+
+
+
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
@@ -11,12 +26,107 @@ import java.util.Optional;
 
 //Created by on 30/12/14.
 
-public class ParkingGui extends Application{
+public class ParkingGui extends Application {
 
 
     private void changecolor(Button A)
     {
         A.setStyle("-fx-background-color: #ff0030");
+    }
+
+    private void provider(Stage primary, Button A){
+
+        List<String> choices = new ArrayList<>();
+        choices.add("Voiture");
+        choices.add("Camion");
+        choices.add("Réservation");
+
+
+
+        Optional<String> response = Dialogs.create()
+                .owner(primary)
+                .title("Formulaire remplissage")
+                .masthead("Formulaire remplissage")
+                .message("Choisir un type:")
+                .showChoices(choices);
+
+        if (response.isPresent()) {
+            if (response.get() == "Voiture") {
+                Stage a = new Stage();
+                GridPane grid = new GridPane();
+                grid.setPadding(new Insets(10, 10, 10, 10));
+
+                final TextField name = new TextField();
+                name.setPromptText("Entrer le nom du proprio.");
+                name.setPrefColumnCount(10);
+                name.getText();
+                GridPane.setConstraints(name, 0, 0);
+                grid.getChildren().add(name);
+
+                final TextField carName = new TextField();
+                carName.setPromptText("Entrer le nom de la Voiture");
+                GridPane.setConstraints(carName, 0, 1);
+                grid.getChildren().add(carName);
+
+                final TextField comment = new TextField();
+                comment.setPrefColumnCount(15);
+                comment.setPromptText("Entrer une remarque.");
+                GridPane.setConstraints(comment, 0, 2);
+                grid.getChildren().add(comment);
+
+                Button submit = new Button("Submit");
+                GridPane.setConstraints(submit, 1, 0);
+                grid.getChildren().add(submit);
+                submit.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        System.out.println("name :" + name.getText() + "\n" + "carName " +carName.getText());
+                        if(!name.getText().equals("")){
+                            A.setStyle("-fx-background-color: #ff0030");
+                            a.close();
+                        }
+                    }
+                });
+
+                Scene ze = new Scene(grid);
+                a.setScene(ze);
+                a.setTitle("Inserer voiture");
+                a.show();
+
+            }
+        }
+    }
+
+    private void providerNope(Stage primary, Button current){
+        Action response = Dialogs.create()
+                .owner(primary)
+                .title("Confirm Dialog")
+                .message("Etes vous sûr de vouloir modifier cette place ?")
+                .showConfirm();
+
+        if (response == Dialog.ACTION_YES) {
+            Stage price = new Stage();
+            BorderPane Paned = new BorderPane();
+
+            Text exemple = new Text("Ici le prix et autres infos");
+            Button quit = new Button("Liberer");
+            BorderPane.setAlignment(quit, Pos.BOTTOM_RIGHT);
+            BorderPane.setMargin(quit, new Insets(12,12,12,12));
+            quit.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent e) {
+                    current.setStyle("-fx-background-color: #60ff05");
+                    // DO TRAITEMENT EX PAIEMENT
+                    price.close();
+                }
+            });
+            Paned.setCenter(exemple);
+            Paned.setBottom(quit);
+            Scene n = new Scene(Paned);
+            price.setScene(n);
+            price.show();
+
+        }
     }
 
     @Override
@@ -52,92 +162,12 @@ public class ParkingGui extends Application{
                     @Override
                     public void handle(ActionEvent e) {
 
-                        //System.out.println(lel.getStyle());
                         if(lel.getStyle().equals(new String("-fx-background-color: #60ff05"))){
-                            List<String> choices = new ArrayList<>();
-                            choices.add("Voiture");
-                            choices.add("Camion");
-                            choices.add("Reservation");
-
-
-
-                            Optional<String> response = Dialogs.create()
-                                    .owner(primaryStage)
-                                    .title("Formulaire remplissage")
-                                    .masthead("Formulaire remplissage")
-                                    .message("Choisir un type:")
-                                    .showChoices(choices);
-
-                            if (response.isPresent()) {
-                                if (response.get() == "Voiture") {
-                                    Stage a = new Stage();
-                                    //Creating a GridPane container
-                                    GridPane grid = new GridPane();
-                                    grid.setPadding(new Insets(10, 10, 10, 10));
-
-                                    final TextField name = new TextField();
-                                    name.setPromptText("Entrer le nom du proprio.");
-                                    name.setPrefColumnCount(10);
-                                    name.getText();
-                                    GridPane.setConstraints(name, 0, 0);
-                                    grid.getChildren().add(name);
-
-                                    final TextField lastName = new TextField();
-                                    lastName.setPromptText("Entrer le nom de la Voiture");
-                                    GridPane.setConstraints(lastName, 0, 1);
-                                    grid.getChildren().add(lastName);
-
-                                    final TextField comment = new TextField();
-                                    comment.setPrefColumnCount(15);
-                                    comment.setPromptText("Entrer une remarque.");
-                                    GridPane.setConstraints(comment, 0, 2);
-                                    grid.getChildren().add(comment);
-
-                                    Button submit = new Button("Submit");
-                                    GridPane.setConstraints(submit, 1, 0);
-                                    grid.getChildren().add(submit);
-                                    submit.setOnAction(new EventHandler<ActionEvent>() {
-                                        @Override
-                                        public void handle(ActionEvent e) {
-                                            System.out.println(name.getText() + " " + lastName.getText());
-                                        }
-                                    });
-
-                                    Scene ze = new Scene(grid);
-                                    a.setScene(ze);
-                                    a.show();
-                                    lel.setStyle("-fx-background-color: #ff0030");
-                                }
-                            }
+                           provider(primaryStage,lel);
                         }
+
                         else{
-                            Action response = Dialogs.create()
-                                    .owner(primaryStage)
-                                    .title("Confirm Dialog")
-                                    .message("Etes vous sûr de vouloir modifier cette place ?")
-                                    .showConfirm();
-
-                            if (response == Dialog.ACTION_YES) {
-                                Stage price = new Stage();
-                                BorderPane Paned = new BorderPane();
-
-                                Text exemple = new Text("Ici le prix et autres infos");
-                                Button quit = new Button("Liberer");
-                                quit.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent e) {
-                                        lel.setStyle("-fx-background-color: #60ff05");
-                                        // DO TRAITEMENT EX PAIEMENT
-                                        price.close();
-                                    }
-                                });
-                                Paned.setCenter(exemple);
-                                Paned.setBottom(quit);
-                                Scene n = new Scene(Paned);
-                                price.setScene(n);
-                                price.show();
-
-                            }
+                            providerNope(primaryStage,lel);
                         }
                     }
                 });
@@ -158,17 +188,33 @@ public class ParkingGui extends Application{
         root.setCenter(lol);
 
         Menu client = new Menu("Client");
-        MenuItem newcl = new MenuItem("Nouveau");
+        MenuItem newCl = new MenuItem("Nouveau");
+        MenuItem changeCl = new MenuItem("Modifier");
         Menu conf = new Menu("Config");
         Menu help = new Menu("Help");
 
-        newcl.setOnAction(new EventHandler<ActionEvent>() {
+        newCl.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
                System.out.println("LOL");
             }
         });
-        client.getItems().add(newcl);
+
+        changeCl.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Stage modifCl = new Stage();
+                BorderPane BP = new BorderPane();
+                ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList("Liste de clients"));
+                BP.setCenter(cb);
+                Scene temp = new Scene(BP,30,40);
+                modifCl.setScene(temp);
+                modifCl.show();
+            }
+        });
+
+        client.getItems().add(newCl);
+        client.getItems().add(changeCl);
         mainMenu.getMenus().addAll(client, conf, help);
 
         Scene sc = new Scene(root);
