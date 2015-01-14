@@ -1,11 +1,10 @@
 package parking.api.business.contract;
 
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
 import parking.api.business.concrete.Booking;
-import parking.api.exceptions.BookingAlreadyConsumedException;
-import parking.api.exceptions.BookingOverlapException;
-import parking.api.exceptions.SpotNotEmptyOrBookedException;
+import parking.api.exceptions.SpotBookedException;
+import parking.api.exceptions.SpotNotBookedException;
+import parking.api.exceptions.SpotNotEmptyException;
 
 /**
  * Created by SKNZ on 28/12/2014.
@@ -32,9 +31,10 @@ public interface ParkingSpot {
     /**
      * Parks the vehicle.
      * @param vehicle The vehicle to be parked
-     * @throws SpotNotEmptyOrBookedException if a vehicle is already parked in the spot or if the spot is booked.
+     * @throws parking.api.exceptions.SpotNotEmptyException if a vehicle is already parked in the spot or if the spot is booked.
+     * @throws parking.api.exceptions.SpotBookedException if the spot is booked by someone else.
      */
-    public void park(Vehicle vehicle) throws SpotNotEmptyOrBookedException;
+    public void park(Vehicle vehicle) throws SpotNotEmptyException, SpotBookedException;
 
     /**
      * Removes the vehicle that is parked.
@@ -49,14 +49,28 @@ public interface ParkingSpot {
     public Boolean isBooked();
 
     /**
-     * Clients books spot until date.
-     * @param until the date until which the spot will be booked. null for infinite.
-     * @param client the client who is booking the spots
-     * @throws BookingOverlapException
+     * Books an empty parking from now until a certain time.
+     * @param client the client who is booking
+     * @param until the date until the booking ends, null for infinite
+     * @throws parking.api.exceptions.SpotBookedException if the spot is already booked
+     * @throws parking.api.exceptions.SpotNotEmptyException if the spot is not empty
      */
-    public void book(DateTime until, Object client) throws SpotNotEmptyOrBookedException;
+    public void book(Object client, DateTime until) throws SpotNotEmptyException, SpotBookedException;
 
-    public void unbook(Booking booking) throws BookingAlreadyConsumedException;
+    /**
+     * Removes the current booking.
+     *
+     * @return the booking that was cancelled
+     * @throws parking.api.exceptions.SpotNotBookedException
+     * @throws parking.api.exceptions.SpotNotEmptyException  if the vehicle has not been removed from the spot
+     */
+    public Booking unbook() throws SpotNotBookedException, SpotNotEmptyException;
 
+    /**
+     * Whether a vehicle fits inside this parking spot
+     *
+     * @param vehicle the vehicle you want to fit
+     * @return true if fits, false if not fits
+     */
     public Boolean fits(Vehicle vehicle);
 }

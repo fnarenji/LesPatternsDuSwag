@@ -1,24 +1,18 @@
 package parking.api.business.concrete;
 
-import org.joda.time.Interval;
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class BookingTest {
     @Test
-    public void testOverlaps() {
-        Booking a = new Booking(Interval.parse("2001-01-01/P2W"));
-        Booking b = new Booking(Interval.parse("2001-01-14/P4D"));
-        Booking c = new Booking(Interval.parse("2001-01-17T14:00/PT3H"));
-
-        assertTrue(a.overlaps(b));
-        assertTrue(b.overlaps(a.getInterval()));
-
-        assertTrue(b.overlaps(c));
-        assertTrue(c.overlaps(b));
-
-        assertFalse(a.overlaps(c));
-        assertFalse(c.overlaps(a));
+    public void testInterval() {
+        Booking a = new Booking("TEST", DateTime.now().plusDays(30));
+        assertTrue(Seconds.secondsBetween(a.getInterval().getEnd(), DateTime.now().plusDays(30)).isLessThan(Seconds.seconds(5)));
+        a.setUntil(DateTime.now().plusDays(60));
+        assertTrue(Seconds.secondsBetween(a.getInterval().getEnd(), DateTime.now().plusDays(60)).isLessThan(Seconds.seconds(5)));
+        assertTrue(a.isOwnedBy("TEST"));
     }
 }

@@ -1,12 +1,11 @@
 package parking.api.business.concrete;
 
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
-import parking.api.business.contract.Vehicle;
 import parking.api.business.contract.ParkingSpot;
-import parking.api.exceptions.BookingOverlapException;
-import parking.api.exceptions.BookingAlreadyConsumedException;
-import parking.api.exceptions.SpotNotEmptyOrBookedException;
+import parking.api.business.contract.Vehicle;
+import parking.api.exceptions.SpotBookedException;
+import parking.api.exceptions.SpotNotBookedException;
+import parking.api.exceptions.SpotNotEmptyException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,10 +16,10 @@ import java.util.Map;
  * Created by SKNZ on 29/12/2014.
  */
 public abstract class BaseParkingSpot implements ParkingSpot {
+    protected static Map<Class, Boolean> vehicleTypeFits = new HashMap<>();
     protected int id;
     private Vehicle vehicle = null;
     private Collection<Booking> bookings = new HashSet<>();
-    protected static Map<Class, Boolean> vehicleTypeFits = new HashMap<>();
 
     @Override
     public Integer getId() {
@@ -38,12 +37,12 @@ public abstract class BaseParkingSpot implements ParkingSpot {
     }
 
     @Override
-    public void park(Vehicle vehicle) throws SpotNotEmptyOrBookedException {
+    public void park(Vehicle vehicle) throws SpotNotEmptyException, SpotBookedException {
         if (this.vehicle != null)
-            throw new SpotNotEmptyOrBookedException(this);
+            throw new SpotNotEmptyException(this);
 
-        if (bookings.stream().anyMatch(booking -> booking.getInterval().contains(DateTime.now())))
-            throw new SpotNotEmptyOrBookedException(this);
+        if (isBooked() && !getCurrentBooking().isOwnedBy(vehicle.getOwner()))
+            throw new SpotBookedException(this);
 
         this.vehicle = vehicle;
     }
@@ -55,25 +54,40 @@ public abstract class BaseParkingSpot implements ParkingSpot {
         return temp;
     }
 
+    public Booking getCurrentBooking() {
+        return bookings.stream().filter(booking -> booking.getInterval().contains(DateTime.now())).findFirst().orElse(null);
+    }
     @Override
-    public Boolean isBooked(Interval interval) {
-        return bookings.stream().anyMatch(booking -> booking.overlaps(interval));
+    public Boolean isBooked() {
+        return bookings.stream().anyMatch(booking -> booking.getInterval().contains(DateTime.now()));
     }
 
     @Override
-    public void book(DateTime until, Object client) throws SpotNotEmptyOrBookedException {
-        if (isBooked(booking.getInterval()))
-            throw new BookingOverlapException(booking);
+    public void book(Object client, DateTime until) throws SpotBookedException, SpotNotEmptyException {
+        if (isBooked())
+            throw new SpotBookedException(this);
 
-        bookings.add(booking);
+        if (isVehicleParked())
+            throw new SpotNotEmptyException(this);
+
+        bookings.add(new Booking(client, until));
     }
 
     @Override
-    public void unbook(Booking booking) throws BookingAlreadyConsumedException {
-        if (booking.consumed)
-            throw new BookingAlreadyConsumedException(booking);
+    public Booking unbook() throws SpotNotBookedException, SpotNotEmptyException {
+        if (isVehicleParked())
+            throw new SpotNotEmptyException(this);
+
+        if (!isBooked())
+            throw new SpotNotBookedException();
+
+        Booking booking = bookings.stream()
+                .filter(currentBooking -> currentBooking.getInterval().contains(DateTime.now()))
+                .findFirst()
+                .get();
 
         bookings.remove(booking);
+        return booking;
     }
 
     @Override
@@ -98,9 +112,7 @@ public abstract class BaseParkingSpot implements ParkingSpot {
         BaseParkingSpot that = (BaseParkingSpot) o;
 
         if (id != that.id) return false;
-        if (bookings != null ? !bookings.equals(that.bookings) : that.bookings != null) return false;
-
-        return true;
+        return !(bookings != null ? !bookings.equals(that.bookings) : that.bookings != null);
     }
 
     @Override

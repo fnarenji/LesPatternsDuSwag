@@ -1,10 +1,9 @@
 package gui;
 
 /**
- * Created by  on 14/01/15.
+ * Created by SKNZ on 14/01/15.
  */
 public class Client {
-
     private String lastName;
     private String firstName;
 

@@ -9,6 +9,7 @@ public class BaseVehicle implements Vehicle {
     private String plate;
     private String brand;
     private String model;
+    private Object owner;
 
     @Override
     public String getPlate() {
@@ -43,6 +44,16 @@ public class BaseVehicle implements Vehicle {
     }
 
     @Override
+    public Object getOwner() {
+        return owner;
+    }
+
+    @Override
+    public void setOwner(Object owner) {
+        this.owner = owner;
+    }
+
+    @Override
     public String toString() {
         return "BaseVehicle{" +
                 "plate='" + plate + '\'' +
@@ -60,9 +71,7 @@ public class BaseVehicle implements Vehicle {
 
         if (brand != null ? !brand.equals(that.brand) : that.brand != null) return false;
         if (model != null ? !model.equals(that.model) : that.model != null) return false;
-        if (!plate.equals(that.plate)) return false;
-
-        return true;
+        return plate.equals(that.plate);
     }
 
     @Override

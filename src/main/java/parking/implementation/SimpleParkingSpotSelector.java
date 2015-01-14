@@ -30,7 +30,8 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
 
             selectedSpot = parkingSpots.stream()
                     .filter(parkingSpot -> parkingSpots.getClass().equals(currentParkingSpotType))
-                    .findFirst().orElse(null);
+                    .findFirst()
+                    .orElse(null);
         }
 
         return selectedSpot;

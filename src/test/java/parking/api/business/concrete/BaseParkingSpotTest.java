@@ -1,23 +1,23 @@
 package parking.api.business.concrete;
 
-import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import parking.api.business.contract.Vehicle;
-import parking.api.exceptions.BookingAlreadyConsumedException;
-import parking.api.exceptions.BookingOverlapException;
-import parking.api.exceptions.SpotNotEmptyOrBookedException;
+import parking.api.exceptions.SpotBookedException;
+import parking.api.exceptions.SpotNotBookedException;
+import parking.api.exceptions.SpotNotEmptyException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class BaseParkingSpotTest {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
     BaseParkingSpot parkingSpot;
-
-    @Rule public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -30,7 +30,7 @@ public class BaseParkingSpotTest {
     }
 
     @Test
-    public void testIsVehicleParked() throws SpotNotEmptyOrBookedException {
+    public void testIsVehicleParked() throws SpotNotEmptyException, SpotBookedException {
         assertFalse(parkingSpot.isVehicleParked());
 
         parkingSpot.park(mock(Vehicle.class));
@@ -41,7 +41,7 @@ public class BaseParkingSpotTest {
     }
 
     @Test
-    public void testGetVehicle() throws SpotNotEmptyOrBookedException {
+    public void testGetVehicle() throws SpotNotEmptyException, SpotBookedException {
         assertNull(parkingSpot.getVehicle());
         Vehicle vehicle = mock(Vehicle.class);
         parkingSpot.park(vehicle);
@@ -49,20 +49,20 @@ public class BaseParkingSpotTest {
     }
 
     @Test
-    public void testPark() throws SpotNotEmptyOrBookedException {
+    public void testPark() throws SpotNotEmptyException, SpotBookedException {
         Vehicle vehicle = mock(Vehicle.class);
         parkingSpot.park(vehicle);
 
         assertThat(parkingSpot.getVehicle(), is(vehicle));
         assertThat(parkingSpot.unpark(), is(vehicle));
 
-        thrown.expect(SpotNotEmptyOrBookedException.class);
         parkingSpot.park(mock(Vehicle.class));
+        thrown.expect(SpotNotEmptyException.class);
         parkingSpot.park(mock(Vehicle.class));
     }
 
     @Test
-    public void testUnpark() throws SpotNotEmptyOrBookedException {
+    public void testUnpark() throws SpotNotEmptyException, SpotBookedException {
         Vehicle vehicle = mock(Vehicle.class);
 
         parkingSpot.park(vehicle);
@@ -73,32 +73,35 @@ public class BaseParkingSpotTest {
     }
 
     @Test
-    public void testBooking() throws BookingOverlapException, BookingAlreadyConsumedException {
-        assertFalse(parkingSpot.isBooked(Interval.parse("2001-01-03/P4D")));
+    public void testBooking() throws SpotNotEmptyException, SpotNotBookedException, SpotBookedException {
+        parkingSpot.book("CLIENT PLUTÔT STYLé", null);
+        assertTrue(parkingSpot.isBooked());
+        assertFalse(parkingSpot.isVehicleParked()); // A booked spot doesn't mean a vehicle is parked
 
-        Booking booking = new Booking(Interval.parse("2001-01-01/P2W"));
-        try {
-            parkingSpot.book(, booking, );
-        } catch (SpotNotEmptyOrBookedException e) {
-            e.printStackTrace();
-        }
-        assertTrue(parkingSpot.isBooked(Interval.parse("2001-01-03/P4D")));
-        assertFalse(parkingSpot.isBooked(Interval.parse("2014-12-31/P1YT22H30M48S")));
+        Booking booking = parkingSpot.unbook();
+        assertFalse(parkingSpot.isBooked());
 
-        parkingSpot.unbook(booking);
-        assertFalse(parkingSpot.isBooked(Interval.parse("2001-01-01/P1D")));
+        assertEquals(booking.getOwner(), "CLIENT PLUTÔT STYLé");
 
-        try {
-            parkingSpot.book(, booking, );
-        } catch (SpotNotEmptyOrBookedException e) {
-            e.printStackTrace();
-        }
-        booking.setConsumed(true);
-        assertTrue(booking.getConsumed());
-        assertTrue(parkingSpot.isBooked(Interval.parse("2001-01-03/P4D")));
+        thrown.expect(SpotNotBookedException.class);
+        parkingSpot.unbook();
+    }
 
-        thrown.expect(BookingAlreadyConsumedException.class);
-        parkingSpot.unbook(booking);
+    @Test
+    public void testBookingSpotNotEmpty() throws SpotNotEmptyException, SpotBookedException, SpotNotBookedException {
+        parkingSpot.book("CLIENT VIVANT", null);
+        assertTrue(parkingSpot.isBooked());
+        assertFalse(parkingSpot.isVehicleParked());
+
+        Vehicle vehicle = mock(Vehicle.class);
+        when(vehicle.getOwner()).thenReturn("CLIENT VIVANT");
+
+        parkingSpot.park(vehicle);
+        assertTrue(parkingSpot.isVehicleParked());
+        assertTrue(parkingSpot.isBooked());
+
+        thrown.expect(SpotNotEmptyException.class);
+        parkingSpot.unbook();
     }
 
     @Test

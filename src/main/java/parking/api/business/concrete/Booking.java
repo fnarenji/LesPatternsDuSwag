@@ -1,44 +1,46 @@
 package parking.api.business.concrete;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.joda.time.MutableInterval;
 
 /**
  * Created by SKNZ on 29/12/2014.
  */
 public class Booking {
-    public Boolean consumed = false;
+    public static final DateTime INFINITE = new DateTime().year().withMaximumValue();
+    private Object owner;
     private Interval interval;
 
-    public Booking(Interval interval) {
-        this.interval = interval;
-    }
+    public Booking(Object owner, DateTime until) {
+        this.owner = owner;
 
-    public Booking(Interval interval, Boolean consumed) {
-        this.interval = interval;
-        this.consumed = consumed;
+        if (until == null)
+            until = INFINITE; // should be quite safe...
+
+        this.interval = new Interval(DateTime.now(), until);
     }
 
     public Interval getInterval() {
         return interval;
     }
 
-    public void setInterval(Interval interval) {
-        this.interval = interval;
+    public void setUntil(DateTime until) {
+        MutableInterval mutableInterval = interval.toMutableInterval();
+        mutableInterval.setEnd(until.toInstant());
+        interval = mutableInterval.toInterval();
     }
 
-    public Boolean getConsumed() {
-        return consumed;
+    public Object getOwner() {
+        return owner;
     }
 
-    public void setConsumed(Boolean consumed) {
-        this.consumed = consumed;
+    public void setOwner(Object owner) {
+        this.owner = owner;
     }
 
-    public Boolean overlaps(Interval interval) {
-        return this.interval.overlaps(interval);
-    }
-    public Boolean overlaps(Booking booking) {
-        return this.interval.overlaps(booking.getInterval());
+    public boolean isOwnedBy(Object owner) {
+        return this.owner.equals(owner);
     }
 
     @Override
@@ -48,24 +50,18 @@ public class Booking {
 
         Booking booking = (Booking) o;
 
-        if (!consumed.equals(booking.consumed)) return false;
-        if (!interval.equals(booking.interval)) return false;
-
-        return true;
+        return interval.equals(booking.interval);
     }
 
     @Override
     public int hashCode() {
-        int result = consumed.hashCode();
-        result = 31 * result + interval.hashCode();
-        return result;
+        return interval.hashCode();
     }
 
     @Override
     public String toString() {
         return "Booking{" +
-                "consumed=" + consumed +
-                ", interval=" + interval +
+                "interval=" + interval +
                 '}';
     }
 }
