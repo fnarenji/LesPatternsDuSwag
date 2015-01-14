@@ -1,5 +1,6 @@
 package parking.api.business.concrete;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import parking.api.business.contract.Vehicle;
 import parking.api.business.contract.ParkingSpot;
@@ -41,6 +42,9 @@ public abstract class BaseParkingSpot implements ParkingSpot {
         if (this.vehicle != null)
             throw new SpotNotEmptyOrBookedException(this);
 
+        if (bookings.stream().anyMatch(booking -> booking.getInterval().contains(DateTime.now())))
+            throw new SpotNotEmptyOrBookedException(this);
+
         this.vehicle = vehicle;
     }
 
@@ -57,7 +61,7 @@ public abstract class BaseParkingSpot implements ParkingSpot {
     }
 
     @Override
-    public void book(Booking booking) throws BookingOverlapException {
+    public void book(DateTime until, Object client) throws SpotNotEmptyOrBookedException {
         if (isBooked(booking.getInterval()))
             throw new BookingOverlapException(booking);
 

@@ -1,6 +1,6 @@
 package parking.api.business.concrete;
 
-import org.joda.time.Interval;
+import org.joda.time.DateTime;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.business.contract.ParkingSpotFactory;
 import parking.api.business.contract.ParkingSpotSelector;
@@ -80,8 +80,8 @@ public class Parking {
     }
 
     // Undefined behaviour if vehicle already parked
-    public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle, Interval interval) throws NoSpotAvailableException {
-        List<ParkingSpot> parkingSpots = parkingSpotsById.values().stream().filter(parkingSpot -> parkingSpot.fits(vehicle) && !parkingSpot.isBooked(interval)).collect(Collectors.toList());
+    public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle, DateTime until) throws NoSpotAvailableException {
+        List<ParkingSpot> parkingSpots = parkingSpotsById.values().stream().filter(parkingSpot -> parkingSpot.fits(vehicle) && !parkingSpot.isBooked()).collect(Collectors.toList());
 
         if (parkingSpots.isEmpty())
             throw new NoSpotAvailableException();

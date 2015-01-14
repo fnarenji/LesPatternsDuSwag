@@ -1,4 +1,5 @@
 package gui;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,16 +18,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class ParkingGui extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-
-    private void changecolor(Button A)
-    {
+    private void changecolor(Button A) {
         A.setStyle("-fx-background-color: #ff0030");
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
 
 
         int SIZE = 10;
@@ -42,11 +43,9 @@ public class ParkingGui extends Application {
         lol.getRowConstraints().add(row);
         lol.getColumnConstraints().add(column);
 
-        for(int y = 0; y < length; y++)
-        {
+        for (int y = 0; y < length; y++) {
             lol.getColumnConstraints().add(column);
-            for(int x = 0; x < width; x++)
-            {
+            for (int x = 0; x < width; x++) {
                 lol.getRowConstraints().add(row);
 
                 matrix[x][y] = new Button(Integer.toString(count++));
@@ -58,12 +57,11 @@ public class ParkingGui extends Application {
                     public void handle(ActionEvent e) {
 
                         //System.out.println(lel.getStyle());
-                        if(lel.getStyle().equals(new String("-fx-background-color: #60ff05"))){
+                        if (lel.getStyle().equals(new String("-fx-background-color: #60ff05"))) {
                             List<String> choices = new ArrayList<>();
                             choices.add("Voiture");
                             choices.add("Camion");
                             choices.add("Reservation");
-
 
 
                             Optional<String> response = Dialogs.create()
@@ -114,8 +112,7 @@ public class ParkingGui extends Application {
                                     lel.setStyle("-fx-background-color: #ff0030");
                                 }
                             }
-                        }
-                        else{
+                        } else {
                             Action response = Dialogs.create()
                                     .owner(primaryStage)
                                     .title("Confirm Dialog")
@@ -147,7 +144,8 @@ public class ParkingGui extends Application {
                     }
                 });
 
-                lol.add(matrix[x][y], y, x);;
+                lol.add(matrix[x][y], y, x);
+                ;
             }
         }
 
@@ -170,7 +168,7 @@ public class ParkingGui extends Application {
         newcl.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-               System.out.println("LOL");
+                System.out.println("LOL");
             }
         });
         client.getItems().add(newcl);
@@ -182,10 +180,6 @@ public class ParkingGui extends Application {
         primaryStage.setTitle("SWAG-- GUI");
         primaryStage.show();
 
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
 }

@@ -5,8 +5,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.MockSettings;
-import org.mockito.Mockito;
 import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.BookingAlreadyConsumedException;
 import parking.api.exceptions.BookingOverlapException;
@@ -15,7 +13,6 @@ import parking.api.exceptions.SpotNotEmptyOrBookedException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class BaseParkingSpotTest {
     BaseParkingSpot parkingSpot;
@@ -80,14 +77,22 @@ public class BaseParkingSpotTest {
         assertFalse(parkingSpot.isBooked(Interval.parse("2001-01-03/P4D")));
 
         Booking booking = new Booking(Interval.parse("2001-01-01/P2W"));
-        parkingSpot.book(booking);
+        try {
+            parkingSpot.book(, booking, );
+        } catch (SpotNotEmptyOrBookedException e) {
+            e.printStackTrace();
+        }
         assertTrue(parkingSpot.isBooked(Interval.parse("2001-01-03/P4D")));
         assertFalse(parkingSpot.isBooked(Interval.parse("2014-12-31/P1YT22H30M48S")));
 
         parkingSpot.unbook(booking);
         assertFalse(parkingSpot.isBooked(Interval.parse("2001-01-01/P1D")));
 
-        parkingSpot.book(booking);
+        try {
+            parkingSpot.book(, booking, );
+        } catch (SpotNotEmptyOrBookedException e) {
+            e.printStackTrace();
+        }
         booking.setConsumed(true);
         assertTrue(booking.getConsumed());
         assertTrue(parkingSpot.isBooked(Interval.parse("2001-01-03/P4D")));
