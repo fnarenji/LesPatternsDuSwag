@@ -42,7 +42,7 @@ public class Parking {
     }
 
     public Integer countParkingSpots(Predicate<ParkingSpot> predicate) {
-        return new Long(parkingSpotsById.values().stream().filter(predicate).count()).intValue();
+        return Long.valueOf(parkingSpotsById.values().stream().filter(predicate).count()).intValue();
     }
 
     public ParkingSpot newParkingSpot(ParkingSpotFactory parkingSpotFactory) {
