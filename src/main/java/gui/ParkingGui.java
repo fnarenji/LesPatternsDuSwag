@@ -1,4 +1,13 @@
 package gui;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
@@ -7,11 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
-
-//Created by on 30/12/14.
-
-public class ParkingGui extends Application{
+public class ParkingGui extends Application {
 
 
     private void changecolor(Button A)
