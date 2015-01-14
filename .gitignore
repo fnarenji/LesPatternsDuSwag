@@ -16,3 +16,21 @@ out/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+src/main/java/gui/truck.png
+
+target/MANIFEST.MF
+
+target/MANIFEST.MF
+
+.idea/misc.xml
+
+*.xml
+
+*.xml
+
+.idea/workspace.xml
+
+LesPatternsDuSwag.iml
+
+target/MANIFEST.MF
