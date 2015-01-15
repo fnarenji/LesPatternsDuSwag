@@ -6,5 +6,5 @@ package parking.api.business.contract;
 public interface ParkingSpotFactory {
     void setIdProvider(ParkingSpotIdProvider provider);
 
-    ParkingSpot createParkingSpot();
+    ParkingSpot createParkingSpot(String type);
 }

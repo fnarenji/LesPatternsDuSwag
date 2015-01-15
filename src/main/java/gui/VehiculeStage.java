@@ -13,6 +13,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import parking.api.business.contract.Vehicle;
+import parking.api.business.contract.VehiculeFactory;
+import parking.api.exceptions.UnknowVehiculeException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -168,12 +171,13 @@ public class VehiculeStage extends Stage {
         this.setTitle("New Vehicule");
     }
 
-    public Collection getVehicule() {
-        Collection vehicule = new ArrayList<>();
-        vehicule.add(this.vehicule.getValue());
-        vehicule.add(plate.getText());
-        vehicule.add(brand.getText());
-        vehicule.add(model.getText());
+    public Vehicle getVehicule() throws UnknowVehiculeException {
+        VehiculeFactory vehiculeFactory = new parking.implementation.VehiculeFactory();
+
+        Vehicle vehicule = vehiculeFactory.createVehicule(this.vehicule.getValue().toString());
+        vehicule.setPlate(plate.getText());
+        vehicule.setBrand(brand.getText());
+        vehicule.setModel(model.getText());
 
         return vehicule;
     }

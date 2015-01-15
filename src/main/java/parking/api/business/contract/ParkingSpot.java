@@ -11,6 +11,17 @@ import parking.api.exceptions.SpotNotEmptyException;
  */
 public interface ParkingSpot {
     /**
+     * Set the owner of the current book for this spot
+     * @param Owner
+     */
+    public void setBookOwner(Object Owner);
+
+    /**
+     * Get the Object owner if this spot is booked
+     * @return Object (owner) null otherwise
+     */
+    public Object getBookOwner();
+    /**
      * Get the id of the parking spot
      * @return The id of the parking spot
      */
