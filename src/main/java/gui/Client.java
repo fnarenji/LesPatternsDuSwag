@@ -1,9 +1,10 @@
 package gui;
 
 /**
- * Created by SKNZ on 14/01/15.
+ * Created by  on 14/01/15.
  */
 public class Client {
+
     private String lastName;
     private String firstName;
 
@@ -17,6 +18,11 @@ public class Client {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    @Override
+    public String toString() {
+        return lastName + " " + firstName;
     }
 
     public void setFirstName(String firstName) {
