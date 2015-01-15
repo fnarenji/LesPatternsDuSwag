@@ -23,4 +23,8 @@ public class ButtonSpot extends MenuButton {
     private ButtonSpot(String text, Node graphic) {
         super(text, graphic);
     }
+
+    public ParkingSpot getParkingSpot() {
+        return parkingSpot;
+    }
 }

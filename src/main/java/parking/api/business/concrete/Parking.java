@@ -45,22 +45,22 @@ public class Parking {
         return Long.valueOf(parkingSpotsById.values().stream().filter(predicate).count()).intValue();
     }
 
-    public ParkingSpot newParkingSpot(ParkingSpotFactory parkingSpotFactory) {
-        ParkingSpot parkingSpot = parkingSpotFactory.createParkingSpot();
+    public ParkingSpot newParkingSpot(ParkingSpotFactory parkingSpotFactory, String type) {
+        ParkingSpot parkingSpot = parkingSpotFactory.createParkingSpot(type);
 
         parkingSpotsById.put(parkingSpot.getId(), parkingSpot);
 
         return parkingSpot;
     }
 
-    public Collection<ParkingSpot> newParkingSpot(ParkingSpotFactory parkingSpotFactory, Integer amount) {
+    public Collection<ParkingSpot> newParkingSpot(ParkingSpotFactory parkingSpotFactory, Integer amount, String type) {
         if (amount < 1)
             throw new IllegalArgumentException("Amount must be > 1, is " + amount);
 
         Collection<ParkingSpot> parkingSpots = new ArrayList<>();
 
         for (Integer i = 0; i < amount; ++i)
-            parkingSpots.add(newParkingSpot(parkingSpotFactory));
+            parkingSpots.add(newParkingSpot(parkingSpotFactory,type));
 
         return parkingSpots;
     }
