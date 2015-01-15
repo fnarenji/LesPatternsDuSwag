@@ -31,7 +31,7 @@ public class ClientListStage extends Stage {
     private Button cancel;
 
     private void createTitle() {
-        title = new Label("List Clients");
+        title = new Label("Select Client");
         title.setFont(Font.font("Arial", 30));
         title.setTextFill(Color.BLACK);
         title.alignmentProperty().setValue(Pos.CENTER);
@@ -110,7 +110,7 @@ public class ClientListStage extends Stage {
 
         this.setResizable(false);
         this.setScene(scene);
-        this.setTitle("New Client");
+        this.setTitle("Select Client");
     }
 
     public Client getClient() {
