@@ -1,4 +1,4 @@
-package gui;
+package parking.implementation;
 
 /**
  * Created by  on 14/01/15.
