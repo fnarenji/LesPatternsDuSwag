@@ -45,7 +45,7 @@ public class ClientListStage extends Stage {
 
     private void createButtonCreate() {
         submit = new Button();
-        submit.setText("Create");
+        submit.setText("Select");
 
         //add action
         submit.setOnAction(createSubmitEventHandler());
