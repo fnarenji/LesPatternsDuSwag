@@ -18,8 +18,20 @@ import java.util.Map;
 public abstract class BaseParkingSpot implements ParkingSpot {
     protected static Map<Class, Boolean> vehicleTypeFits = new HashMap<>();
     protected int id;
+    private Object bookOwner = null;
     private Vehicle vehicle = null;
     private Collection<Booking> bookings = new HashSet<>();
+
+
+    @Override
+    public Object getBookOwner() {
+        return this.bookOwner;
+    }
+
+    @Override
+    public void setBookOwner(Object owner) {
+        this.bookOwner = owner;
+    }
 
     @Override
     public Integer getId() {
