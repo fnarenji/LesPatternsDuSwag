@@ -42,6 +42,12 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
         return priorityMap.whereTo(vehicle.getClass()).next().equals(parkingSpot.getClass());
     }
 
+    /**
+     * Check every spot to find the bests spots (the booked spots first=
+     * @param vehicle
+     * @param parkingSpots
+     * @return Collection of the parking spots available for the user and with the booked spots first
+     */
     @Override
     public Collection<ParkingSpot> checkBooked(Vehicle vehicle, Collection<ParkingSpot> parkingSpots){
         List<ParkingSpot> selectedSpots = new ArrayList<ParkingSpot>();
@@ -59,7 +65,7 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
         for(ParkingSpot parkSpot : selectedSpots){
             ps.add(parkSpot);
         }
-        return parkingSpots;
+        return ps;
     }
 
 }
