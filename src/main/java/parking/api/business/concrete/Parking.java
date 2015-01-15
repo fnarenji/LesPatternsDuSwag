@@ -1,11 +1,13 @@
 package parking.api.business.concrete;
 
-import org.joda.time.DateTime;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.business.contract.ParkingSpotFactory;
 import parking.api.business.contract.ParkingSpotSelector;
 import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.NoSpotAvailableException;
+import parking.api.exceptions.ReorganizationException;
+import parking.api.exceptions.SpotBookedException;
+import parking.api.exceptions.SpotNotEmptyException;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -80,7 +82,7 @@ public class Parking {
     }
 
     // Undefined behaviour if vehicle already parked
-    public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle, DateTime until) throws NoSpotAvailableException {
+    public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle) throws NoSpotAvailableException {
         List<ParkingSpot> availableParkingSpots = parkingSpotsById.values().stream()
                 .filter(parkingSpot -> parkingSpot.fits(vehicle) && !parkingSpot.isVehicleParked())
                 .collect(Collectors.toList());
@@ -89,5 +91,29 @@ public class Parking {
             throw new NoSpotAvailableException();
 
         return parkingSpotSelector.select(vehicle, availableParkingSpots);
+    }
+
+    public void reorganizeParking() throws ReorganizationException {
+        try {
+       /* List<ParkingSpot> occupiedParkingSpots = */
+            parkingSpotsById.values().stream()
+                    .filter(parkingSpot -> parkingSpot.isVehicleParked() && !parkingSpotSelector.isOptimalParkingSpotForVehicle(parkingSpot, parkingSpot.getVehicle()))
+                    .forEach(parkingSpot -> {
+                        Vehicle vehicle = parkingSpot.unpark();
+                        try {
+                            ParkingSpot optimalParkingSpot = findAvailableParkingSpotForVehicle(vehicle);
+                            optimalParkingSpot.park(vehicle);
+                        } catch (NoSpotAvailableException e) {
+                            e.printStackTrace();
+                        } catch (SpotNotEmptyException | SpotBookedException e) {
+                            throw new RuntimeException(new ReorganizationException());
+                        }
+                    });
+        } catch (RuntimeException e) {
+            if (e.getCause() instanceof ReorganizationException)
+                throw (ReorganizationException) e.getCause();
+
+            throw e;
+        }
     }
 }

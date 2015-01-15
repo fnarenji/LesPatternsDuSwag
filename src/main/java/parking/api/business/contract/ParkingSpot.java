@@ -43,6 +43,13 @@ public interface ParkingSpot {
     public Vehicle unpark();
 
     /**
+     * Get the booking that's currently in effect for this parking spot.
+     *
+     * @return the booking
+     */
+    Booking getCurrentBooking();
+
+    /**
      * Checks if the parking spot is booked.
      * @return true if booked; false if not booked
      */
@@ -50,12 +57,12 @@ public interface ParkingSpot {
 
     /**
      * Books an empty parking from now until a certain time.
-     * @param client the client who is booking
+     * @param owner the owner who is booking
      * @param until the date until the booking ends, null for infinite
      * @throws parking.api.exceptions.SpotBookedException if the spot is already booked
      * @throws parking.api.exceptions.SpotNotEmptyException if the spot is not empty
      */
-    public void book(Object client, DateTime until) throws SpotNotEmptyException, SpotBookedException;
+    public void book(Object owner, DateTime until) throws SpotNotEmptyException, SpotBookedException;
 
     /**
      * Removes the current booking.

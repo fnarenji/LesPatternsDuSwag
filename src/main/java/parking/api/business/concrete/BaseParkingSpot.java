@@ -54,23 +54,25 @@ public abstract class BaseParkingSpot implements ParkingSpot {
         return temp;
     }
 
+    @Override
     public Booking getCurrentBooking() {
         return bookings.stream().filter(booking -> booking.getInterval().contains(DateTime.now())).findFirst().orElse(null);
     }
+
     @Override
     public Boolean isBooked() {
         return bookings.stream().anyMatch(booking -> booking.getInterval().contains(DateTime.now()));
     }
 
     @Override
-    public void book(Object client, DateTime until) throws SpotBookedException, SpotNotEmptyException {
+    public void book(Object owner, DateTime until) throws SpotBookedException, SpotNotEmptyException {
         if (isBooked())
             throw new SpotBookedException(this);
 
         if (isVehicleParked())
             throw new SpotNotEmptyException(this);
 
-        bookings.add(new Booking(client, until));
+        bookings.add(new Booking(owner, until));
     }
 
     @Override
