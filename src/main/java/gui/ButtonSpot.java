@@ -91,7 +91,7 @@ public class ButtonSpot extends MenuButton {
                     parkingSpot.unpark();
 
                     Alert alert = new Alert(
-                            Alert.AlertType.CONFIRMATION,
+                            Alert.AlertType.INFORMATION,
                             "Place libérée."
                     );
                     alert.show();
