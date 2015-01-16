@@ -16,7 +16,7 @@ import javafx.stage.Window;
 /**
  * Created by  on 15/01/15.
  */
-public class constructStage extends Stage {
+public class ConstructStage extends Stage {
 
     Label title;
     Label label;
@@ -106,7 +106,7 @@ public class constructStage extends Stage {
         createButtonCancel();
     }
 
-    public constructStage(Window owner) {
+    public ConstructStage(Window owner) {
         this.initOwner(owner);
 
         init();
@@ -116,10 +116,10 @@ public class constructStage extends Stage {
         //add Nodes to FlowPane
         flowPane.getChildren().addAll(
                 title,
-                nbTruck,
                 nbCar,
-                cancel,
-                construct
+                nbTruck,
+                construct,
+                cancel
         );
 
         flowPane.setMaxSize(200, 400);
@@ -138,8 +138,6 @@ public class constructStage extends Stage {
         this.setResizable(false);
         this.setScene(scene);
         this.setTitle("New Parking");
-
-        this.showAndWait();
     }
 
     public String getNbTruck() {

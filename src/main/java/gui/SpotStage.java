@@ -2,6 +2,7 @@ package gui;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -63,10 +64,12 @@ public class SpotStage extends Stage {
         //set text
         if(parkingSpot.isBooked()) {
             booking.setText("Place Réservée");
+            booking.setPrefWidth(200);
             booking.setTextFill(Color.RED);
         }
         else {
             booking.setText("Place Non Réservée");
+            booking.setPrefWidth(200);
             booking.setTextFill(Color.GREEN);
         }
 
