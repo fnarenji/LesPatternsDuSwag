@@ -1,12 +1,12 @@
 package parking.implementation;
 
-import parking.api.business.concrete.Parking;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.business.contract.ParkingSpotSelector;
 import parking.api.business.contract.Vehicle;
 import parking.api.business.helper.ParkingSpotByVehicleTypePriorityMap;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by SKNZ on 01/01/2015.
@@ -25,12 +25,13 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
         ParkingSpot selectedSpot = null;
         Iterator<Class> parkingSpotType = priorityMap.whereTo(vehicle.getClass());
 
+        parkingSpots = cleanAndSortSpotList(vehicle, parkingSpots);
+
         while (selectedSpot == null && parkingSpotType.hasNext()) {
             Class currentParkingSpotType = parkingSpotType.next();
 
             selectedSpot = parkingSpots.stream()
-                    .filter(parkingSpot -> parkingSpots.getClass().
-                            equals(currentParkingSpotType))
+                    .filter(parkingSpot -> parkingSpot.getClass().equals(currentParkingSpotType))
                     .findFirst()
                     .orElse(null);
         }
@@ -49,24 +50,17 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
      * @param parkingSpots
      * @return Collection of the parking spots available for the user and with the booked spots first
      */
-    @Override
-    public Collection<ParkingSpot> checkBooked(Vehicle vehicle, Collection<ParkingSpot> parkingSpots){
+    public List<ParkingSpot> cleanAndSortSpotList(Vehicle vehicle, Collection<ParkingSpot> parkingSpots) {
         List<ParkingSpot> selectedSpots = new ArrayList<ParkingSpot>();
 
-        for(ParkingSpot currentSpot : parkingSpots){
-            if(currentSpot.isBooked() && currentSpot.getBookOwner() != vehicle.getOwner()) continue;
+        selectedSpots.addAll(
+                parkingSpots.stream()
+                        .filter(currentSpot -> !currentSpot.isBooked() && currentSpot.getCurrentBooking().equals(vehicle.getOwner()))
+                        .collect(Collectors.toList()));
 
-            selectedSpots.add(currentSpot);
-        }
+        Collections.sort(selectedSpots, (a, b) -> a.isBooked().compareTo(b.isBooked()));
 
-        Collections.sort(selectedSpots, new ParkingSpotBookedComparator());
-
-        Collection<ParkingSpot> ps = null;
-
-        for(ParkingSpot parkSpot : selectedSpots){
-            ps.add(parkSpot);
-        }
-        return ps;
+        return selectedSpots;
     }
 
 }
