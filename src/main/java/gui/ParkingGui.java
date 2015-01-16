@@ -60,22 +60,31 @@ public class ParkingGui extends Application {
         final int[] y = {0};
         vehicules.forEach(vehicule -> {
             try {
-                this.parkingManager.getParkingById(0).newParkingSpot(this.parkingSpotFactory, nbVehicules.get(vehicule), vehicule).forEach(
-                        spot -> {
-                            if (x[0] == maxInLine) {
-                                x[0] = 0;
-                                y[0]++;
-                            }
+                this.parkingManager.getParkingById(0)
+                        .newParkingSpot(
+                                this.parkingSpotFactory,
+                                nbVehicules.get(vehicule),
+                                vehicule)
+                        .forEach(
+                                spot -> {
+                                    if (x[0] == maxInLine) {
+                                        x[0] = 0;
+                                        y[0]++;
+                                    }
 
-                            ButtonSpot buttonSpot = new ButtonSpot(spot, vehicule, primaryStage);
+                                    ButtonSpot buttonSpot = new ButtonSpot(
+                                            spot,
+                                            vehicule,
+                                            primaryStage
+                                    );
 
-                            gridPane.add(
-                                    buttonSpot,
-                                    x[0]++,
-                                    y[0]
-                            );
-                        }
-                );
+                                    gridPane.add(
+                                            buttonSpot,
+                                            x[0]++,
+                                            y[0]
+                                    );
+                                }
+                        );
             } catch (ParkingNotPresentException e) {
                 e.printStackTrace();
             }
