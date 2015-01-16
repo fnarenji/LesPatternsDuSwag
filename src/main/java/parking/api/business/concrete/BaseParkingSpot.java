@@ -6,6 +6,7 @@ import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.SpotBookedException;
 import parking.api.exceptions.SpotNotBookedException;
 import parking.api.exceptions.SpotNotEmptyException;
+import parking.api.exceptions.VehicleNotFitException;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,12 +17,11 @@ import java.util.Map;
  * Created by SKNZ on 29/12/2014.
  */
 public abstract class BaseParkingSpot implements ParkingSpot {
-    protected static Map<Class, Boolean> vehicleTypeFits = new HashMap<>();
+    protected Map<Class, Boolean> vehicleTypeFits = new HashMap<>();
     protected int id;
     private Object bookOwner = null;
     private Vehicle vehicle = null;
     private Collection<Booking> bookings = new HashSet<>();
-
 
     @Override
     public Object getBookOwner() {
@@ -49,7 +49,10 @@ public abstract class BaseParkingSpot implements ParkingSpot {
     }
 
     @Override
-    public void park(Vehicle vehicle) throws SpotNotEmptyException, SpotBookedException {
+    public void park(Vehicle vehicle) throws SpotNotEmptyException, SpotBookedException, VehicleNotFitException {
+        if (!fits(vehicle))
+            throw new VehicleNotFitException(this, vehicle);
+
         if (this.vehicle != null)
             throw new SpotNotEmptyException(this);
 
@@ -106,6 +109,14 @@ public abstract class BaseParkingSpot implements ParkingSpot {
 
     @Override
     public Boolean fits(Vehicle vehicle) {
+        vehicleTypeFits.forEach((key, value) -> {
+            System.out.println(this.getClass().toString());
+            System.out.println(key.toString());
+            System.out.println(vehicle.getClass());
+            System.out.println(vehicle.getClass() == key);
+            System.out.println(vehicle.getClass().equals(key));
+            System.out.println();
+        });
         return vehicleTypeFits.getOrDefault(vehicle.getClass(), false);
     }
 

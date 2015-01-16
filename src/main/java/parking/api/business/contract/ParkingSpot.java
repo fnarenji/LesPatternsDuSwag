@@ -5,22 +5,24 @@ import parking.api.business.concrete.Booking;
 import parking.api.exceptions.SpotBookedException;
 import parking.api.exceptions.SpotNotBookedException;
 import parking.api.exceptions.SpotNotEmptyException;
+import parking.api.exceptions.VehicleNotFitException;
 
 /**
  * Created by SKNZ on 28/12/2014.
  */
 public interface ParkingSpot {
     /**
+     * Get the Object owner if this spot is booked
+     * @return Object (owner) null otherwise
+     */
+    public Object getBookOwner();
+
+    /**
      * Set the owner of the current book for this spot
      * @param Owner
      */
     public void setBookOwner(Object Owner);
 
-    /**
-     * Get the Object owner if this spot is booked
-     * @return Object (owner) null otherwise
-     */
-    public Object getBookOwner();
     /**
      * Get the id of the parking spot
      * @return The id of the parking spot
@@ -45,7 +47,7 @@ public interface ParkingSpot {
      * @throws parking.api.exceptions.SpotNotEmptyException if a vehicle is already parked in the spot or if the spot is booked.
      * @throws parking.api.exceptions.SpotBookedException if the spot is booked by someone else.
      */
-    public void park(Vehicle vehicle) throws SpotNotEmptyException, SpotBookedException;
+    public void park(Vehicle vehicle) throws SpotNotEmptyException, SpotBookedException, VehicleNotFitException;
 
     /**
      * Removes the vehicle that is parked.

@@ -95,7 +95,6 @@ public class Parking {
 
     public void reorganizeParking() throws ReorganizationException {
         try {
-       /* List<ParkingSpot> occupiedParkingSpots = */
             parkingSpotsById.values().stream()
                     .filter(parkingSpot -> parkingSpot.isVehicleParked() && !parkingSpotSelector.isOptimalParkingSpotForVehicle(parkingSpot, parkingSpot.getVehicle()))
                     .forEach(parkingSpot -> {

@@ -9,23 +9,12 @@ import parking.api.exceptions.UnknowVehiculeException;
 public class VehiculeFactory implements parking.api.business.contract.VehiculeFactory {
     @Override
     public Vehicle createVehicule(String name) throws UnknowVehiculeException {
-
-        Vehicle vehicule = null;
-
-        switch (name) {
-            case "Voiture":
-                vehicule = new Car();
-                break;
-            case "Moto":
-                vehicule = new Motorbike();
-                break;
-            case "Camion":
-                vehicule = new Carrier();
-                break;
-            default:
-                throw new UnknowVehiculeException();
-        }
-
-        return vehicule;
+        if (name.equals("Voiture"))
+            return new Car();
+        else if (name.equals("Moto"))
+            return new Motorbike();
+        else if (name.equals("Camion"))
+            return new Carrier();
+        throw new RuntimeException();
     }
 }
