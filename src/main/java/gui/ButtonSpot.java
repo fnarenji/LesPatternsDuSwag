@@ -6,10 +6,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Window;
 import parking.api.business.contract.ParkingSpot;
-import parking.api.exceptions.SpotBookedException;
-import parking.api.exceptions.SpotNotEmptyException;
-import parking.api.exceptions.UnknowVehiculeException;
-import parking.api.exceptions.VehicleNotFitException;
+import parking.api.exceptions.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,11 +80,11 @@ public class ButtonSpot extends MenuButton {
         this.park = new MenuItem("Park");
         this.park.setOnAction(event -> {
             try {
-                if (this.park.getText() == "Park") {
+                if (this.park.getText().equalsIgnoreCase("park")) {
                     VehiculeStage parkStage = new VehiculeStage(this.parent);
                     parkStage.showAndWait();
                     parkingSpot.park(parkStage.getVehicule());
-                } else if (this.park.getText() == "Unpark") {
+                } else if (this.park.getText().equalsIgnoreCase("unpark")) {
                     parkingSpot.unpark();
 
                     Alert alert = new Alert(
@@ -130,8 +127,17 @@ public class ButtonSpot extends MenuButton {
     private void createBook() {
         this.book = new MenuItem("Book");
         book.setOnAction(event -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "not implemented");
-            alert.show();
+            try {
+                if (this.book.getText().equalsIgnoreCase("book")) {
+
+                } else if (this.book.getText().equalsIgnoreCase("unbook")) {
+                    this.parkingSpot.unbook();
+                }
+            } catch (SpotNotEmptyException e) {
+                e.printStackTrace();
+            } catch (SpotNotBookedException e) {
+                e.printStackTrace();
+            }
         });
     }
 

@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import parking.api.business.concrete.ParkingManager;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
+import parking.implementation.Client;
 import parking.implementation.ParkingSpotFactory;
 
 import java.util.*;
@@ -30,8 +31,11 @@ public class ParkingGui extends Application {
     private int nbParking = 0;
     private int nbCar;
     private int nbCarrier;
+    Collection<Client> clients = new ArrayList<Client>();
     private ParkingManager parkingManager;
     private ParkingSpotFactory parkingSpotFactory;
+
+    private Client currentClient;
 
     public static void main(String[] args) {
         launch(args);
@@ -105,9 +109,22 @@ public class ParkingGui extends Application {
 
     private void createMenuClient() {
         this.menuClient = new Menu("Client");
+        MenuItem list = new MenuItem("Selectionner");
+        list.setOnAction(event -> {
+            ClientListStage clientListStage = new ClientListStage(primaryStage, clients);
+            clientListStage.showAndWait();
+
+            System.out.println(clients);
+        });
+
         MenuItem nouveau = new MenuItem("Nouveau");
+        nouveau.setOnAction(event -> {
+            ClientStage clientStage = new ClientStage(primaryStage);
+            clientStage.showAndWait();
+        });
 
         this.menuClient.getItems().addAll(
+                list,
                 nouveau
         );
     }
@@ -120,10 +137,11 @@ public class ParkingGui extends Application {
             ConstructStage constructStage = new ConstructStage(this.primaryStage);
             constructStage.showAndWait();
 
-            this.nbCar = Integer.parseInt(constructStage.getNbCar());
-            this.nbCarrier = Integer.parseInt(constructStage.getNbTruck());
+            this.nbCar = constructStage.getNbCar();
+            this.nbCarrier = constructStage.getNbTruck();
 
-            generateParking();
+            if (nbCar != 0 || nbCarrier != 0)
+                generateParking();
         });
 
         this.menuParking.getItems().addAll(
@@ -175,6 +193,9 @@ public class ParkingGui extends Application {
         topContainer.getChildren().add(toolBar);
         root.setTop(topContainer);
         root.setCenter(gridPane);
+
+        clients.add(new Client("", "Anonyme", ""));
+        currentClient = clients.iterator().next();
 
         createMenu();
         mainMenu.getMenus().addAll(

@@ -140,12 +140,16 @@ public class ConstructStage extends Stage {
         this.setTitle("New Parking");
     }
 
-    public String getNbTruck() {
-        return nbTruck.getText();
+    public int getNbTruck() {
+        if (nbTruck.getText().equalsIgnoreCase(""))
+            return 0;
+        return Integer.parseInt(nbTruck.getText());
     }
 
-    public String getNbCar() {
-        return nbCar.getText();
+    public int getNbCar() {
+        if (nbCar.getText().equalsIgnoreCase(""))
+            return 0;
+        return Integer.parseInt(nbCar.getText());
     }
 
 }
