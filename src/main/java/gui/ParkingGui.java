@@ -4,12 +4,13 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import parking.api.business.concrete.ParkingManager;
-import parking.api.business.contract.ParkingSpot;
-import parking.api.exceptions.*;
+import parking.api.exceptions.ParkingExistsException;
+import parking.api.exceptions.ParkingNotPresentException;
 import parking.implementation.ParkingSpotFactory;
 
 import java.util.*;
@@ -79,6 +80,10 @@ public class ParkingGui extends Application {
                 e.printStackTrace();
             }
         });
+
+        this.primaryStage.setHeight(
+                y[0] * 50 + 90  //50: button height & 90: menu height
+        );
     }
 
     private void createMenu() {
@@ -170,7 +175,11 @@ public class ParkingGui extends Application {
                 this.menuQuit
         );
 
-        Scene sc = new Scene(root, 600, 500);
+        Scene sc = new Scene(
+                root,
+                600,
+                500
+        );
 
         primaryStage.setScene(sc);
         primaryStage.sizeToScene();

@@ -40,9 +40,9 @@ public class ButtonSpot extends MenuButton {
         this.colors.put("Carrier", "#0e4fff");
 
         this.setStyle("-fx-background-color: " + this.colors.getOrDefault(this.type, this.defaultColor));
-        this.setMinSize(60, 60);
-        this.setMaxSize(60, 60);
-        this.setPrefSize(60, 60);
+        this.setMinSize(60, 50);
+        this.setMaxSize(60, 50);
+        this.setPrefSize(60, 50);
 
         createPark();
         createBook();
