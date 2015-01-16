@@ -109,14 +109,6 @@ public abstract class BaseParkingSpot implements ParkingSpot {
 
     @Override
     public Boolean fits(Vehicle vehicle) {
-        vehicleTypeFits.forEach((key, value) -> {
-            System.out.println(this.getClass().toString());
-            System.out.println(key.toString());
-            System.out.println(vehicle.getClass());
-            System.out.println(vehicle.getClass() == key);
-            System.out.println(vehicle.getClass().equals(key));
-            System.out.println();
-        });
         return vehicleTypeFits.getOrDefault(vehicle.getClass(), false);
     }
 

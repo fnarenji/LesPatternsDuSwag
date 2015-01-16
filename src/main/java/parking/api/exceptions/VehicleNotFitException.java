@@ -8,6 +8,6 @@ import parking.api.business.contract.Vehicle;
  */
 public class VehicleNotFitException extends Exception {
     public VehicleNotFitException(ParkingSpot spot, Vehicle vehicle) {
-        super("Tried to fit " + vehicle.getClass().getName() + " in " + spot.getClass().getName()".");
+        super("Tried to fit " + vehicle.getClass().getName() + " in " + spot.getClass().getName() + ".");
     }
 }

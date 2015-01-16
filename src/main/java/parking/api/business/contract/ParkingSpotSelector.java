@@ -8,5 +8,4 @@ import java.util.Collection;
 public interface ParkingSpotSelector {
     public ParkingSpot select(Vehicle vehicle, Collection<ParkingSpot> parkingSpots);
     public Boolean isOptimalParkingSpotForVehicle(ParkingSpot parkingSpot, Vehicle vehicle);
-    public Collection<ParkingSpot> checkBooked(Vehicle vehicle, Collection<ParkingSpot> parkingSpots);
 }

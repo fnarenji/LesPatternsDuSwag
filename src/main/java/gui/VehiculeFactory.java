@@ -1,5 +1,6 @@
-package parking.api.business.contract;
+package gui;
 
+import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.UnknowVehiculeException;
 
 /**

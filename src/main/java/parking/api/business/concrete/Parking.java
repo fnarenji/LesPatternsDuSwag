@@ -4,10 +4,7 @@ import parking.api.business.contract.ParkingSpot;
 import parking.api.business.contract.ParkingSpotFactory;
 import parking.api.business.contract.ParkingSpotSelector;
 import parking.api.business.contract.Vehicle;
-import parking.api.exceptions.NoSpotAvailableException;
-import parking.api.exceptions.ReorganizationException;
-import parking.api.exceptions.SpotBookedException;
-import parking.api.exceptions.SpotNotEmptyException;
+import parking.api.exceptions.*;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -104,7 +101,7 @@ public class Parking {
                             optimalParkingSpot.park(vehicle);
                         } catch (NoSpotAvailableException e) {
                             e.printStackTrace();
-                        } catch (SpotNotEmptyException | SpotBookedException e) {
+                        } catch (SpotNotEmptyException | VehicleNotFitException | SpotBookedException e) {
                             throw new RuntimeException(new ReorganizationException());
                         }
                     });

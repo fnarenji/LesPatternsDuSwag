@@ -14,7 +14,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import parking.api.business.contract.Vehicle;
-import parking.api.business.contract.VehiculeFactory;
 import parking.api.exceptions.UnknowVehiculeException;
 
 import java.util.ArrayList;
@@ -35,6 +34,42 @@ public class VehiculeStage extends Stage {
     private TextField model;
     private Button submit;
     private Button cancel;
+
+    public VehiculeStage(Window owner) {
+        this.initOwner(owner);
+
+        init();
+
+        BorderPane borderPane = new BorderPane();
+        FlowPane flowPane = new FlowPane();
+
+        //add Nodes to FlowPane
+        flowPane.getChildren().addAll(
+                title,
+                vehicule,
+                plate,
+                brand,
+                model,
+                submit,
+                cancel
+        );
+
+        flowPane.setMaxSize(200, 400);
+
+        //add FlowPane
+        flowPane.alignmentProperty().setValue(Pos.CENTER);
+        borderPane.setCenter(flowPane);
+        //add Label error
+        borderPane.setBottom(label);
+        BorderPane.setAlignment(label, Pos.CENTER);
+
+        //create scene
+        Scene scene = new Scene(borderPane, 300, 200);
+
+        this.setResizable(false);
+        this.setScene(scene);
+        this.setTitle("New Vehicule");
+    }
 
     private void createTitle() {
         title = new Label("New Vehicule");
@@ -133,42 +168,6 @@ public class VehiculeStage extends Stage {
         createTextFieldModel();
         createButtonCreate();
         createButtonCancel();
-    }
-
-    public VehiculeStage(Window owner) {
-        this.initOwner(owner);
-
-        init();
-
-        BorderPane borderPane = new BorderPane();
-        FlowPane flowPane = new FlowPane();
-
-        //add Nodes to FlowPane
-        flowPane.getChildren().addAll(
-                title,
-                vehicule,
-                plate,
-                brand,
-                model,
-                submit,
-                cancel
-        );
-
-        flowPane.setMaxSize(200, 400);
-
-        //add FlowPane
-        flowPane.alignmentProperty().setValue(Pos.CENTER);
-        borderPane.setCenter(flowPane);
-        //add Label error
-        borderPane.setBottom(label);
-        borderPane.setAlignment(label, Pos.CENTER);
-
-        //create scene
-        Scene scene = new Scene(borderPane, 300, 200);
-
-        this.setResizable(false);
-        this.setScene(scene);
-        this.setTitle("New Vehicule");
     }
 
     public Vehicle getVehicule() throws UnknowVehiculeException {

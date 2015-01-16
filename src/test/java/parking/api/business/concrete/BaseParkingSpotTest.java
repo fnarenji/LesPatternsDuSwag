@@ -8,6 +8,7 @@ import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.SpotBookedException;
 import parking.api.exceptions.SpotNotBookedException;
 import parking.api.exceptions.SpotNotEmptyException;
+import parking.api.exceptions.VehicleNotFitException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -30,7 +31,7 @@ public class BaseParkingSpotTest {
     }
 
     @Test
-    public void testIsVehicleParked() throws SpotNotEmptyException, SpotBookedException {
+    public void testIsVehicleParked() throws SpotNotEmptyException, SpotBookedException, VehicleNotFitException {
         assertFalse(parkingSpot.isVehicleParked());
 
         parkingSpot.park(mock(Vehicle.class));
@@ -41,7 +42,7 @@ public class BaseParkingSpotTest {
     }
 
     @Test
-    public void testGetVehicle() throws SpotNotEmptyException, SpotBookedException {
+    public void testGetVehicle() throws SpotNotEmptyException, SpotBookedException, VehicleNotFitException {
         assertNull(parkingSpot.getVehicle());
         Vehicle vehicle = mock(Vehicle.class);
         parkingSpot.park(vehicle);
@@ -49,7 +50,7 @@ public class BaseParkingSpotTest {
     }
 
     @Test
-    public void testPark() throws SpotNotEmptyException, SpotBookedException {
+    public void testPark() throws SpotNotEmptyException, SpotBookedException, VehicleNotFitException {
         Vehicle vehicle = mock(Vehicle.class);
         parkingSpot.park(vehicle);
 
@@ -62,7 +63,7 @@ public class BaseParkingSpotTest {
     }
 
     @Test
-    public void testUnpark() throws SpotNotEmptyException, SpotBookedException {
+    public void testUnpark() throws SpotNotEmptyException, SpotBookedException, VehicleNotFitException {
         Vehicle vehicle = mock(Vehicle.class);
 
         parkingSpot.park(vehicle);
@@ -88,7 +89,7 @@ public class BaseParkingSpotTest {
     }
 
     @Test
-    public void testBookingSpotNotEmpty() throws SpotNotEmptyException, SpotBookedException, SpotNotBookedException {
+    public void testBookingSpotNotEmpty() throws SpotNotEmptyException, SpotBookedException, SpotNotBookedException, VehicleNotFitException {
         parkingSpot.book("CLIENT VIVANT", null);
         assertTrue(parkingSpot.isBooked());
         assertFalse(parkingSpot.isVehicleParked());

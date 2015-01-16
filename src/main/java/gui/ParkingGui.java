@@ -1,47 +1,33 @@
 package gui;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
-import org.controlsfx.control.action.Action;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
-
-import parking.api.business.concrete.Parking;
 import parking.api.business.concrete.ParkingManager;
 import parking.api.business.contract.ParkingSpot;
-import parking.api.business.contract.ParkingSpotIdProvider;
 import parking.api.exceptions.*;
-import parking.implementation.CarParkingSpot;
-
 import parking.implementation.ParkingSpotFactory;
-import parking.implementation.SimpleParkingSpotIdProvider;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 //Created by on 30/12/14.
 
 public class ParkingGui extends Application {
 
 
-    private  int countP = 0;
-    private Collection<ButtonSpot> currentsButtonSpot = new ArrayList<>();
-
     final TextField nbCar = new TextField();
     final TextField nbTruck = new TextField();
+    private int countP = 0;
+    private Collection<ButtonSpot> currentsButtonSpot = new ArrayList<>();
 
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -150,6 +136,8 @@ public class ParkingGui extends Application {
                                 e1.printStackTrace();
                             } catch (UnknowVehiculeException e1) {
                                 e1.printStackTrace();
+                            } catch (VehicleNotFitException e1) {
+                                e1.printStackTrace();
                             }
                             lel.setStyle("-fx-background-color: #ff0030");
                             park.setText("Unpark");
@@ -162,7 +150,7 @@ public class ParkingGui extends Application {
                             spotStage.showAndWait();
                         });
                         lel.getItems().addAll(park,book,info);
-                        gridPane.add(matrix[x][y], y, x);;
+                        gridPane.add(matrix[x][y], y, x);
                     }
                 }
 
@@ -182,10 +170,6 @@ public class ParkingGui extends Application {
         primaryStage.setTitle("SWAG-- GUI");
         primaryStage.show();
 
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 
 }
