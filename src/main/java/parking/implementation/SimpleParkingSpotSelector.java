@@ -55,7 +55,7 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
 
         selectedSpots.addAll(
                 parkingSpots.stream()
-                        .filter(currentSpot -> !currentSpot.isBooked() && currentSpot.getCurrentBooking().equals(vehicle.getOwner()))
+                        .filter(currentSpot -> currentSpot.isBooked() && currentSpot.getCurrentBooking().getOwner().equals(vehicle.getOwner()))
                         .collect(Collectors.toList()));
 
         Collections.sort(selectedSpots, (a, b) -> a.isBooked().compareTo(b.isBooked()));
