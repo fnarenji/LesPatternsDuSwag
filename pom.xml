@@ -9,7 +9,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-		        <version>3.1</version>
+                <version>3.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -23,7 +23,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>parking.implementation.gui.ParkingGui</mainClass>
+                            <mainClass>parking.implementation.parking.implementation.gui.ParkingGui</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

@@ -2,6 +2,7 @@ package parking.api.business.concrete;
 
 import org.joda.time.DateTime;
 import parking.api.business.contract.ParkingSpot;
+import parking.api.business.contract.ParkingSpotObserver;
 import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.SpotBookedException;
 import parking.api.exceptions.SpotNotBookedException;
@@ -19,19 +20,8 @@ import java.util.Map;
 public abstract class BaseParkingSpot implements ParkingSpot {
     protected Map<Class, Boolean> vehicleTypeFits = new HashMap<>();
     protected int id;
-    private Object bookOwner = null;
     private Vehicle vehicle = null;
     private Collection<Booking> bookings = new HashSet<>();
-
-    @Override
-    public Object getBookOwner() {
-        return this.bookOwner;
-    }
-
-    @Override
-    public void setBookOwner(Object owner) {
-        this.bookOwner = owner;
-    }
 
     @Override
     public Integer getId() {
@@ -105,6 +95,11 @@ public abstract class BaseParkingSpot implements ParkingSpot {
 
         bookings.remove(booking);
         return booking;
+    }
+
+    @Override
+    public void registerObserver(ParkingSpotObserver parkingSpotObserver) {
+
     }
 
     @Override

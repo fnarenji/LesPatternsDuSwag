@@ -15,18 +15,6 @@ import java.util.Observable;
  */
 public interface ParkingSpot extends Serializable {
     /**
-     * Get the Object owner if this spot is booked
-     * @return Object (owner) null otherwise
-     */
-    public Object getBookOwner();
-
-    /**
-     * Set the owner of the current book for this spot
-     * @param Owner
-     */
-    public void setBookOwner(Object Owner);
-
-    /**
      * Get the id of the parking spot
      * @return The id of the parking spot
      */
@@ -96,4 +84,9 @@ public interface ParkingSpot extends Serializable {
      * @return true if fits, false if not fits
      */
     public Boolean fits(Vehicle vehicle);
+
+    /**
+     * Register an observer.
+     */
+    public void registerObserver(ParkingSpotObserver parkingSpotObserver);
 }

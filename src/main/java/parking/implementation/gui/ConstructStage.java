@@ -1,6 +1,5 @@
 package parking.implementation.gui;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -52,6 +51,7 @@ class ConstructStage extends Stage {
         label.setTextFill(Color.RED);
         label.alignmentProperty().setValue(Pos.CENTER);
     }
+
     private void createConstructButton() {
         constructButton = new Button();
         constructButton.setText("Create");

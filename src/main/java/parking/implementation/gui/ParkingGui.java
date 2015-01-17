@@ -8,31 +8,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import parking.api.business.concrete.ParkingManager;
-import parking.api.exceptions.ParkingExistsException;
-import parking.api.exceptions.ParkingNotPresentException;
-
 import parking.implementation.Client;
 import parking.implementation.ParkingSpotFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
 
 //Created by on 30/12/14.
 
 public class ParkingGui extends Application {
+    private Stage stage;
+    private BorderPane borderPane;
 
-    private Stage primaryStage;
-    private GridPane gridPane;
-    private Menu menuClient;
-    private Menu menuParking;
-    private Menu menuSelector;
-    private Menu menuQuit;
+    private Client currentClient;
+    private Collection<Collection<GridPane>> gridPaneParking = new ArrayList<>();
 
-    private int maxInLine = 10;
-    private int nbParking = 0;
-    private int nbCar;
-    private int nbCarrier;
     private Collection<Client> clients = new ArrayList<>();
     private ParkingManager parkingManager;
     private ParkingSpotFactory parkingSpotFactory;
@@ -41,78 +33,34 @@ public class ParkingGui extends Application {
         launch(args);
     }
 
-    private void generateParking() {
-        try {
-            this.parkingManager = ParkingManager.getInstance();
-            this.parkingSpotFactory = new ParkingSpotFactory();
+    private Collection<GridPane> generateParking() {
+        ParkingListStage parkingListStage = new ParkingListStage(stage, clients);
+        parkingListStage.showAndWait();
+        return parkingListStage.getParking();
+    }
 
-            this.parkingManager.setCompanyName("SWAG COMPANY");
-            this.parkingManager.newParking(++nbParking, "Parking 1");
+    private MenuBar createMenu() {
+        Menu menuClient = createMenuClient();
+        Menu menuParking = createMenuParking();
+        Menu menuSelector = createMenuSelector();
+        Menu menuQuit = createMenuQuit();
 
-        } catch (ParkingExistsException e) {
-            e.printStackTrace();
-        }
-
-        Collection<String> vehicles = new ArrayList<>();
-        Map<String, Integer> nbVehicles = new HashMap<>();
-        vehicles.add("Car");
-        nbVehicles.put("Car", this.nbCar);
-        vehicles.add("Carrier");
-        nbVehicles.put("Carrier", this.nbCarrier);
-
-        final int[] x = {0};
-        final int[] y = {0};
-        vehicles.forEach(vehicle -> {
-            try {
-                this.parkingSpotFactory.setNextVehicleType(vehicle);
-                this.parkingManager.getParkingById(0)
-                        .newParkingSpot(
-                                this.parkingSpotFactory,
-                                nbVehicles.get(vehicle))
-                        .forEach(
-                                spot -> {
-                                    if (x[0] == maxInLine) {
-                                        x[0] = 0;
-                                        y[0]++;
-                                    }
-
-                                    ButtonSpot buttonSpot = new ButtonSpot(
-                                            spot,
-                                            vehicle,
-                                            primaryStage,
-                                            clients
-                                    );
-
-                                    gridPane.add(
-                                            buttonSpot,
-                                            x[0]++,
-                                            y[0]
-                                    );
-                                }
-                        );
-            } catch (ParkingNotPresentException e) {
-                e.printStackTrace();
-            }
-        });
-
-        this.primaryStage.setHeight(
-                y[0] * 50 + 90  //50: button height & 90: menu height
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(
+                menuClient,
+                menuParking,
+                menuSelector,
+                menuQuit
         );
+
+        return menuBar;
     }
 
-    private void createMenu() {
-        createMenuClient();
-        createMenuParking();
-        createMenuSelector();
-        createMenuQuit();
-
-    }
-
-    private void createMenuClient() {
-        this.menuClient = new Menu("Client");
+    private Menu createMenuClient() {
+        Menu menuClient = new Menu("Client");
         MenuItem list = new MenuItem("Selectionner");
         list.setOnAction(event -> {
-            ClientListStage clientListStage = new ClientListStage(primaryStage, clients);
+            ClientListStage clientListStage = new ClientListStage(stage, clients);
             clientListStage.showAndWait();
 
             System.out.println(clients);
@@ -120,50 +68,51 @@ public class ParkingGui extends Application {
 
         MenuItem nouveau = new MenuItem("Nouveau");
         nouveau.setOnAction(event -> {
-            ClientStage clientStage = new ClientStage(primaryStage);
+            ClientStage clientStage = new ClientStage(stage);
             clientStage.showAndWait();
             clients.add(clientStage.getClient());
         });
 
-        this.menuClient.getItems().addAll(
+        menuClient.getItems().addAll(
                 list,
                 nouveau
         );
+
+        return menuClient;
     }
 
-    private void createMenuParking() {
-        this.menuParking = new Menu("Parking");
+    private Menu createMenuParking() {
+        Menu menuParking = new Menu("Parking");
+        MenuItem select = new MenuItem("Selectionner");
+
         MenuItem nouveau = new MenuItem("Nouveau");
 
         nouveau.setOnAction(event -> {
-            ConstructStage constructStage = new ConstructStage(this.primaryStage);
-            constructStage.showAndWait();
-
-            this.nbCar = constructStage.getCarNumberField();
-            this.nbCarrier = constructStage.getTruckNumberField();
-
-            if (nbCar != 0 || nbCarrier != 0)
-                generateParking();
+            generateParking();
         });
 
-        this.menuParking.getItems().addAll(
+        menuParking.getItems().addAll(
                 nouveau
         );
+
+        return menuParking;
     }
 
-    private void createMenuSelector() {
-        this.menuSelector = new Menu("AutoSelector");
+    private Menu createMenuSelector() {
+        Menu menuSelector = new Menu("AutoSelector");
         MenuItem find = new MenuItem("Find a place");
         MenuItem undo = new MenuItem("Unselect place");
 
-        this.menuSelector.getItems().addAll(
+        menuSelector.getItems().addAll(
                 find,
                 undo
         );
+
+        return menuSelector;
     }
 
-    private void createMenuQuit() {
-        this.menuQuit = new Menu("Quit");
+    private Menu createMenuQuit() {
+        Menu menuQuit = new Menu("Quit");
         MenuItem quit = new MenuItem("Quit");
         quit.setOnAction(event -> {
             Alert confirm = new Alert(
@@ -172,50 +121,53 @@ public class ParkingGui extends Application {
             );
             Optional<ButtonType> result = confirm.showAndWait();
             if (result.get() == ButtonType.OK)
-                this.primaryStage.close();
+                stage.close();
         });
 
-        this.menuQuit.getItems().addAll(
+        menuQuit.getItems().addAll(
                 quit
         );
+
+        return menuQuit;
     }
 
     @Override
     public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        this.primaryStage.setOnCloseRequest(event -> Platform.exit());
+        this.stage = primaryStage;
 
-        this.gridPane = new GridPane();
-        BorderPane root = new BorderPane();
-        VBox topContainer = new VBox();
-        MenuBar mainMenu = new MenuBar();
-        ToolBar toolBar = new ToolBar();
-
-        topContainer.getChildren().add(mainMenu);
-        topContainer.getChildren().add(toolBar);
-        root.setTop(topContainer);
-        root.setCenter(gridPane);
-
+        //add data
         clients.add(new Client("", "Anonyme", ""));
         Client currentClient = clients.iterator().next();
 
-        createMenu();
-        mainMenu.getMenus().addAll(
-                this.menuClient,
-                this.menuParking,
-                this.menuSelector,
-                this.menuQuit
-        );
+        //create root
+        borderPane = new BorderPane();
 
-        Scene sc = new Scene(
-                root,
+        //create top menu
+        MenuBar menu = createMenu();
+        VBox vBox = new VBox();
+        vBox.getChildren().add(menu);
+        vBox.setPrefHeight(menu.getHeight());
+        borderPane.setTop(vBox);
+        borderPane.setPrefHeight(vBox.getHeight());
+
+        //generate parking
+        Collection<GridPane> parking = generateParking();
+        //active floor
+        GridPane currentFloor = parking.iterator().next();
+
+        borderPane.setCenter(currentFloor);
+
+        Scene scene = new Scene(
+                borderPane,
                 600,
-                500
+                400
         );
 
-        primaryStage.setScene(sc);
+        primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.setTitle("SWAG Parking");
+
+        primaryStage.setOnCloseRequest(event -> Platform.exit());
         primaryStage.show();
 
     }

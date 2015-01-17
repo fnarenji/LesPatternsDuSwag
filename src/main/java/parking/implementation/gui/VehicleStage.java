@@ -141,12 +141,12 @@ public class VehicleStage extends Stage {
 
     private EventHandler<ActionEvent> createSubmitEventHandler() {
         return event -> {
-            if(!plateField.getText().isEmpty()
+            if (!plateField.getText().isEmpty()
                     && !brandField.getText().isEmpty()
                     && !modelField.getText().isEmpty()
                     ) {
                 close();
-            }else {
+            } else {
                 label.setText("Tous les champs ne sont pas renseignés");
             }
         };
