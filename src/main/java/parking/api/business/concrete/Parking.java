@@ -8,6 +8,7 @@ import parking.api.exceptions.*;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -112,6 +113,9 @@ public class Parking implements Serializable {
 
             throw e;
         }
+    }
+    public void forEach(Consumer<ParkingSpot> consumer) {
+        parkingSpotsById.values().forEach(consumer);
     }
 
 }

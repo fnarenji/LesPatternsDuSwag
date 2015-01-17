@@ -3,7 +3,6 @@ package parking.api.business.concrete;
 import parking.api.business.contract.observer.Observable;
 import parking.api.business.contract.observer.Observer;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 

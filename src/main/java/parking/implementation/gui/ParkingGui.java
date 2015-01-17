@@ -112,9 +112,9 @@ public class ParkingGui extends Application {
     }
 
     private Menu createMenuQuit() {
-        Menu menuQuit = new Menu("Quit");
-        MenuItem quit = new MenuItem("Quit");
-        quit.setOnAction(event -> {
+        Menu menuQuit = new Menu();
+        Label quitLabel = new Label("Quit");
+        quitLabel.setOnMouseClicked(event -> {
             Alert confirm = new Alert(
                     Alert.AlertType.CONFIRMATION,
                     "Êtes vous sûr de vouloir quitter ?"
@@ -124,9 +124,7 @@ public class ParkingGui extends Application {
                 stage.close();
         });
 
-        menuQuit.getItems().addAll(
-                quit
-        );
+        menuQuit.setGraphic(quitLabel);
 
         return menuQuit;
     }

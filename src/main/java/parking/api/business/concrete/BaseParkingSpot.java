@@ -61,8 +61,12 @@ public abstract class BaseParkingSpot extends BaseObservable implements ParkingS
     @Override
     public Vehicle unpark() {
         Vehicle temp = vehicle;
+
         vehicle = null;
         enteredHour = null;
+
+        notifyObservers();
+
         return temp;
     }
 
