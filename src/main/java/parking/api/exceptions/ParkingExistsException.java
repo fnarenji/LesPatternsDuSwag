@@ -6,7 +6,7 @@ package parking.api.exceptions;
 public class ParkingExistsException extends ParkingException {
     /**
      * Raised when try create a parking with an id already existing
-     * 
+     *
      * @param id Id of the parking
      */
     public ParkingExistsException(Integer id) {
