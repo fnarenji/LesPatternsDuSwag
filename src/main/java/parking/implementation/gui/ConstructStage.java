@@ -1,6 +1,5 @@
-package gui;
+package parking.implementation.gui;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

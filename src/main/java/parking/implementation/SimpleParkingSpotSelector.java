@@ -30,8 +30,7 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
         while (selectedSpot == null && parkingSpotType.hasNext()) {
             Class currentParkingSpotType = parkingSpotType.next();
 
-            selectedSpot = parkingSpots.stream()
-                    .filter(parkingSpot -> parkingSpot.getClass().equals(currentParkingSpotType))
+            selectedSpot = parkingSpots.stream()                    .filter(parkingSpot -> parkingSpot.getClass().equals(currentParkingSpotType))
                     .findFirst()
                     .orElse(null);
         }

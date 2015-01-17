@@ -1,4 +1,4 @@
-package gui;
+package parking.implementation.gui;
 
 import javafx.scene.Node;
 import javafx.scene.control.Alert;

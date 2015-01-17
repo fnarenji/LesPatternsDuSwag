@@ -1,4 +1,4 @@
-package gui;
+package parking.implementation.gui;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

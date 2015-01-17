@@ -1,4 +1,4 @@
-package gui;
+package parking.implementation.gui;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * Created by loick on 14/01/15.
  */
-public class ParkingFloorListStage extends Stage {
+public class ParkingListStage extends Stage {
 
     private Collection<Client> clients;
     private Collection<GridPane> parking = new ArrayList<>();
@@ -186,9 +186,8 @@ public class ParkingFloorListStage extends Stage {
         createButtonOK();
     }
 
-    public ParkingFloorListStage(Window owner, Collection<GridPane> parking, Collection<Client> clients) {
+    public ParkingListStage(Window owner, Collection<Client> clients) {
         this.initOwner(owner);
-        this.parking = parking;
         this.clients = clients;
 
         init();
@@ -221,7 +220,7 @@ public class ParkingFloorListStage extends Stage {
         this.setTitle("Parking");
     }
 
-    public GridPane getFloor() {
-        return (GridPane) this.select.getValue();
+    public Collection<GridPane> getParking() {
+        return parking;
     }
 }
