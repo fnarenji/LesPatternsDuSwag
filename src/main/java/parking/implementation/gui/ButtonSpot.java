@@ -63,6 +63,11 @@ class ButtonSpot extends MenuButton {
         this.park.setText("Park");
     }
 
+    private void setAvailableBook() {
+        this.setStyle("-fx-background-color: " + this.colors.getOrDefault(this.type, this.defaultColor));
+        this.book.setText("Book");
+    }
+    
     private void setBooked() {
         this.setStyle("-fx-background-color: #fcff00");
         this.book.setText("Unbook");
@@ -74,12 +79,15 @@ class ButtonSpot extends MenuButton {
     }
 
     private void updateState() {
+        System.out.println("lol");
         if (this.parkingSpot.isVehicleParked() && !parkingSpot.getVehicle().getBrand().equals(""))
             this.setBusy();
         else if (this.parkingSpot.isBooked())
             this.setBooked();
-        else
+        else if(!this.parkingSpot.isVehicleParked() && park.getText().equals("Unpark"))
             this.setAvailable();
+        else
+            this.setAvailableBook();
     }
 
     private void createPark() {
