@@ -59,7 +59,7 @@ public class ParkingTest {
             }
         };
 
-        parking.newParkingSpot(parkingSpotFactory, null);
+        parking.newParkingSpot(parkingSpotFactory);
         SerializeParkings.serialize(parking);
 
         Parking p = SerializeParkings.deserialize();
@@ -80,7 +80,7 @@ public class ParkingTest {
             @Override
             public ParkingSpot createParkingSpot() {
                 ParkingSpot parkingSpot = mock(ParkingSpot.class);
-                when(parkingSpot.getId()).thenReturn(new Integer(++i));
+                when(parkingSpot.getId()).thenReturn(++i);
                 return parkingSpot;
             }
         };
@@ -107,7 +107,7 @@ public class ParkingTest {
             @Override
             public ParkingSpot createParkingSpot() {
                 ParkingSpot parkingSpot = mock(ParkingSpot.class);
-                when(parkingSpot.getId()).thenReturn(new Integer(++i));
+                when(parkingSpot.getId()).thenReturn(++i);
                 return parkingSpot;
             }
         };
@@ -129,7 +129,7 @@ public class ParkingTest {
             @Override
             public ParkingSpot createParkingSpot() {
                 ParkingSpot parkingSpot = mock(ParkingSpot.class);
-                when(parkingSpot.getId()).thenReturn(new Integer(++i));
+                when(parkingSpot.getId()).thenReturn(++i);
                 return parkingSpot;
             }
         };
@@ -150,7 +150,7 @@ public class ParkingTest {
             @Override
             public ParkingSpot createParkingSpot() {
                 ParkingSpot parkingSpot = mock(ParkingSpot.class);
-                when(parkingSpot.getId()).thenReturn(new Integer(++i));
+                when(parkingSpot.getId()).thenReturn(++i);
                 when(parkingSpot.isVehicleParked()).thenReturn(true);
                 when(parkingSpot.getVehicle()).thenAnswer(invocationOnMock -> {
                     Vehicle vehicle = mock(Vehicle.class);
