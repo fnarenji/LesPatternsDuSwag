@@ -1,6 +1,8 @@
 package parking.implementation.gui;
 
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+import parking.api.business.concrete.Parking;
 import parking.api.business.concrete.ParkingManager;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.ParkingNotPresentException;
@@ -10,20 +12,25 @@ import parking.api.exceptions.ParkingNotPresentException;
  */
 public class ParkingGrid extends GridPane {
     private static final int MAX_LINE = 10;
-    private ParkingManager parkingManager = ParkingManager.getInstance();
+    private Stage primaryStage;
 
-    public void updateGrid(Integer parking, Integer floor) {
+    public ParkingGrid(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    public void updateGrid(Integer parkingId, Integer floor) {
         try {
             int x = 0;
             int y = 0;
 
-            for (ParkingSpot parkingSpot : parkingManager.getParkingById(parking)) {
+            Parking parking = ParkingManager.getInstance().getParkingById(parkingId);
+            for (ParkingSpot parkingSpot : parking) {
                 if (y == MAX_LINE) {
                     y++;
                     x = 0;
                 }
 
-                add(new ButtonSpot(parkingSpot, ParkingGUI.getMainStage()), x++, y);
+                add(new ButtonSpot(parkingSpot, primaryStage), x++, y);
             }
         } catch (ParkingNotPresentException e) {
             e.printStackTrace();

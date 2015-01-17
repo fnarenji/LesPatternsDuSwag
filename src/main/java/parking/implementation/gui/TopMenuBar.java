@@ -1,6 +1,7 @@
 package parking.implementation.gui;
 
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.util.Optional;
 
@@ -8,7 +9,10 @@ import java.util.Optional;
  * Created by sknz on 1/17/15.
  */
 public class TopMenuBar extends MenuBar {
-    public TopMenuBar() {
+    private Stage primaryStage;
+
+    public TopMenuBar(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         getMenus().addAll(createMenuClient(), createMenuParking(), createMenuSelector(), createMenuQuit());
     }
 
@@ -16,13 +20,13 @@ public class TopMenuBar extends MenuBar {
         Menu menuClient = new Menu("Client");
         MenuItem list = new MenuItem("Selectionner");
         list.setOnAction(event -> {
-            ClientListStage clientListStage = new ClientListStage(ParkingGUI.getMainStage());
+            ClientListStage clientListStage = new ClientListStage(primaryStage);
             clientListStage.showAndWait();
         });
 
         MenuItem nouveau = new MenuItem("Nouveau");
         nouveau.setOnAction(event -> {
-            ClientStage clientStage = new ClientStage(ParkingGUI.getMainStage());
+            ClientStage clientStage = new ClientStage(primaryStage);
             clientStage.showAndWait();
             ClientManager.getInstance().addClient(clientStage.getClient());
         });
@@ -42,7 +46,7 @@ public class TopMenuBar extends MenuBar {
         MenuItem nouveau = new MenuItem("Nouveau");
 
         nouveau.setOnAction(event -> {
-            ParkingListStage parkingListStage = new ParkingListStage(ParkingGUI.getMainStage());
+            ParkingListStage parkingListStage = new ParkingListStage(primaryStage);
             parkingListStage.showAndWait();
 
             System.out.println(parkingListStage.getChoice());
@@ -78,7 +82,7 @@ public class TopMenuBar extends MenuBar {
             );
             Optional<ButtonType> result = confirm.showAndWait();
             if (result.get() == ButtonType.OK)
-                ParkingGUI.getMainStage().close();
+                primaryStage.close();
         });
 
         menuQuit.setGraphic(quitLabel);

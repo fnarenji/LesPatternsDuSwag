@@ -7,11 +7,8 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Window;
 import org.joda.time.DateTime;
 import parking.api.business.contract.ParkingSpot;
-import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.*;
-import parking.implementation.logic.Car;
 import parking.implementation.logic.CarParkingSpot;
-import parking.implementation.logic.Carrier;
 import parking.implementation.logic.CarrierParkingSpot;
 
 import java.util.HashMap;
@@ -72,7 +69,7 @@ class ButtonSpot extends MenuButton {
         this.setStyle("-fx-background-color: " + colors.get(type));
         this.book.setText("Book");
     }
-    
+
     private void setBooked() {
         this.setStyle("-fx-background-color: #fcff00");
         this.book.setText("Unbook");
@@ -89,7 +86,7 @@ class ButtonSpot extends MenuButton {
             this.setBusy();
         else if (this.parkingSpot.isBooked())
             this.setBooked();
-        else if(!this.parkingSpot.isVehicleParked() && park.getText().equals("Unpark"))
+        else if (!this.parkingSpot.isVehicleParked() && park.getText().equals("Unpark"))
             this.setAvailable();
         else
             this.setAvailableBook();

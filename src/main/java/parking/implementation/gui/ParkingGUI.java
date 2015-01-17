@@ -3,38 +3,23 @@ package parking.implementation.gui;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import parking.api.business.concrete.Parking;
 import parking.api.business.concrete.ParkingManager;
-import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.ParkingExistsException;
-import parking.api.exceptions.ParkingNotPresentException;
-import parking.implementation.logic.Client;
 import parking.implementation.logic.FloorParkingSpotIdProvider;
 import parking.implementation.logic.ParkingSpotFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 //Created by on 30/12/14.
 
 public class ParkingGUI extends Application {
-    private static Stage mainStage;
-
-    public static Stage getMainStage() {
-        return mainStage;
+    public static void main(String[] args) {
+        launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-        mainStage = primaryStage;
-
         ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory();
         parkingSpotFactory.setIdProvider(new FloorParkingSpotIdProvider());
         parkingSpotFactory.setNextVehicleType("Car");
@@ -45,14 +30,14 @@ public class ParkingGUI extends Application {
             e.printStackTrace();
         }
 
-        ParkingGrid parkingGrid = new ParkingGrid();
+        ParkingGrid parkingGrid = new ParkingGrid(primaryStage);
         parkingGrid.updateGrid(1, 1);
 
         //create root
         BorderPane borderPane = new BorderPane();
 
         //create top menu
-        MenuBar menu = new TopMenuBar();
+        MenuBar menu = new TopMenuBar(primaryStage);
 
         borderPane.setTop(menu);
         borderPane.setPrefHeight(menu.getHeight());
@@ -66,9 +51,5 @@ public class ParkingGUI extends Application {
 
         primaryStage.setOnCloseRequest(event -> Platform.exit());
         primaryStage.show(); // show time !
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

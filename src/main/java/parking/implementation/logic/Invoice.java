@@ -4,7 +4,7 @@ package parking.implementation.logic;
  * Created by loicpauletto on 17/01/15.
  */
 public class Invoice {
-    
+
     private int invoiceNuber;
     private double invoicePrice;
 

@@ -14,6 +14,7 @@ public class Booking {
 
     /**
      * Create a reservation
+     *
      * @param owner owner of the booking
      * @param until end date of the booking
      */
@@ -28,6 +29,7 @@ public class Booking {
 
     /**
      * Get the interval of the booking
+     *
      * @return interval which the duration of the booking
      */
     public Interval getInterval() {
@@ -35,7 +37,8 @@ public class Booking {
     }
 
     /**
-     *Assign the date of the end of the booking to the interval
+     * Assign the date of the end of the booking to the interval
+     *
      * @param until date of the end of the boking
      */
     public void setUntil(DateTime until) {
@@ -51,6 +54,7 @@ public class Booking {
 
     /**
      * Get the owner of the booking
+     *
      * @return the owner of the booking
      */
     public Object getOwner() {
@@ -59,6 +63,7 @@ public class Booking {
 
     /**
      * Set the owner of the booking
+     *
      * @param owner the person which own the booking
      */
     public void setOwner(Object owner) {
@@ -67,6 +72,7 @@ public class Booking {
 
     /**
      * Check the owner of the booking
+     *
      * @param owner the owner we want to test
      * @return true if the booking is owned by the owner passed as parameter
      */

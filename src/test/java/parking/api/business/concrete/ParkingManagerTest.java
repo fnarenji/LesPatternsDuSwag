@@ -52,12 +52,14 @@ public class ParkingManagerTest {
         try {
             parkingManager.getParkingById(parking.getId());
             fail("Exception not thrown");
-        } catch (ParkingNotPresentException e) { }
+        } catch (ParkingNotPresentException e) {
+        }
 
         try {
             parkingManager.deleteParking(parking.getId());
             fail("Exception not thrown");
-        } catch (ParkingNotPresentException e) { }
+        } catch (ParkingNotPresentException e) {
+        }
 
         parking = parkingManager.newParking(1, "Prk GAP");
         assertEquals(parkingManager.getParkingById(1), parking);
@@ -80,7 +82,7 @@ public class ParkingManagerTest {
     }
 
     @Test
-    public void testSerializeParking(){
+    public void testSerializeParking() {
         SerializeParkingManager.serialize(parkingManager);
 
         assertEquals(parkingManager, SerializeParkingManager.deserialize());

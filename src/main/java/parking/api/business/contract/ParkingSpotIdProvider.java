@@ -6,6 +6,7 @@ package parking.api.business.contract;
 public interface ParkingSpotIdProvider {
     /**
      * Provide an id for a new place.
+     *
      * @return
      */
     public Integer nextId();

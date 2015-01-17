@@ -7,6 +7,6 @@ import parking.implementation.logic.Invoice;
  */
 public interface InvoiceStrategy {
 
-    public Invoice computeInvoice(Vehicle baseVehicle, ParkingSpot baseParkingSpot,double priceHour);
-    
+    public Invoice computeInvoice(Vehicle baseVehicle, ParkingSpot baseParkingSpot, double priceHour);
+
 }

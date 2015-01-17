@@ -8,5 +8,5 @@ import parking.api.business.concrete.BaseVehicle;
  */
 public interface Invoice {
     public double computeInvoice(BaseVehicle baseVehicle, BaseParkingSpot baseParkingSpot);
-    
+
 }

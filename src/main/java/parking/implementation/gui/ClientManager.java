@@ -2,7 +2,6 @@ package parking.implementation.gui;
 
 import parking.implementation.logic.Client;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -29,5 +28,7 @@ public class ClientManager {
         clients.remove(e);
     }
 
-    public int count() { return clients.size(); }
+    public int count() {
+        return clients.size();
+    }
 }

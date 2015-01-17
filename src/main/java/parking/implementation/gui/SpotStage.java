@@ -23,77 +23,6 @@ class SpotStage extends Stage {
     private Label booking;
     private Button ok;
 
-    private void createTitle() {
-        title = new Label("Parking Spot");
-        title.setFont(Font.font("Arial", 30));
-        title.setTextFill(Color.BLACK);
-        title.alignmentProperty().setValue(Pos.CENTER);
-    }
-
-    private void createID() {
-        id = new Label();
-
-        //set text
-        id.setText("ID : " + parkingSpot.getId());
-
-        id.alignmentProperty().setValue(Pos.CENTER);
-    }
-
-    private void createState() {
-        state = new Label();
-
-        //set text
-        if(parkingSpot.isVehicleParked()) {
-            state.setText("Place Occupée");
-            state.setTextFill(Color.RED);
-        }
-        else {
-            state.setText("Place Libre");
-            state.setTextFill(Color.GREEN);
-        }
-
-        state.alignmentProperty().setValue(Pos.CENTER);
-    }
-
-    private void createBooking() {
-        booking = new Label();
-
-        //set text
-        if(parkingSpot.isBooked()) {
-            booking.setText("Place Réservée");
-            booking.setPrefWidth(200);
-            booking.setTextFill(Color.RED);
-        }
-        else {
-            booking.setText("Place Non Réservée");
-            booking.setPrefWidth(200);
-            booking.setTextFill(Color.GREEN);
-        }
-
-        booking.alignmentProperty().setValue(Pos.CENTER);
-    }
-
-    private void createButtonOK() {
-        ok = new Button();
-        ok.setText("OK");
-
-        //add action
-        ok.setOnAction(event -> close());
-
-        //style
-        ok.setStyle("-fx-background-color: green");
-        ok.setTextFill(Color.WHITE);
-    }
-
-    private void init() {
-        createTitle();
-        createID();
-        createState();
-        createBooking();
-
-        createButtonOK();
-    }
-
     public SpotStage(Window owner, ParkingSpot parkingSpot) {
         this.initOwner(owner);
         this.parkingSpot = parkingSpot;
@@ -123,5 +52,74 @@ class SpotStage extends Stage {
         this.setResizable(false);
         this.setScene(scene);
         this.setTitle("Parking Spot");
+    }
+
+    private void createTitle() {
+        title = new Label("Parking Spot");
+        title.setFont(Font.font("Arial", 30));
+        title.setTextFill(Color.BLACK);
+        title.alignmentProperty().setValue(Pos.CENTER);
+    }
+
+    private void createID() {
+        id = new Label();
+
+        //set text
+        id.setText("ID : " + parkingSpot.getId());
+
+        id.alignmentProperty().setValue(Pos.CENTER);
+    }
+
+    private void createState() {
+        state = new Label();
+
+        //set text
+        if (parkingSpot.isVehicleParked()) {
+            state.setText("Place Occupée");
+            state.setTextFill(Color.RED);
+        } else {
+            state.setText("Place Libre");
+            state.setTextFill(Color.GREEN);
+        }
+
+        state.alignmentProperty().setValue(Pos.CENTER);
+    }
+
+    private void createBooking() {
+        booking = new Label();
+
+        //set text
+        if (parkingSpot.isBooked()) {
+            booking.setText("Place Réservée");
+            booking.setPrefWidth(200);
+            booking.setTextFill(Color.RED);
+        } else {
+            booking.setText("Place Non Réservée");
+            booking.setPrefWidth(200);
+            booking.setTextFill(Color.GREEN);
+        }
+
+        booking.alignmentProperty().setValue(Pos.CENTER);
+    }
+
+    private void createButtonOK() {
+        ok = new Button();
+        ok.setText("OK");
+
+        //add action
+        ok.setOnAction(event -> close());
+
+        //style
+        ok.setStyle("-fx-background-color: green");
+        ok.setTextFill(Color.WHITE);
+    }
+
+    private void init() {
+        createTitle();
+        createID();
+        createState();
+        createBooking();
+
+        createButtonOK();
     }
 }

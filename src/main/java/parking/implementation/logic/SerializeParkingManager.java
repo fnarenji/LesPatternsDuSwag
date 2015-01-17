@@ -1,6 +1,5 @@
 package parking.implementation.logic;
 
-import parking.api.business.concrete.Parking;
 import parking.api.business.concrete.ParkingManager;
 
 import java.io.*;
@@ -15,7 +14,7 @@ public class SerializeParkingManager {
         try {
 
             OutputStream file = new FileOutputStream("save/parkingManager.ser");
-            oos =  new ObjectOutputStream(file);
+            oos = new ObjectOutputStream(file);
 
             oos.writeObject(parkingManager);
             oos.flush();
@@ -27,7 +26,7 @@ public class SerializeParkingManager {
         } finally {
 
             try {
-                if(oos != null) {
+                if (oos != null) {
                     oos.flush();
                     oos.close();
                 }
@@ -41,25 +40,25 @@ public class SerializeParkingManager {
         ObjectInputStream ois = null;
         ParkingManager parkingManager = null;
 
-            InputStream file = null;
-            try {
-                file = new FileInputStream("save/parkingManager.ser");
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            try {
-                ois = new ObjectInputStream(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        InputStream file = null;
+        try {
+            file = new FileInputStream("save/parkingManager.ser");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            ois = new ObjectInputStream(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            try {
-                parkingManager = (ParkingManager) ois.readObject();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+        try {
+            parkingManager = (ParkingManager) ois.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         return parkingManager;
     }

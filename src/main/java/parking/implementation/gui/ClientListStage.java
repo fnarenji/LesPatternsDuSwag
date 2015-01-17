@@ -31,6 +31,42 @@ class ClientListStage extends Stage {
     private Button submitButton;
     private Button cancelButton;
 
+    public ClientListStage(Window owner) {
+        this.initOwner(owner);
+        this.clients = clients;
+
+        init();
+
+        BorderPane borderPane = new BorderPane();
+        FlowPane flowPane = new FlowPane();
+
+        //add Nodes to FlowPane
+        flowPane.getChildren().addAll(
+                titleLabel,
+                clientChoiceBox,
+                durationChoiceBox,
+                submitButton,
+                label,
+                createButton,
+                cancelButton
+        );
+
+        updateState();
+
+        flowPane.setMaxSize(200, 400);
+
+        //add FlowPane
+        flowPane.alignmentProperty().setValue(Pos.CENTER);
+        borderPane.setCenter(flowPane);
+
+        //createButton scene
+        Scene scene = new Scene(borderPane, 300, 200);
+
+        this.setResizable(false);
+        this.setScene(scene);
+        this.setTitle("Select Client");
+    }
+
     private void createTitle() {
         titleLabel = new Label("Select Client");
         titleLabel.setFont(Font.font("Arial", 30));
@@ -113,11 +149,11 @@ class ClientListStage extends Stage {
         cancelButton.setStyle("-fx-background-color: red");
         cancelButton.setTextFill(Color.WHITE);
     }
-    
-    private void createDurationChoixBox(){
+
+    private void createDurationChoixBox() {
         durationChoiceBox = new ChoiceBox<>();
         Collection<Integer> during = new ArrayList<>();
-        for(int i = 1; i < 50; i++ )
+        for (int i = 1; i < 50; i++)
             during.add(new Integer(i));
         durationChoiceBox.getItems().setAll(during);
     }
@@ -132,49 +168,12 @@ class ClientListStage extends Stage {
         createDurationChoixBox();
     }
 
-    public ClientListStage(Window owner) {
-        this.initOwner(owner);
-        this.clients = clients;
-
-        init();
-
-        BorderPane borderPane = new BorderPane();
-        FlowPane flowPane = new FlowPane();
-
-        //add Nodes to FlowPane
-        flowPane.getChildren().addAll(
-                titleLabel,
-                clientChoiceBox,
-                durationChoiceBox,
-                submitButton,
-                label,
-                createButton,
-                cancelButton
-        );
-
-        updateState();
-
-        flowPane.setMaxSize(200, 400);
-
-        //add FlowPane
-        flowPane.alignmentProperty().setValue(Pos.CENTER);
-        borderPane.setCenter(flowPane);
-
-        //createButton scene
-        Scene scene = new Scene(borderPane, 300, 200);
-
-        this.setResizable(false);
-        this.setScene(scene);
-        this.setTitle("Select Client");
-    }
-
-
     public Client getClient() {
         return this.clientChoiceBox.getValue();
     }
-    
-    public Integer getDuration(){
+
+    public Integer getDuration() {
         return durationChoiceBox.getValue();
-        
+
     }
 }
