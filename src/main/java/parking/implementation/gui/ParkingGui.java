@@ -47,8 +47,7 @@ public class ParkingGui extends Application {
                     x = 0;
                 }
 
-                gridPane.add(
-                        new ButtonSpot(parkingSpot, getMainStage()), x++, y);
+                gridPane.add(new ButtonSpot(parkingSpot, getMainStage()), x++, y);
             }
         } catch (ParkingNotPresentException e) {
             e.printStackTrace();
