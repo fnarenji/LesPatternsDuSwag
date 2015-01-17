@@ -7,9 +7,12 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Window;
 import org.joda.time.DateTime;
 import parking.api.business.contract.ParkingSpot;
+import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.*;
 import parking.implementation.logic.Car;
+import parking.implementation.logic.CarParkingSpot;
 import parking.implementation.logic.Carrier;
+import parking.implementation.logic.CarrierParkingSpot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,9 +21,13 @@ import java.util.Map;
  * Created by on 14/01/15.
  */
 class ButtonSpot extends MenuButton {
+    private static Map<Class<? extends ParkingSpot>, String> colors = new HashMap<>();
 
-    private Map<String, String> colors = new HashMap<>();
-    private String defaultColor = "yellow";
+    static {
+        colors.put(CarParkingSpot.class, "#60FF05");
+        colors.put(CarrierParkingSpot.class, "#0E4FFF");
+        colors.put(ParkingSpot.class, "yellow");
+    }
 
     private ParkingSpot parkingSpot;
     private String type;
@@ -30,19 +37,15 @@ class ButtonSpot extends MenuButton {
     private MenuItem book;
     private MenuItem infos;
 
-    public ButtonSpot(ParkingSpot parkingSpot, String type, Window parent) {
+    public ButtonSpot(ParkingSpot parkingSpot, Window parent) {
         super(parkingSpot.getId().toString());
         this.parkingSpot = parkingSpot;
-        this.type = type;
         this.parent = parent;
 
-        this.colors.put(Car.class.toString(), "#60ff05");
-        this.colors.put(Carrier.class.toString(), "#0e4fff");
-
-        this.setStyle("-fx-background-color: " + this.colors.getOrDefault(this.type, this.defaultColor));
-        this.setMinSize(60, 50);
-        this.setMaxSize(60, 50);
-        this.setPrefSize(60, 50);
+        setStyle("-fx-background-color: " + colors.get(parkingSpot.getClass()));
+        setMinSize(60, 50);
+        setMaxSize(60, 50);
+        setPrefSize(60, 50);
 
         createPark();
         createBook();
@@ -53,11 +56,7 @@ class ButtonSpot extends MenuButton {
             System.out.println(observable.getId());
         });
 
-        this.getItems().addAll(
-                this.park,
-                this.book,
-                this.infos
-        );
+        getItems().addAll(park, book, infos);
     }
 
     ButtonSpot(String text, Node graphic) {
