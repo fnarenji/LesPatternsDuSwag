@@ -2,7 +2,7 @@ package parking.api.business.concrete;
 
 import org.joda.time.DateTime;
 import parking.api.business.contract.ParkingSpot;
-import parking.api.business.contract.ParkingSpotObserver;
+import parking.api.business.contract.observer.Observer;
 import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.SpotBookedException;
 import parking.api.exceptions.SpotNotBookedException;
@@ -98,7 +98,7 @@ public abstract class BaseParkingSpot implements ParkingSpot {
     }
 
     @Override
-    public void registerObserver(ParkingSpotObserver parkingSpotObserver) {
+    public void registerObserver(Observer parkingSpotObserver) {
 
     }
 

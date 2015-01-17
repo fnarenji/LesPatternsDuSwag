@@ -8,7 +8,6 @@ import parking.api.exceptions.SpotNotEmptyException;
 import parking.api.exceptions.VehicleNotFitException;
 
 import java.io.Serializable;
-import java.util.Observable;
 
 /**
  * Created by SKNZ on 28/12/2014.
@@ -84,9 +83,4 @@ public interface ParkingSpot extends Serializable {
      * @return true if fits, false if not fits
      */
     public Boolean fits(Vehicle vehicle);
-
-    /**
-     * Register an observer.
-     */
-    public void registerObserver(ParkingSpotObserver parkingSpotObserver);
 }
