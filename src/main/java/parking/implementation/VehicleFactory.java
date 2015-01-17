@@ -1,14 +1,14 @@
 package parking.implementation;
 
 import parking.api.business.contract.Vehicle;
-import parking.api.exceptions.UnknowVehiculeException;
+import parking.api.exceptions.UnknownVehicleException;
 
 /**
  * Created by loick on 15/01/15.
  */
-public class VehiculeFactory implements gui.VehiculeFactory {
+public class VehicleFactory implements gui.VehicleFactory {
     @Override
-    public Vehicle createVehicule(String name) throws UnknowVehiculeException {
+    public Vehicle createVehicle(String name) throws UnknownVehicleException {
         if (name.equals("Voiture"))
             return new Car();
         else if (name.equals("Moto"))

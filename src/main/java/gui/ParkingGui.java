@@ -8,7 +8,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import parking.api.business.concrete.ParkingManager;
 import parking.implementation.Client;
+import parking.implementation.ParkingSpotFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,13 +19,15 @@ import java.util.Optional;
 //Created by on 30/12/14.
 
 public class ParkingGui extends Application {
-
     private Stage stage;
     private BorderPane borderPane;
 
-    private Collection<Client> clients = new ArrayList<>();
     private Client currentClient;
     private Collection<Collection<GridPane>> gridPaneParking = new ArrayList<>();
+
+    private Collection<Client> clients = new ArrayList<>();
+    private ParkingManager parkingManager;
+    private ParkingSpotFactory parkingSpotFactory;
 
     public static void main(String[] args) {
         launch(args);
@@ -32,7 +36,6 @@ public class ParkingGui extends Application {
     private Collection<GridPane> generateParking() {
         ParkingListStage parkingListStage = new ParkingListStage(stage, clients);
         parkingListStage.showAndWait();
-
         return parkingListStage.getParking();
     }
 
@@ -81,7 +84,6 @@ public class ParkingGui extends Application {
     private Menu createMenuParking() {
         Menu menuParking = new Menu("Parking");
         MenuItem select = new MenuItem("Selectionner");
-
 
         MenuItem nouveau = new MenuItem("Nouveau");
 
@@ -135,7 +137,7 @@ public class ParkingGui extends Application {
 
         //add data
         clients.add(new Client("", "Anonyme", ""));
-        currentClient = clients.iterator().next();
+        Client currentClient = clients.iterator().next();
 
         //create root
         borderPane = new BorderPane();

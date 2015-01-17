@@ -1,8 +1,6 @@
 package gui;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,8 +15,7 @@ import parking.api.business.contract.ParkingSpot;
 /**
  * Created by loick on 14/01/15.
  */
-public class SpotStage extends Stage {
-
+class SpotStage extends Stage {
     private ParkingSpot parkingSpot;
     private Label title;
     private Label id;
@@ -81,15 +78,11 @@ public class SpotStage extends Stage {
         ok.setText("OK");
 
         //add action
-        ok.setOnAction(createOKEventHandler());
+        ok.setOnAction(event -> close());
 
         //style
         ok.setStyle("-fx-background-color: green");
         ok.setTextFill(Color.WHITE);
-    }
-
-    private EventHandler createOKEventHandler() {
-        return event -> this.close();
     }
 
     private void init() {

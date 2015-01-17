@@ -4,8 +4,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import parking.api.business.concrete.Parking;
-import parking.api.business.concrete.ParkingManager;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
@@ -38,8 +36,7 @@ public class ParkingManagerTest {
 
     @Test
     public void testNewParking() throws ParkingExistsException, ParkingNotPresentException {
-        Parking parking = parkingManager.newParking(1, "Prk MARSEILLE");
-
+        parkingManager.newParking(1, "Prk MARSEILLE");
         thrown.expect(ParkingExistsException.class);
         parkingManager.newParking(1, "Prk MARSEILLE2");
     }
@@ -68,7 +65,7 @@ public class ParkingManagerTest {
     @Test
     public void testContainsParking() throws Exception {
         assertFalse(parkingManager.containsParking(1));
-        Parking parking = parkingManager.newParking(1, "Prk AIX-EN-PCE");
+        parkingManager.newParking(1, "Prk AIX-EN-PCE");
         assertTrue(parkingManager.containsParking(1));
     }
 

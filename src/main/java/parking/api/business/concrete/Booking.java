@@ -8,7 +8,7 @@ import org.joda.time.MutableInterval;
  * Created by SKNZ on 29/12/2014.
  */
 public class Booking {
-    public static final DateTime INFINITE = new DateTime().year().withMaximumValue();
+    private static final DateTime INFINITE = new DateTime().year().withMaximumValue();
     private Object owner;
     private Interval interval;
 

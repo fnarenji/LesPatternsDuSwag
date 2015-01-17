@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,13 +22,13 @@ import java.util.Collection;
 /**
  * Created by loick on 14/01/15.
  */
-public class ClientStage extends Stage {
+class ClientStage extends Stage {
 
     private Collection<String> civility_list = new ArrayList<>();
 
     private Label title;
     private Label label;
-    private ChoiceBox civility;
+    private ChoiceBox<String> civility;
     private TextField lastname;
     private TextField firstname;
     private Button submit;
@@ -47,7 +48,7 @@ public class ClientStage extends Stage {
     }
 
     private void createCivilite() {
-        civility = new ChoiceBox();
+        civility = new ChoiceBox<>();
         civility.getItems().addAll(this.civility_list);
         civility.setValue(this.civility_list.iterator().next());
     }
@@ -85,14 +86,14 @@ public class ClientStage extends Stage {
         cancel.setText("Cancel");
 
         //add action
-        cancel.setOnAction(createCancelEventHandler());
+        cancel.setOnAction(event -> close());
 
         //style
         cancel.setStyle("-fx-background-color: red");
         cancel.setTextFill(Color.WHITE);
     }
 
-    private EventHandler createSubmitEventHandler() {
+    private EventHandler<ActionEvent> createSubmitEventHandler() {
         return event -> {
             if(!lastname.getText().isEmpty()
                     && !firstname.getText().isEmpty()
@@ -102,10 +103,6 @@ public class ClientStage extends Stage {
                 label.setText("Tous les champs ne sont pas renseignés");
             }
         };
-    }
-
-    private EventHandler createCancelEventHandler() {
-        return event -> this.close();
     }
 
     private void init() {

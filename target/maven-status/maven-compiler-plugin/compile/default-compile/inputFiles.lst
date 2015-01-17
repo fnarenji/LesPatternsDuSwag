@@ -1,10 +1,8 @@
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/implementation/Carrier.java
-/home/sknz/Development/LesPatternsDuSwag/src/main/java/gui/VehiculeStage.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/exceptions/VehicleNotFitException.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/business/concrete/Parking.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/gui/ButtonSpot.java
-/home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/implementation/VehiculeFactory.java
-/home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/exceptions/UnknowVehiculeException.java
+/home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/implementation/VehicleFactory.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/business/helper/ParkingSpotByVehicleTypePriorityMap.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/business/contract/ParkingSpotSelector.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/business/contract/ParkingSpot.java
@@ -12,7 +10,7 @@
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/exceptions/ParkingException.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/business/concrete/Booking.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/implementation/ParkingSpotFactory.java
-/home/sknz/Development/LesPatternsDuSwag/src/main/java/gui/VehiculeFactory.java
+/home/sknz/Development/LesPatternsDuSwag/src/main/java/gui/VehicleStage.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/gui/SpotStage.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/exceptions/ParkingNotPresentException.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/implementation/SimpleParkingSpotSelector.java
@@ -23,7 +21,9 @@
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/gui/ClientListStage.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/gui/ParkingGui.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/exceptions/ParkingBookedSpotsExceptions.java
+/home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/exceptions/UnknownVehicleException.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/business/concrete/BaseParkingSpot.java
+/home/sknz/Development/LesPatternsDuSwag/src/main/java/gui/VehicleFactory.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/business/concrete/BaseVehicle.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/parking/api/business/concrete/ParkingManager.java
 /home/sknz/Development/LesPatternsDuSwag/src/main/java/gui/ClientStage.java

@@ -19,23 +19,23 @@ import java.util.Collection;
 /**
  * Created by loick on 14/01/15.
  */
-public class ClientListStage extends Stage {
+class ClientListStage extends Stage {
 
     private Collection<Client> clients;
 
-    private Label title;
+    private Label titleLabel;
     private Label label;
-    private ChoiceBox select;
-    private ChoiceBox duration;
-    private Button create;
-    private Button submit;
-    private Button cancel;
+    private ChoiceBox<Client> clientChoiceBox;
+    private ChoiceBox<Integer> durationChoiceBox;
+    private Button createButton;
+    private Button submitButton;
+    private Button cancelButton;
 
     private void createTitle() {
-        title = new Label("Select Client");
-        title.setFont(Font.font("Arial", 30));
-        title.setTextFill(Color.BLACK);
-        title.alignmentProperty().setValue(Pos.CENTER);
+        titleLabel = new Label("Select Client");
+        titleLabel.setFont(Font.font("Arial", 30));
+        titleLabel.setTextFill(Color.BLACK);
+        titleLabel.alignmentProperty().setValue(Pos.CENTER);
     }
 
     private void createLabel() {
@@ -45,32 +45,31 @@ public class ClientListStage extends Stage {
     }
 
     private void createSelect() {
-        select = new ChoiceBox();
-        if (!clients.isEmpty()) {
-            select.getItems().setAll(this.clients);
-        }
+        clientChoiceBox = new ChoiceBox<>();
+        if (!clients.isEmpty())
+            clientChoiceBox.getItems().setAll(clients);
     }
 
     private void updateState() {
         if (clients.isEmpty()) {
-            this.select.setVisible(false);
-            this.submit.setVisible(false);
-            this.label.setVisible(true);
+            clientChoiceBox.setVisible(false);
+            submitButton.setVisible(false);
+            label.setVisible(true);
         } else {
-            this.select.setVisible(true);
-            this.submit.setVisible(true);
-            this.label.setVisible(false);
+            clientChoiceBox.setVisible(true);
+            submitButton.setVisible(true);
+            label.setVisible(false);
 
-            select.getItems().setAll(clients);
+            clientChoiceBox.getItems().setAll(clients);
         }
     }
 
     private void createButtonCreate() {
-        create = new Button();
-        create.setText("New Client");
+        createButton = new Button();
+        createButton.setText("New Client");
 
         //add action
-        create.setOnAction(event -> {
+        createButton.setOnAction(event -> {
             ClientStage clientStage = new ClientStage(this);
             clientStage.showAndWait();
 
@@ -83,44 +82,44 @@ public class ClientListStage extends Stage {
         });
 
         //style
-        create.setStyle("-fx-background-color: blue");
-        create.setTextFill(Color.WHITE);
+        createButton.setStyle("-fx-background-color: blue");
+        createButton.setTextFill(Color.WHITE);
     }
 
     private void createButtonSubmit() {
-        submit = new Button();
-        submit.setText("Select");
+        submitButton = new Button();
+        submitButton.setText("Select");
 
         //add action
-        submit.setOnAction(event -> {
+        submitButton.setOnAction(event -> {
             this.close();
         });
 
         //style
-        submit.setStyle("-fx-background-color: green");
-        submit.setTextFill(Color.WHITE);
+        submitButton.setStyle("-fx-background-color: green");
+        submitButton.setTextFill(Color.WHITE);
     }
 
     private void createButtonCancel() {
-        cancel = new Button();
-        cancel.setText("Cancel");
+        cancelButton = new Button();
+        cancelButton.setText("Cancel");
 
         //add action
-        cancel.setOnAction(event -> {
+        cancelButton.setOnAction(event -> {
             this.close();
         });
 
         //style
-        cancel.setStyle("-fx-background-color: red");
-        cancel.setTextFill(Color.WHITE);
+        cancelButton.setStyle("-fx-background-color: red");
+        cancelButton.setTextFill(Color.WHITE);
     }
     
     private void createDurationChoixBox(){
-        duration = new ChoiceBox();
+        durationChoiceBox = new ChoiceBox<>();
         Collection<Integer> during = new ArrayList<>();
         for(int i = 1; i < 50; i++ )
             during.add(new Integer(i));
-        duration.getItems().setAll(during);
+        durationChoiceBox.getItems().setAll(during);
     }
 
     private void init() {
@@ -144,13 +143,13 @@ public class ClientListStage extends Stage {
 
         //add Nodes to FlowPane
         flowPane.getChildren().addAll(
-                title,
-                select,
-                duration,
-                submit,
+                titleLabel,
+                clientChoiceBox,
+                durationChoiceBox,
+                submitButton,
                 label,
-                create,
-                cancel
+                createButton,
+                cancelButton
         );
 
         updateState();
@@ -161,7 +160,7 @@ public class ClientListStage extends Stage {
         flowPane.alignmentProperty().setValue(Pos.CENTER);
         borderPane.setCenter(flowPane);
 
-        //create scene
+        //createButton scene
         Scene scene = new Scene(borderPane, 300, 200);
 
         this.setResizable(false);
@@ -170,11 +169,11 @@ public class ClientListStage extends Stage {
     }
 
     public Client getClient() {
-        return (Client) this.select.getValue();
+        return this.clientChoiceBox.getValue();
     }
     
     public Integer getDuration(){
-        return (Integer) this.duration.getValue();
+        return durationChoiceBox.getValue();
         
     }
 }

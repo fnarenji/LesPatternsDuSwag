@@ -81,8 +81,7 @@ public class ParkingFloorListStage extends Stage {
                     parkingManager.getParkingById(parkingManager.count())
                             .newParkingSpot(
                                     this.parkingSpotFactory,
-                                    nbVehicules.get(vehicule),
-                                    vehicule)
+                                    nbVehicules.get(vehicule))
                             .forEach(
                                     spot -> {
                                         if (x[0] == maxInLine) {
