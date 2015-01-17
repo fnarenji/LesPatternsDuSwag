@@ -168,6 +168,7 @@ class ClientListStage extends Stage {
         this.setTitle("Select Client");
     }
 
+
     public Client getClient() {
         return this.clientChoiceBox.getValue();
     }

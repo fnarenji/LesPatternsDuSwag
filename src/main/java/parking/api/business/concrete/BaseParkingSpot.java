@@ -23,9 +23,27 @@ public abstract class BaseParkingSpot extends BaseObservable implements ParkingS
     private Vehicle vehicle = null;
     private Collection<Booking> bookings = new HashSet<>();
     private DateTime enteredHour = null;
+<<<<<<< Updated upstream
 
     public DateTime getEnteredHour() {
         return enteredHour;
+=======
+
+<<<<<<< HEAD
+
+    @Override
+    public Object getBookOwner() {
+        return this.bookOwner;
+    }
+
+    @Override
+    public void setBookOwner(Object owner) {
+        this.bookOwner = owner;
+=======
+    public DateTime getEnteredHour() {
+        return enteredHour;
+>>>>>>> FETCH_HEAD
+>>>>>>> Stashed changes
     }
 
     @Override

@@ -28,23 +28,48 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         instance = new ParkingManager();
     }
 
+    /**
+     * Get the instance of the parking manager
+     * @return The instance of the parking manager
+     */
     public static ParkingManager getInstance() {
         return instance;
     }
 
+    /**
+     * Get the name of the company
+     * @return The name of the company
+     */
     public String getCompanyName() {
         return companyName;
     }
 
+    /**
+     * Set the name of the company
+     * @param companyName The name of the company
+     */
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
 
+    /**
+     * Create a new parking
+     * @param name name of the parking
+     * @return the new parking
+     * @throws ParkingExistsException raised if such a parking already exist
+     */
     public Parking newParking(String name) throws ParkingExistsException {
         int id = this.count();
         return this.newParking(++id, name);
     }
 
+    /**
+     * Create a new parking
+     * @param id id of the parking
+     * @param name name of the parking
+     * @return The new parking
+     * @throws ParkingExistsException raised if a parking with the same id already exist
+     */
     public Parking newParking(Integer id, String name) throws ParkingExistsException {
         if (parkingsById.containsKey(id))
             throw new ParkingExistsException(id);
@@ -55,6 +80,12 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         return parking;
     }
 
+    /**
+     * Delete a parking
+     * @param id Id of the parking to delete
+     * @throws ParkingNotPresentException Raised when the parking to delete doesn't exist
+     * @throws ParkingBookedSpotsExceptions Raised when there are booked spots in the parking
+     */
     public void deleteParking(Integer id) throws ParkingNotPresentException, ParkingBookedSpotsExceptions {
         if (!parkingsById.containsKey(id))
             throw new ParkingNotPresentException(id);
@@ -66,6 +97,11 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         parkingsById.remove(parking.getId());
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Boolean containsParking(Integer id) {
         return parkingsById.containsKey(id);
     }
