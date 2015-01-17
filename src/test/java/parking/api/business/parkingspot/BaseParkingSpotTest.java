@@ -1,4 +1,4 @@
-package parking.api.business.concrete;
+package parking.api.business.parkingspot;
 
 import org.junit.Before;
 import org.junit.Rule;

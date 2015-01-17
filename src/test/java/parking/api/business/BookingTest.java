@@ -1,4 +1,4 @@
-package parking.api.business.concrete;
+package parking.api.business;
 
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
