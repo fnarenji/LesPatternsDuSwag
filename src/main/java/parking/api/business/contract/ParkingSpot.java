@@ -13,7 +13,7 @@ import java.io.Serializable;
 /**
  * Created by SKNZ on 28/12/2014.
  */
-public interface ParkingSpot extends Serializable, Observable {
+public interface ParkingSpot extends Serializable, Observable<ParkingSpot> {
     /**
      * Get the id of the parking spot
      * @return The id of the parking spot

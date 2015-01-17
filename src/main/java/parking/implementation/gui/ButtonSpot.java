@@ -10,9 +10,7 @@ import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.*;
 import parking.implementation.logic.Car;
 import parking.implementation.logic.Carrier;
-import parking.implementation.logic.Client;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,11 +48,20 @@ class ButtonSpot extends MenuButton {
         createBook();
         createInfos();
 
+        parkingSpot.registerObserver(observable -> {
+            // ICI CHANGER LA COULEUR DES BIDULES LEAULE
+            System.out.println(observable.getId());
+        });
+
         this.getItems().addAll(
                 this.park,
                 this.book,
                 this.infos
         );
+    }
+
+    ButtonSpot(String text, Node graphic) {
+        super(text, graphic);
     }
 
     private void setAvailable() {
@@ -145,11 +152,11 @@ class ButtonSpot extends MenuButton {
                     ClientListStage clientListStage = new ClientListStage(parent);
                     clientListStage.showAndWait();
                     if (clientListStage.getClient() != null)
-                        parkingSpot.book(clientListStage.getClient(),new DateTime(DateTime.now().plusDays(clientListStage.getDuration())));
-                    
+                        parkingSpot.book(clientListStage.getClient(), new DateTime(DateTime.now().plusDays(clientListStage.getDuration())));
+
                 } else if (this.book.getText().equalsIgnoreCase("unbook")) {
                     this.parkingSpot.unbook();
-                    
+
                     Alert alert = new Alert(
                             Alert.AlertType.INFORMATION,
                             "Place libérée."
@@ -158,14 +165,14 @@ class ButtonSpot extends MenuButton {
                 }
 
                 updateState();
-                
+
             } catch (SpotNotEmptyException e) {
                 Alert alert = new Alert(
                         Alert.AlertType.ERROR,
                         "Place deja occupée."
                 );
                 alert.show();
-            }catch (SpotBookedException e) {
+            } catch (SpotBookedException e) {
                 Alert alert = new Alert(
                         Alert.AlertType.ERROR,
                         "Place déjà réservée."
@@ -187,14 +194,6 @@ class ButtonSpot extends MenuButton {
             SpotStage spotStage = new SpotStage(this.parent, this.parkingSpot);
             spotStage.show();
         });
-    }
-
-    private ButtonSpot(String text) {
-        super(text);
-    }
-
-    ButtonSpot(String text, Node graphic) {
-        super(text, graphic);
     }
 
     public ParkingSpot getParkingSpot() {

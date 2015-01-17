@@ -6,6 +6,7 @@ import parking.api.exceptions.ParkingNotPresentException;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -13,7 +14,7 @@ import java.util.function.Predicate;
 /**
  * Created by SKNZ on 28/12/2014.
  */
-public class ParkingManager implements Serializable {
+public class ParkingManager implements Serializable, Iterable<Parking> {
     private static ParkingManager instance = new ParkingManager();
     private String companyName;
     private Map<Integer, Parking> parkingsById = new HashMap<>();
@@ -76,10 +77,6 @@ public class ParkingManager implements Serializable {
         return parkingsById.get(id);
     }
 
-    public void forEach(Consumer<Parking> consumer) {
-        parkingsById.values().forEach(consumer);
-    }
-
     public int count() {
         return count(parking -> true);
     }
@@ -111,5 +108,15 @@ public class ParkingManager implements Serializable {
         int result = companyName != null ? companyName.hashCode() : 0;
         result = 31 * result + (parkingsById != null ? parkingsById.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public Iterator<Parking> iterator() {
+        return parkingsById.values().iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Parking> action) {
+        parkingsById.values().forEach(action);
     }
 }

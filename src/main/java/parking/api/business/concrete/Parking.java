@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 /**
  * Created by SKNZ on 28/12/2014.
  */
-public class Parking implements Serializable {
+public class Parking implements Serializable, Iterable<ParkingSpot> {
     private final Integer id;
     private String name;
     private Map<Integer, ParkingSpot> parkingSpotsById = new HashMap<>();
@@ -116,12 +116,19 @@ public class Parking implements Serializable {
         }
     }
 
-    public void forEach(Consumer<ParkingSpot> consumer) {
-        parkingSpotsById.values().forEach(consumer);
-    }
-
     public Stream<ParkingSpot> stream() {
         return parkingSpotsById.values().stream();
     }
 
+    public Collection<ParkingSpot> getSpots() { return parkingSpotsById.values(); }
+
+    @Override
+    public Iterator<ParkingSpot> iterator() {
+        return parkingSpotsById.values().iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super ParkingSpot> action) {
+        parkingSpotsById.values().forEach(action);
+    }
 }
