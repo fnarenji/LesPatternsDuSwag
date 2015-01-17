@@ -66,21 +66,21 @@ public class ParkingFloorListStage extends Stage {
                 e.printStackTrace();
             }
 
-            Collection<String> vehicules = new ArrayList<>();
-            Map<String, Integer> nbVehicules = new HashMap<>();
-            vehicules.add("Car");
-            nbVehicules.put("Car", nbCar);
-            vehicules.add("Carrier");
-            nbVehicules.put("Carrier", nbCarrier);
+            Collection<String> vehicles = new ArrayList<>();
+            Map<String, Integer> nbVehicles = new HashMap<>();
+            vehicles.add("Car");
+            nbVehicles.put("Car", nbCar);
+            vehicles.add("Carrier");
+            nbVehicles.put("Carrier", nbCarrier);
 
             final int[] x = {0};
             final int[] y = {0};
-            vehicules.forEach(vehicule -> {
+            vehicles.forEach(vehicle -> {
                 try {
                     parkingManager.getParkingById(parkingManager.count())
                             .newParkingSpot(
                                     this.parkingSpotFactory,
-                                    nbVehicules.get(vehicule))
+                                    nbVehicles.get(vehicle))
                             .forEach(
                                     spot -> {
                                         if (x[0] == maxInLine) {
@@ -90,7 +90,7 @@ public class ParkingFloorListStage extends Stage {
 
                                         ButtonSpot buttonSpot = new ButtonSpot(
                                                 spot,
-                                                vehicule,
+                                                vehicle,
                                                 this,
                                                 clients
                                         );

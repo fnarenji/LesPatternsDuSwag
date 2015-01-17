@@ -120,7 +120,7 @@ public class Parking implements Serializable {
         parkingSpotsById.values().forEach(consumer);
     }
 
-    public Stream stream() {
+    public Stream<ParkingSpot> stream() {
         return parkingSpotsById.values().stream();
     }
 

@@ -60,29 +60,27 @@ public class ParkingListStage extends Stage {
                 parkingSpotFactory = new ParkingSpotFactory();
 
                 parkingManager.setCompanyName("SWAG COMPANY");
-                int idParking = parkingManager.count();
-                parkingManager.newParking("Parking " + ++idParking);
-
+                parkingManager.newParking("Parking " + parkingManager.count() + 1);
             } catch (ParkingExistsException e) {
                 e.printStackTrace();
             }
 
-            Collection<String> vehicules = new ArrayList<>();
-            Map<String, Integer> nbVehicules = new HashMap<>();
-            vehicules.add("Car");
-            nbVehicules.put("Car", nbCar);
-            vehicules.add("Carrier");
-            nbVehicules.put("Carrier", nbCarrier);
+            Collection<String> vehicleTypeNames = new ArrayList<>();
+            Map<String, Integer> vehicleCountByVehicleName = new HashMap<>();
+            vehicleTypeNames.add("Car");
+            vehicleCountByVehicleName.put("Car", nbCar);
+            vehicleTypeNames.add("Carrier");
+            vehicleCountByVehicleName.put("Carrier", nbCarrier);
 
             final int[] x = {0};
             final int[] y = {0};
-            vehicules.forEach(vehicule -> {
+            vehicleTypeNames.forEach(vehicle -> {
                 try {
-                    parkingSpotFactory.setNextVehicleType(vehicule);
+                    parkingSpotFactory.setNextVehicleType(vehicle);
                     parkingManager.getParkingById(parkingManager.count())
                             .newParkingSpot(
                                     this.parkingSpotFactory,
-                                    nbVehicules.get(vehicule))
+                                    vehicleCountByVehicleName.get(vehicle))
                             .forEach(
                                     spot -> {
                                         if (x[0] == maxInLine) {
@@ -92,7 +90,7 @@ public class ParkingListStage extends Stage {
 
                                         ButtonSpot buttonSpot = new ButtonSpot(
                                                 spot,
-                                                vehicule,
+                                                vehicle,
                                                 this,
                                                 clients
                                         );
