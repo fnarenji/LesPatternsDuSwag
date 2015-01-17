@@ -153,11 +153,13 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
     }
 
     /**
-     * readResolve() is used for replacing te object read from the stream (for the serialization)
-     * @return
+     * readResolve() is used for replacing the object read from the stream (for the serialization)
+     * @return the instance
      * @throws ObjectStreamException
      */
-    protected Object readResolve() throws ObjectStreamException{return instance;}
+    protected Object readResolve() throws ObjectStreamException {
+        return instance;
+    }
 
     @Override
     public boolean equals(Object o) {

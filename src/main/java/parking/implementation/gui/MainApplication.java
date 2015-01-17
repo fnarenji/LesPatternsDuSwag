@@ -8,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import parking.api.business.parking.ParkingManager;
 import parking.api.exceptions.ParkingExistsException;
+import parking.implementation.gui.controls.MainSplash;
 import parking.implementation.gui.controls.ParkingGrid;
 import parking.implementation.gui.controls.TopMenuBar;
 import parking.implementation.business.logistic.floor.FloorParkingSpotIdProvider;
@@ -22,6 +23,23 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        primaryStage.setTitle("LesPatternsDuSwag - Parking qualitatif since 1889");
+        primaryStage.setOnCloseRequest(event -> Platform.exit());
+
+        MainSplash splash = new MainSplash();
+        splash.run(primaryStage);
+        switch (splash.getResult()) {
+            case 1:
+                System.out.println(1);
+                break;
+            case 2:
+                System.out.println(2);
+                break;
+            default:
+                System.out.println("CASSOS !");
+                break;
+        }
+/*
         ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory();
         parkingSpotFactory.setIdProvider(new FloorParkingSpotIdProvider());
         parkingSpotFactory.setNextVehicleType("Car");
@@ -36,22 +54,19 @@ public class MainApplication extends Application {
         parkingGrid.updateGrid(1, 1);
 
         //create root
-        BorderPane borderPane = new BorderPane();
+        BorderPane pane = new BorderPane();
 
         //create top menu
         MenuBar menu = new TopMenuBar(primaryStage);
 
-        borderPane.setTop(menu);
-        borderPane.setPrefHeight(menu.getHeight());
-        borderPane.setCenter(parkingGrid);
+        pane.setTop(menu);
+        pane.setPrefHeight(menu.getHeight());
+        pane.setCenter(parkingGrid);
 
-        Scene scene = new Scene(borderPane, 600, 400);
+        Scene scene = new Scene(pane, 600, 400);
 
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
-        primaryStage.setTitle("LesPatternsDuSwag - Parking qualitatif since 1889");
-
-        primaryStage.setOnCloseRequest(event -> Platform.exit());
-        primaryStage.show(); // show time !
+        primaryStage.show(); // show time !*/
     }
 }
