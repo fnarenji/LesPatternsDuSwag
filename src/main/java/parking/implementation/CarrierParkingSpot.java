@@ -5,7 +5,7 @@ import parking.api.business.concrete.BaseParkingSpot;
 /**
  * Created by SKNZ on 31/12/2014.
  */
-public class CarrierParkingSpot extends BaseParkingSpot {
+class CarrierParkingSpot extends BaseParkingSpot {
     CarrierParkingSpot(Integer id) {
         this.id = id;
         vehicleTypeFits.put(Carrier.class, true);

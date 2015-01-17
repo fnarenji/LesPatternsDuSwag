@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by on 14/01/15.
  */
-public class ButtonSpot extends MenuButton {
+class ButtonSpot extends MenuButton {
 
     private Map<String, String> colors = new HashMap<>();
     private String defaultColor = "yellow";
@@ -27,9 +27,9 @@ public class ButtonSpot extends MenuButton {
     private MenuItem book;
     private MenuItem infos;
 
-    public ButtonSpot(ParkingSpot ps, String type, Window parent) {
-        super(Integer.toString(ps.getId()));
-        this.parkingSpot = ps;
+    public ButtonSpot(ParkingSpot parkingSpot, String type, Window parent) {
+        super(parkingSpot.getId().toString());
+        this.parkingSpot = parkingSpot;
         this.type = type;
         this.parent = parent;
 
@@ -81,9 +81,9 @@ public class ButtonSpot extends MenuButton {
         this.park.setOnAction(event -> {
             try {
                 if (this.park.getText().equalsIgnoreCase("park")) {
-                    VehiculeStage parkStage = new VehiculeStage(this.parent);
+                    VehicleStage parkStage = new VehicleStage(this.parent);
                     parkStage.showAndWait();
-                    parkingSpot.park(parkStage.getVehicule());
+                    parkingSpot.park(parkStage.getVehicle());
                 } else if (this.park.getText().equalsIgnoreCase("unpark")) {
                     parkingSpot.unpark();
 
@@ -108,7 +108,7 @@ public class ButtonSpot extends MenuButton {
                         "Place reservée."
                 );
                 alert.show();
-            } catch (UnknowVehiculeException e1) {
+            } catch (UnknownVehicleException e1) {
                 Alert alert = new Alert(
                         Alert.AlertType.ERROR,
                         "Véhicule inconnu."

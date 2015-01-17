@@ -45,22 +45,22 @@ public class Parking implements Serializable {
         return Long.valueOf(parkingSpotsById.values().stream().filter(predicate).count()).intValue();
     }
 
-    public ParkingSpot newParkingSpot(ParkingSpotFactory parkingSpotFactory, String type) {
-        ParkingSpot parkingSpot = parkingSpotFactory.createParkingSpot(type);
+    public ParkingSpot newParkingSpot(ParkingSpotFactory parkingSpotFactory) {
+        ParkingSpot parkingSpot = parkingSpotFactory.createParkingSpot();
 
         parkingSpotsById.put(parkingSpot.getId(), parkingSpot);
 
         return parkingSpot;
     }
 
-    public Collection<ParkingSpot> newParkingSpot(ParkingSpotFactory parkingSpotFactory, Integer amount, String type) {
+    public Collection<ParkingSpot> newParkingSpot(ParkingSpotFactory parkingSpotFactory, Integer amount) {
         if (amount < 1)
             throw new IllegalArgumentException("Amount must be > 1, is " + amount);
 
         Collection<ParkingSpot> parkingSpots = new ArrayList<>();
 
         for (Integer i = 0; i < amount; ++i)
-            parkingSpots.add(newParkingSpot(parkingSpotFactory,type));
+            parkingSpots.add(newParkingSpot(parkingSpotFactory));
 
         return parkingSpots;
     }
@@ -125,10 +125,8 @@ public class Parking implements Serializable {
         if (name != null ? !name.equals(parking.name) : parking.name != null) return false;
         if (parkingSpotSelector != null ? !parkingSpotSelector.equals(parking.parkingSpotSelector) : parking.parkingSpotSelector != null)
             return false;
-        if (parkingSpotsById != null ? !parkingSpotsById.equals(parking.parkingSpotsById) : parking.parkingSpotsById != null)
-            return false;
 
-        return true;
+        return !(parkingSpotsById != null ? !parkingSpotsById.equals(parking.parkingSpotsById) : parking.parkingSpotsById != null);
     }
 
     @Override

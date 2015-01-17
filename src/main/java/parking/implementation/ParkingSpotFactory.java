@@ -7,7 +7,7 @@ import parking.api.business.contract.ParkingSpotIdProvider;
  * Created by  on 15/01/15.
  */
 public class ParkingSpotFactory implements parking.api.business.contract.ParkingSpotFactory {
-
+    private String nextVehicleType;
     private ParkingSpotIdProvider idProvider = new SimpleParkingSpotIdProvider();
 
     @Override
@@ -15,14 +15,19 @@ public class ParkingSpotFactory implements parking.api.business.contract.Parking
         this.idProvider = provider;
     }
 
+    public void setNextVehicleType(String nextVehicleType) {
+        this.nextVehicleType = nextVehicleType;
+    }
+
     @Override
-    public ParkingSpot createParkingSpot(String type) {
+    public ParkingSpot createParkingSpot() {
         Integer id = idProvider.nextId();
         System.out.println(id);
-        if (type.equals("Car"))
+        if (nextVehicleType.equals("Car"))
             return new CarParkingSpot(id);
-        else if (type.equals("Carrier"))
+        else if (nextVehicleType.equals("Carrier"))
             return new CarrierParkingSpot(id);
-        throw new RuntimeException();
+
+        return null;
     }
 }

@@ -16,36 +16,35 @@ import javafx.stage.Window;
 /**
  * Created by  on 15/01/15.
  */
-public class ConstructStage extends Stage {
-
-    Label title;
-    Label label;
-    Button construct;
-    Button cancel;
-    TextField nbTruck;
-    TextField nbCar;
+class ConstructStage extends Stage {
+    private Label titleLabel;
+    private Label label;
+    private Button constructButton;
+    private Button cancelButton;
+    private TextField truckNumberField;
+    private TextField carNumberField;
 
     private void createTitle() {
-        title = new Label("New Parking");
-        title.setFont(Font.font("Arial", 30));
-        title.setTextFill(Color.BLACK);
-        title.alignmentProperty().setValue(Pos.CENTER);
+        titleLabel = new Label("New Parking");
+        titleLabel.setFont(Font.font("Arial", 30));
+        titleLabel.setTextFill(Color.BLACK);
+        titleLabel.alignmentProperty().setValue(Pos.CENTER);
     }
 
     private void createTextFieldPlate() {
-        nbCar = new TextField();
-        nbCar.setPromptText("Place for car");
+        carNumberField = new TextField();
+        carNumberField.setPromptText("Place for car");
 
         //style
-        nbCar.alignmentProperty().setValue(Pos.CENTER);
+        carNumberField.alignmentProperty().setValue(Pos.CENTER);
     }
 
     private void createTextFieldBrand() {
-        nbTruck = new TextField();
-        nbTruck.setPromptText("Place for truck");
+        truckNumberField = new TextField();
+        truckNumberField.setPromptText("Place for truck");
 
         //style
-        nbTruck.alignmentProperty().setValue(Pos.CENTER);
+        truckNumberField.alignmentProperty().setValue(Pos.CENTER);
     }
 
     private void createLabel() {
@@ -53,29 +52,21 @@ public class ConstructStage extends Stage {
         label.setTextFill(Color.RED);
         label.alignmentProperty().setValue(Pos.CENTER);
     }
-
-    private EventHandler createSubmitEventHandler() {
-        return event -> {
-            if(!nbCar.getText().isEmpty()
-                    && !nbTruck.getText().isEmpty()
-                    ) {
-                this.close();
-            }else {
-                label.setText("Tous les champs ne sont pas renseignés");
-            }
-        };
-    }
-
-    private void createConstructButton(){
-        construct = new Button();
-        construct.setText("Create");
+    private void createConstructButton() {
+        constructButton = new Button();
+        constructButton.setText("Create");
 
         //add action
-        construct.setOnAction(createSubmitEventHandler());
+        constructButton.setOnAction(event -> {
+            if (!carNumberField.getText().isEmpty() && !truckNumberField.getText().isEmpty())
+                close();
+            else
+                label.setText("Tous les champs ne sont pas renseignés");
+        });
 
         //style
-        construct.setStyle("-fx-background-color: green");
-        construct.setTextFill(Color.WHITE);
+        constructButton.setStyle("-fx-background-color: green");
+        constructButton.setTextFill(Color.WHITE);
     }
 
     private EventHandler createCancelEventHandler() {
@@ -83,15 +74,15 @@ public class ConstructStage extends Stage {
     }
 
     private void createButtonCancel() {
-        cancel = new Button();
-        cancel.setText("Cancel");
+        cancelButton = new Button();
+        cancelButton.setText("Cancel");
 
         //add action
-        cancel.setOnAction(createCancelEventHandler());
+        cancelButton.setOnAction(createCancelEventHandler());
 
         //style
-        cancel.setStyle("-fx-background-color: red");
-        cancel.setTextFill(Color.WHITE);
+        cancelButton.setStyle("-fx-background-color: red");
+        cancelButton.setTextFill(Color.WHITE);
     }
 
 
@@ -115,11 +106,11 @@ public class ConstructStage extends Stage {
         FlowPane flowPane = new FlowPane();
         //add Nodes to FlowPane
         flowPane.getChildren().addAll(
-                title,
-                nbCar,
-                nbTruck,
-                construct,
-                cancel
+                titleLabel,
+                carNumberField,
+                truckNumberField,
+                constructButton,
+                cancelButton
         );
 
         flowPane.setMaxSize(200, 400);
@@ -140,16 +131,16 @@ public class ConstructStage extends Stage {
         this.setTitle("New Parking");
     }
 
-    public int getNbTruck() {
-        if (nbTruck.getText().equalsIgnoreCase(""))
+    public int getTruckNumberField() {
+        if (truckNumberField.getText().equalsIgnoreCase(""))
             return 0;
-        return Integer.parseInt(nbTruck.getText());
+        return Integer.parseInt(truckNumberField.getText());
     }
 
-    public int getNbCar() {
-        if (nbCar.getText().equalsIgnoreCase(""))
+    public int getCarNumberField() {
+        if (carNumberField.getText().equalsIgnoreCase(""))
             return 0;
-        return Integer.parseInt(nbCar.getText());
+        return Integer.parseInt(carNumberField.getText());
     }
 
 }

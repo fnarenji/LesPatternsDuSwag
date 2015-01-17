@@ -50,7 +50,7 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
      * @param parkingSpots
      * @return Collection of the parking spots available for the user and with the booked spots first
      */
-    public List<ParkingSpot> cleanAndSortSpotList(Vehicle vehicle, Collection<ParkingSpot> parkingSpots) {
+    private List<ParkingSpot> cleanAndSortSpotList(Vehicle vehicle, Collection<ParkingSpot> parkingSpots) {
         List<ParkingSpot> selectedSpots = new ArrayList<ParkingSpot>();
 
         selectedSpots.addAll(

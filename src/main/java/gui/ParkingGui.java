@@ -31,11 +31,9 @@ public class ParkingGui extends Application {
     private int nbParking = 0;
     private int nbCar;
     private int nbCarrier;
-    Collection<Client> clients = new ArrayList<Client>();
+    private Collection<Client> clients = new ArrayList<>();
     private ParkingManager parkingManager;
     private ParkingSpotFactory parkingSpotFactory;
-
-    private Client currentClient;
 
     public static void main(String[] args) {
         launch(args);
@@ -47,28 +45,28 @@ public class ParkingGui extends Application {
             this.parkingSpotFactory = new ParkingSpotFactory();
 
             this.parkingManager.setCompanyName("SWAG COMPANY");
-            this.parkingManager.newParking(this.nbParking++, "Parking 1");
+            this.parkingManager.newParking(++nbParking, "Parking 1");
 
         } catch (ParkingExistsException e) {
             e.printStackTrace();
         }
 
-        Collection<String> vehicules = new ArrayList<>();
-        Map<String, Integer> nbVehicules = new HashMap<>();
-        vehicules.add("Car");
-        nbVehicules.put("Car", this.nbCar);
-        vehicules.add("Carrier");
-        nbVehicules.put("Carrier", this.nbCarrier);
+        Collection<String> vehicles = new ArrayList<>();
+        Map<String, Integer> nbVehicles = new HashMap<>();
+        vehicles.add("Car");
+        nbVehicles.put("Car", this.nbCar);
+        vehicles.add("Carrier");
+        nbVehicles.put("Carrier", this.nbCarrier);
 
         final int[] x = {0};
         final int[] y = {0};
-        vehicules.forEach(vehicule -> {
+        vehicles.forEach(vehicle -> {
             try {
+                this.parkingSpotFactory.setNextVehicleType(vehicle);
                 this.parkingManager.getParkingById(0)
                         .newParkingSpot(
                                 this.parkingSpotFactory,
-                                nbVehicules.get(vehicule),
-                                vehicule)
+                                nbVehicles.get(vehicle))
                         .forEach(
                                 spot -> {
                                     if (x[0] == maxInLine) {
@@ -78,7 +76,7 @@ public class ParkingGui extends Application {
 
                                     ButtonSpot buttonSpot = new ButtonSpot(
                                             spot,
-                                            vehicule,
+                                            vehicle,
                                             primaryStage
                                     );
 
@@ -137,8 +135,8 @@ public class ParkingGui extends Application {
             ConstructStage constructStage = new ConstructStage(this.primaryStage);
             constructStage.showAndWait();
 
-            this.nbCar = constructStage.getNbCar();
-            this.nbCarrier = constructStage.getNbTruck();
+            this.nbCar = constructStage.getCarNumberField();
+            this.nbCarrier = constructStage.getTruckNumberField();
 
             if (nbCar != 0 || nbCarrier != 0)
                 generateParking();
@@ -195,7 +193,7 @@ public class ParkingGui extends Application {
         root.setCenter(gridPane);
 
         clients.add(new Client("", "Anonyme", ""));
-        currentClient = clients.iterator().next();
+        Client currentClient = clients.iterator().next();
 
         createMenu();
         mainMenu.getMenus().addAll(

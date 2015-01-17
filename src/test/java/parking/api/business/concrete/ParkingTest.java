@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ParkingTest {
-    Parking parking;
+    private Parking parking;
 
     @Before
     public void setUp() throws ParkingExistsException, ParkingBookedSpotsExceptions, ParkingNotPresentException {
@@ -54,9 +54,8 @@ public class ParkingTest {
             }
 
             @Override
-            public ParkingSpot createParkingSpot(String type) {
-                ParkingSpot parkingSpot = new CarParkingSpot(i++);
-                return parkingSpot;
+            public ParkingSpot createParkingSpot() {
+                return new CarParkingSpot(i++);
             }
         };
 
@@ -79,7 +78,7 @@ public class ParkingTest {
             }
 
             @Override
-            public ParkingSpot createParkingSpot(String type) {
+            public ParkingSpot createParkingSpot() {
                 ParkingSpot parkingSpot = mock(ParkingSpot.class);
                 when(parkingSpot.getId()).thenReturn(new Integer(++i));
                 return parkingSpot;
@@ -87,15 +86,14 @@ public class ParkingTest {
         };
 
         assertEquals(new Integer(0), parking.countParkingSpots());
-        parking.newParkingSpot(parkingSpotFactory,null);
+        parking.newParkingSpot(parkingSpotFactory);
 
         assertEquals(new Integer(1), parking.countParkingSpots());
-        parking.newParkingSpot(parkingSpotFactory, 42, null);
+        parking.newParkingSpot(parkingSpotFactory, 42);
 
         assertEquals(new Integer(43), parking.countParkingSpots());
-        parking.newParkingSpot(parkingSpotFactory,null);
+        parking.newParkingSpot(parkingSpotFactory);
     }
-
 
     @Test
     public void testCountParkingSpotsPredicate() {
@@ -107,14 +105,14 @@ public class ParkingTest {
             }
 
             @Override
-            public ParkingSpot createParkingSpot(String type) {
+            public ParkingSpot createParkingSpot() {
                 ParkingSpot parkingSpot = mock(ParkingSpot.class);
                 when(parkingSpot.getId()).thenReturn(new Integer(++i));
                 return parkingSpot;
             }
         };
 
-        parking.newParkingSpot(parkingSpotFactory, 42, null);
+        parking.newParkingSpot(parkingSpotFactory, 42);
         assertEquals(new Integer(42 / 2), parking.countParkingSpots(parkingSpot -> parkingSpot.getId() <= 42 / 2));
         assertEquals(new Integer(parking.countParkingSpots() / 2), parking.countParkingSpots(parkingSpot -> parkingSpot.getId() <= 42 / 2));
     }
@@ -129,14 +127,14 @@ public class ParkingTest {
             }
 
             @Override
-            public ParkingSpot createParkingSpot(String type) {
+            public ParkingSpot createParkingSpot() {
                 ParkingSpot parkingSpot = mock(ParkingSpot.class);
                 when(parkingSpot.getId()).thenReturn(new Integer(++i));
                 return parkingSpot;
             }
         };
 
-        ParkingSpot parkingSpot = parking.newParkingSpot(parkingSpotFactory, null);
+        ParkingSpot parkingSpot = parking.newParkingSpot(parkingSpotFactory);
         assertEquals(parkingSpot, parking.getSpotBySpotId(452));
     }
 
@@ -150,7 +148,7 @@ public class ParkingTest {
             }
 
             @Override
-            public ParkingSpot createParkingSpot(String type) {
+            public ParkingSpot createParkingSpot() {
                 ParkingSpot parkingSpot = mock(ParkingSpot.class);
                 when(parkingSpot.getId()).thenReturn(new Integer(++i));
                 when(parkingSpot.isVehicleParked()).thenReturn(true);
@@ -164,7 +162,7 @@ public class ParkingTest {
             }
         };
 
-        parking.newParkingSpot(parkingSpotFactory, 42, null);
+        parking.newParkingSpot(parkingSpotFactory, 42);
         assertEquals(parking.getSpotBySpotId(34), parking.getSpotByVehiclePlate("34"));
     }
 }
