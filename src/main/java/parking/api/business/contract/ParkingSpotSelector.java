@@ -6,10 +6,7 @@ import java.util.Collection;
 /**
  * Created by SKNZ on 30/12/2014.
  */
-<<<<<<< Updated upstream
-public interface ParkingSpotSelector extends Serializable {
-=======
-<<<<<<< HEAD
+
 public interface ParkingSpotSelector extends Serializable{
     /**
      * Select a compatible spot for the vehicle passed as parameter into the collection of spot also passed as parameter
@@ -17,10 +14,7 @@ public interface ParkingSpotSelector extends Serializable{
      * @param parkingSpots parking spots available
      * @return
      */
-=======
-public interface ParkingSpotSelector extends Serializable {
->>>>>>> FETCH_HEAD
->>>>>>> Stashed changes
+
     public ParkingSpot select(Vehicle vehicle, Collection<ParkingSpot> parkingSpots);
 
     /**
