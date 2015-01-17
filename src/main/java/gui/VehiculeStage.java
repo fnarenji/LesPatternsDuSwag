@@ -171,12 +171,18 @@ public class VehiculeStage extends Stage {
     }
 
     public Vehicle getVehicule() throws UnknowVehiculeException {
+        if (this.vehicule.getValue().toString() == null
+                || plate.getText() == null
+                || brand.getText() == null
+                || brand.getText() == null)
+            return null;
+
         VehiculeFactory vehiculeFactory = new parking.implementation.VehiculeFactory();
 
         Vehicle vehicule = vehiculeFactory.createVehicule(this.vehicule.getValue().toString());
         vehicule.setPlate(plate.getText());
         vehicule.setBrand(brand.getText());
-        vehicule.setModel(model.getText());
+        vehicule.setModel(brand.getText());
 
         return vehicule;
     }

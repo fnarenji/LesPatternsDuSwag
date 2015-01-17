@@ -5,15 +5,22 @@ package parking.implementation;
  */
 public class Client {
 
+    private String civility;
     private String lastName;
     private String firstName;
 
-    public String getLastName() {
-        return lastName;
+    public Client(String civility, String lastName, String firstName) {
+        this.civility = civility;
+        this.lastName = lastName;
+        this.firstName = firstName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getCivility() {
+        return civility;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String getFirstName() {
@@ -23,9 +30,5 @@ public class Client {
     @Override
     public String toString() {
         return lastName + " " + firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 }

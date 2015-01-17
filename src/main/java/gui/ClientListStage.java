@@ -1,6 +1,5 @@
 package gui;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,10 +21,11 @@ import java.util.Collection;
 public class ClientListStage extends Stage {
 
     private Collection<Client> clients;
-    private Client selected;
 
     private Label title;
+    private Label label;
     private ChoiceBox select;
+    private Button create;
     private Button submit;
     private Button cancel;
 
@@ -36,18 +36,63 @@ public class ClientListStage extends Stage {
         title.alignmentProperty().setValue(Pos.CENTER);
     }
 
+    private void createLabel() {
+        label = new Label("Il n'y a pas de clients.");
+        label.setTextFill(Color.RED);
+        label.setAlignment(Pos.CENTER);
+    }
+
     private void createSelect() {
         select = new ChoiceBox();
-        select.getItems().addAll(this.clients);
-        select.setValue(this.clients.iterator().next());
+        if (!clients.isEmpty()) {
+            select.getItems().setAll(this.clients);
+        }
+    }
+
+    private void updateState() {
+        if (clients.isEmpty()) {
+            this.select.setVisible(false);
+            this.submit.setVisible(false);
+            this.label.setVisible(true);
+        } else {
+            this.select.setVisible(true);
+            this.submit.setVisible(true);
+            this.label.setVisible(false);
+
+            select.getItems().setAll(clients);
+        }
     }
 
     private void createButtonCreate() {
+        create = new Button();
+        create.setText("New Client");
+
+        //add action
+        create.setOnAction(event -> {
+            ClientStage clientStage = new ClientStage(this);
+            clientStage.showAndWait();
+
+            Client newClient = clientStage.getClient();
+
+            if (newClient != null)
+                clients.add(newClient);
+
+            updateState();
+        });
+
+        //style
+        create.setStyle("-fx-background-color: blue");
+        create.setTextFill(Color.WHITE);
+    }
+
+    private void createButtonSubmit() {
         submit = new Button();
         submit.setText("Select");
 
         //add action
-        submit.setOnAction(createSubmitEventHandler());
+        submit.setOnAction(event -> {
+            this.close();
+        });
 
         //style
         submit.setStyle("-fx-background-color: green");
@@ -59,31 +104,27 @@ public class ClientListStage extends Stage {
         cancel.setText("Cancel");
 
         //add action
-        cancel.setOnAction(createCancelEventHandler());
+        cancel.setOnAction(event -> {
+            this.close();
+        });
 
         //style
         cancel.setStyle("-fx-background-color: red");
         cancel.setTextFill(Color.WHITE);
     }
 
-    private EventHandler createSubmitEventHandler() {
-        return event -> this.close();
-    }
-
-    private EventHandler createCancelEventHandler() {
-        return event -> this.close();
-    }
-
     private void init() {
-
         createTitle();
+        createLabel();
         createSelect();
+        createButtonSubmit();
         createButtonCreate();
         createButtonCancel();
     }
 
-    public ClientListStage(Window owner) {
+    public ClientListStage(Window owner, Collection<Client> clients) {
         this.initOwner(owner);
+        this.clients = clients;
 
         init();
 
@@ -95,8 +136,12 @@ public class ClientListStage extends Stage {
                 title,
                 select,
                 submit,
+                label,
+                create,
                 cancel
         );
+
+        updateState();
 
         flowPane.setMaxSize(200, 400);
 
@@ -113,6 +158,6 @@ public class ClientListStage extends Stage {
     }
 
     public Client getClient() {
-        return this.selected;
+        return (Client) this.select.getValue();
     }
 }

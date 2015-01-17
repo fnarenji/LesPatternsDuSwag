@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import parking.implementation.Client;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -156,12 +157,15 @@ public class ClientStage extends Stage {
         this.setTitle("New Client");
     }
 
-    public Collection getClient() {
-        Collection client = new ArrayList<>();
-        client.add(civility.getValue());
-        client.add(lastname.getText());
-        client.add(firstname.getText());
-
-        return client;
+    public Client getClient() {
+        if (civility.getValue() == null
+                || lastname.getText() == null
+                || firstname.getText() == null)
+            return null;
+        return new Client(
+                civility.getValue().toString(),
+                lastname.getText(),
+                firstname.getText()
+        );
     }
 }

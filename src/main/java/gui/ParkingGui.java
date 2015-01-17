@@ -1,47 +1,189 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import parking.api.business.concrete.ParkingManager;
-import parking.api.business.contract.ParkingSpot;
-import parking.api.exceptions.*;
+import parking.api.exceptions.ParkingExistsException;
+import parking.api.exceptions.ParkingNotPresentException;
+import parking.implementation.Client;
 import parking.implementation.ParkingSpotFactory;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 //Created by on 30/12/14.
 
 public class ParkingGui extends Application {
 
+    private Stage primaryStage;
+    private GridPane gridPane;
+    private Menu menuClient;
+    private Menu menuParking;
+    private Menu menuSelector;
+    private Menu menuQuit;
 
-    final TextField nbCar = new TextField();
-    final TextField nbTruck = new TextField();
-    private int countP = 0;
-    private Collection<ButtonSpot> currentsButtonSpot = new ArrayList<>();
+    private int maxInLine = 10;
+    private int nbParking = 0;
+    private int nbCar;
+    private int nbCarrier;
+    Collection<Client> clients = new ArrayList<Client>();
+    private ParkingManager parkingManager;
+    private ParkingSpotFactory parkingSpotFactory;
+
+    private Client currentClient;
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    private void generateParking() {
+        try {
+            this.parkingManager = ParkingManager.getInstance();
+            this.parkingSpotFactory = new ParkingSpotFactory();
+
+            this.parkingManager.setCompanyName("SWAG COMPANY");
+            this.parkingManager.newParking(this.nbParking++, "Parking 1");
+
+        } catch (ParkingExistsException e) {
+            e.printStackTrace();
+        }
+
+        Collection<String> vehicules = new ArrayList<>();
+        Map<String, Integer> nbVehicules = new HashMap<>();
+        vehicules.add("Car");
+        nbVehicules.put("Car", this.nbCar);
+        vehicules.add("Carrier");
+        nbVehicules.put("Carrier", this.nbCarrier);
+
+        final int[] x = {0};
+        final int[] y = {0};
+        vehicules.forEach(vehicule -> {
+            try {
+                this.parkingManager.getParkingById(0)
+                        .newParkingSpot(
+                                this.parkingSpotFactory,
+                                nbVehicules.get(vehicule),
+                                vehicule)
+                        .forEach(
+                                spot -> {
+                                    if (x[0] == maxInLine) {
+                                        x[0] = 0;
+                                        y[0]++;
+                                    }
+
+                                    ButtonSpot buttonSpot = new ButtonSpot(
+                                            spot,
+                                            vehicule,
+                                            primaryStage
+                                    );
+
+                                    gridPane.add(
+                                            buttonSpot,
+                                            x[0]++,
+                                            y[0]
+                                    );
+                                }
+                        );
+            } catch (ParkingNotPresentException e) {
+                e.printStackTrace();
+            }
+        });
+
+        this.primaryStage.setHeight(
+                y[0] * 50 + 90  //50: button height & 90: menu height
+        );
+    }
+
+    private void createMenu() {
+        createMenuClient();
+        createMenuParking();
+        createMenuSelector();
+        createMenuQuit();
+
+    }
+
+    private void createMenuClient() {
+        this.menuClient = new Menu("Client");
+        MenuItem list = new MenuItem("Selectionner");
+        list.setOnAction(event -> {
+            ClientListStage clientListStage = new ClientListStage(primaryStage, clients);
+            clientListStage.showAndWait();
+
+            System.out.println(clients);
+        });
+
+        MenuItem nouveau = new MenuItem("Nouveau");
+        nouveau.setOnAction(event -> {
+            ClientStage clientStage = new ClientStage(primaryStage);
+            clientStage.showAndWait();
+        });
+
+        this.menuClient.getItems().addAll(
+                list,
+                nouveau
+        );
+    }
+
+    private void createMenuParking() {
+        this.menuParking = new Menu("Parking");
+        MenuItem nouveau = new MenuItem("Nouveau");
+
+        nouveau.setOnAction(event -> {
+            ConstructStage constructStage = new ConstructStage(this.primaryStage);
+            constructStage.showAndWait();
+
+            this.nbCar = constructStage.getNbCar();
+            this.nbCarrier = constructStage.getNbTruck();
+
+            if (nbCar != 0 || nbCarrier != 0)
+                generateParking();
+        });
+
+        this.menuParking.getItems().addAll(
+                nouveau
+        );
+    }
+
+    private void createMenuSelector() {
+        this.menuSelector = new Menu("AutoSelector");
+        MenuItem find = new MenuItem("Find a place");
+        MenuItem undo = new MenuItem("Unselect place");
+
+        this.menuSelector.getItems().addAll(
+                find,
+                undo
+        );
+    }
+
+    private void createMenuQuit() {
+        this.menuQuit = new Menu("Quit");
+        MenuItem quit = new MenuItem("Quit");
+        quit.setOnAction(event -> {
+            Alert confirm = new Alert(
+                    Alert.AlertType.CONFIRMATION,
+                    "Êtes vous sûr de vouloir quitter ?"
+            );
+            Optional<ButtonType> result = confirm.showAndWait();
+            if (result.get() == ButtonType.OK)
+                this.primaryStage.close();
+        });
+
+        this.menuQuit.getItems().addAll(
+                quit
+        );
+    }
+
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        this.primaryStage.setOnCloseRequest(event -> Platform.exit());
 
-        int SIZE = 10;
-        int length = SIZE;
-        int width = SIZE;
-
-        GridPane gridPane = new GridPane();
-
-        int count = 0;
-        MenuButton[][] matrix = new MenuButton[width][length];
-
-
+        this.gridPane = new GridPane();
         BorderPane root = new BorderPane();
         VBox topContainer = new VBox();
         MenuBar mainMenu = new MenuBar();
@@ -52,122 +194,26 @@ public class ParkingGui extends Application {
         root.setTop(topContainer);
         root.setCenter(gridPane);
 
-        Menu client = new Menu("Client");
-        MenuItem newCl = new MenuItem("Nouveau");
+        clients.add(new Client("", "Anonyme", ""));
+        currentClient = clients.iterator().next();
 
-        Menu conf = new Menu("Parking");
-        MenuItem changePark = new MenuItem("Nouveau");
+        createMenu();
+        mainMenu.getMenus().addAll(
+                this.menuClient,
+                this.menuParking,
+                this.menuSelector,
+                this.menuQuit
+        );
 
-        Menu autoSelector = new Menu("AutoSelector");
-        MenuItem find = new MenuItem("Find a place");
-        MenuItem undo = new MenuItem("Unselect place");
-
-        Menu quit = new Menu("Quit");
-        quit.setOnAction(event -> {
-            System.out.println("lol");
-            primaryStage.close();
-        });
-
-        changePark.setOnAction(e -> {
-            // Create the custom dialog.
-                constructStage tmpe = new constructStage(primaryStage);
-
-                ParkingManager parkingManager = ParkingManager.getInstance();
-                try {
-                    parkingManager.newParking(countP++,"Default");
-                } catch (ParkingExistsException e1) {
-                    e1.printStackTrace();
-                }
-
-                Collection<ParkingSpot> currentsSpot = null;
-
-            ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory();
-            try {
-                currentsSpot = parkingManager.getParkingById(0).newParkingSpot(parkingSpotFactory, Integer.parseInt(tmpe.getNbCar()), "Car");
-            } catch (ParkingNotPresentException e1) {
-                e1.printStackTrace();
-            }
-            for(Iterator<ParkingSpot> i = currentsSpot.iterator();i.hasNext();){
-                ButtonSpot a = new ButtonSpot(i.next());
-                a.setStyle("-fx-background-color: #60ff05");
-                currentsButtonSpot.add(a);
-            }
-
-            try{
-                currentsSpot = parkingManager.getParkingById(0).newParkingSpot(parkingSpotFactory, Integer.parseInt(tmpe.getNbTruck()), "Carrier");
-            } catch (ParkingNotPresentException e1) {
-                e1.printStackTrace();
-            }
-            for(Iterator<ParkingSpot> i = currentsSpot.iterator();i.hasNext();){
-                ButtonSpot a = new ButtonSpot(i.next());
-                a.setStyle("-fx-background-color: #0e4fff");
-                currentsButtonSpot.add(a);
-            }
-
-            Iterator<ButtonSpot> tmp = currentsButtonSpot.iterator();
-
-                ColumnConstraints column = new ColumnConstraints();
-                column.setPercentWidth(50);
-                RowConstraints row = new RowConstraints();
-                row.setPercentHeight(50);
-                gridPane.getRowConstraints().add(row);
-                gridPane.getColumnConstraints().add(column);
-
-                for(int x = 0; x < length; x++)
-                {
-                    gridPane.getRowConstraints().add(row);
-                    for(int y = 0; y < width; y++)
-                    {
-                        gridPane.getColumnConstraints().add(column);
-                        if(!tmp.hasNext()) break;
-                        matrix[x][y] = tmp.next();
-                        matrix[x][y].setMinSize(60,60);
-                        matrix[x][y].setTextAlignment(TextAlignment.CENTER);
-                        ButtonSpot lel = (ButtonSpot)matrix[x][y];
-                        MenuItem park = new MenuItem("Park");
-                        park.setOnAction(event -> {
-                            VehiculeStage parkStage = new VehiculeStage(primaryStage);
-                            parkStage.showAndWait();
-                            try {
-                                lel.getParkingSpot().park(parkStage.getVehicule());
-                            } catch (SpotNotEmptyException e1) {
-                                e1.printStackTrace();
-                            } catch (SpotBookedException e1) {
-                                e1.printStackTrace();
-                            } catch (UnknowVehiculeException e1) {
-                                e1.printStackTrace();
-                            } catch (VehicleNotFitException e1) {
-                                e1.printStackTrace();
-                            }
-                            lel.setStyle("-fx-background-color: #ff0030");
-                            park.setText("Unpark");
-                        });
-                       // MenuItem unpark = new MenuItem("Unpark");
-                        MenuItem book = new MenuItem("Book");
-                        MenuItem info = new MenuItem("Info");
-                        info.setOnAction(event ->{
-                            SpotStage spotStage = new SpotStage(primaryStage,lel.getParkingSpot());
-                            spotStage.showAndWait();
-                        });
-                        lel.getItems().addAll(park,book,info);
-                        gridPane.add(matrix[x][y], y, x);
-                    }
-                }
-
-        });
-
-        client.getItems().add(newCl);
-        conf.getItems().add(changePark);
-        autoSelector.getItems().add(find);
-        autoSelector.getItems().add(undo);
-
-        mainMenu.getMenus().addAll(client, conf, autoSelector,quit);
-
-        Scene sc = new Scene(root, 500, 500);
+        Scene sc = new Scene(
+                root,
+                600,
+                500
+        );
 
         primaryStage.setScene(sc);
         primaryStage.sizeToScene();
-        primaryStage.setTitle("SWAG-- GUI");
+        primaryStage.setTitle("SWAG Parking");
         primaryStage.show();
 
     }
