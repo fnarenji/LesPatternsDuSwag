@@ -24,34 +24,11 @@ import java.util.stream.Collectors;
 
 //Created by on 30/12/14.
 
-public class ParkingGui extends Application {
+public class ParkingGUI extends Application {
     private static Stage mainStage;
 
     public static Stage getMainStage() {
         return mainStage;
-    }
-
-    private GridPane gridPane;
-    private int nbMaxLine = 10;
-
-    private ParkingManager parkingManager = ParkingManager.getInstance();
-
-    public void updateGrid(Integer parking, Integer floor) {
-        try {
-            int x = 0;
-            int y = 0;
-
-            for (ParkingSpot parkingSpot : parkingManager.getParkingById(parking)) {
-                if (y == nbMaxLine) {
-                    y++;
-                    x = 0;
-                }
-
-                gridPane.add(new ButtonSpot(parkingSpot, getMainStage()), x++, y);
-            }
-        } catch (ParkingNotPresentException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -68,8 +45,8 @@ public class ParkingGui extends Application {
             e.printStackTrace();
         }
 
-        gridPane = new GridPane();
-        updateGrid(1, 1);
+        ParkingGrid parkingGrid = new ParkingGrid();
+        parkingGrid.updateGrid(1, 1);
 
         //create root
         BorderPane borderPane = new BorderPane();
@@ -77,14 +54,9 @@ public class ParkingGui extends Application {
         //create top menu
         MenuBar menu = new TopMenuBar();
 
-        // vertical layout box
-        /*VBox vBox = new VBox();
-        vBox.getChildren().add(menu);
-        vBox.setPrefHeight(menu.getHeight());*/
-
         borderPane.setTop(menu);
         borderPane.setPrefHeight(menu.getHeight());
-        borderPane.setCenter(gridPane);
+        borderPane.setCenter(parkingGrid);
 
         Scene scene = new Scene(borderPane, 600, 400);
 

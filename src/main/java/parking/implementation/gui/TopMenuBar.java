@@ -1,8 +1,6 @@
 package parking.implementation.gui;
 
 import javafx.scene.control.*;
-import parking.api.business.concrete.Parking;
-import parking.implementation.logic.Client;
 
 import java.util.Optional;
 
@@ -18,13 +16,13 @@ public class TopMenuBar extends MenuBar {
         Menu menuClient = new Menu("Client");
         MenuItem list = new MenuItem("Selectionner");
         list.setOnAction(event -> {
-            ClientListStage clientListStage = new ClientListStage(ParkingGui.getMainStage());
+            ClientListStage clientListStage = new ClientListStage(ParkingGUI.getMainStage());
             clientListStage.showAndWait();
         });
 
         MenuItem nouveau = new MenuItem("Nouveau");
         nouveau.setOnAction(event -> {
-            ClientStage clientStage = new ClientStage(ParkingGui.getMainStage());
+            ClientStage clientStage = new ClientStage(ParkingGUI.getMainStage());
             clientStage.showAndWait();
             ClientManager.getInstance().addClient(clientStage.getClient());
         });
@@ -44,7 +42,7 @@ public class TopMenuBar extends MenuBar {
         MenuItem nouveau = new MenuItem("Nouveau");
 
         nouveau.setOnAction(event -> {
-            ParkingListStage parkingListStage = new ParkingListStage(ParkingGui.getMainStage());
+            ParkingListStage parkingListStage = new ParkingListStage(ParkingGUI.getMainStage());
             parkingListStage.showAndWait();
 
             System.out.println(parkingListStage.getChoice());
@@ -80,7 +78,7 @@ public class TopMenuBar extends MenuBar {
             );
             Optional<ButtonType> result = confirm.showAndWait();
             if (result.get() == ButtonType.OK)
-                ParkingGui.getMainStage().close();
+                ParkingGUI.getMainStage().close();
         });
 
         menuQuit.setGraphic(quitLabel);
