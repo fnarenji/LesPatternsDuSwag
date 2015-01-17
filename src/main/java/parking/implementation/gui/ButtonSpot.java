@@ -8,6 +8,8 @@ import javafx.stage.Window;
 import org.joda.time.DateTime;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.*;
+import parking.implementation.logic.Car;
+import parking.implementation.logic.Carrier;
 import parking.implementation.logic.Client;
 
 import java.util.Collection;
@@ -39,8 +41,8 @@ class ButtonSpot extends MenuButton {
         this.parent = parent;
         this.clientCollection = clientCollection;
 
-        this.colors.put("Car", "#60ff05");
-        this.colors.put("Carrier", "#0e4fff");
+        this.colors.put(Car.class.toString(), "#60ff05");
+        this.colors.put(Carrier.class.toString(), "#0e4fff");
 
         this.setStyle("-fx-background-color: " + this.colors.getOrDefault(this.type, this.defaultColor));
         this.setMinSize(60, 50);

@@ -8,21 +8,26 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import parking.api.business.concrete.Parking;
 import parking.api.business.concrete.ParkingManager;
+import parking.api.exceptions.ParkingExistsException;
+import parking.api.exceptions.ParkingNotPresentException;
 import parking.implementation.logic.Client;
+import parking.implementation.logic.FloorParkingSpotIdProvider;
 import parking.implementation.logic.ParkingSpotFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 //Created by on 30/12/14.
 
 public class ParkingGui extends Application {
     private Stage stage;
-    private BorderPane borderPane;
+    private GridPane gridPane;
+    private int nbMaxLine = 10;
 
-    private Client currentClient;
     private Collection<Collection<GridPane>> gridPaneParking = new ArrayList<>();
 
     private Collection<Client> clients = new ArrayList<>();
@@ -31,12 +36,6 @@ public class ParkingGui extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-
-    private Collection<GridPane> generateParking() {
-        ParkingListStage parkingListStage = new ParkingListStage(stage, clients);
-        parkingListStage.showAndWait();
-        return parkingListStage.getParking();
     }
 
     private MenuBar createMenu() {
@@ -83,12 +82,13 @@ public class ParkingGui extends Application {
 
     private Menu createMenuParking() {
         Menu menuParking = new Menu("Parking");
-        MenuItem select = new MenuItem("Selectionner");
-
         MenuItem nouveau = new MenuItem("Nouveau");
 
         nouveau.setOnAction(event -> {
-            generateParking();
+            ParkingListStage parkingListStage = new ParkingListStage(stage);
+            parkingListStage.showAndWait();
+
+            System.out.println(parkingListStage.getChoice());
         });
 
         menuParking.getItems().addAll(
@@ -129,16 +129,54 @@ public class ParkingGui extends Application {
         return menuQuit;
     }
 
+    public void updateGrid(Integer parking, Integer floor) {
+        try {
+            final int[] x = {0};
+            final int[] y = {0};
+            parkingManager.getParkingById(parking)
+                    .forEach(spot -> {
+                        if (y[0] == nbMaxLine) {
+                            y[0]++;
+                            x[0] = 0;
+                        }
+
+                        gridPane.add(
+                                new ButtonSpot(
+                                        spot,
+                                        spot.getClass().toString(),
+                                        stage,
+                                        clients
+                                ),
+                                x[0]++,
+                                y[0]
+                        );
+                    });
+        } catch (ParkingNotPresentException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void start(Stage primaryStage) {
         this.stage = primaryStage;
 
         //add data
         clients.add(new Client("", "Anonyme", ""));
-        Client currentClient = clients.iterator().next();
+
+        try {
+            ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory();
+            parkingSpotFactory.setIdProvider(new FloorParkingSpotIdProvider());
+            parkingSpotFactory.setNextVehicleType("Car");
+
+            ParkingManager.getInstance().newParking(1, "Parking 1").newParkingSpot(parkingSpotFactory, 10);
+        } catch (ParkingExistsException e) {
+            e.printStackTrace();
+        }
+
+        updateGrid(1, 1);
 
         //create root
-        borderPane = new BorderPane();
+        BorderPane borderPane = new BorderPane();
 
         //create top menu
         MenuBar menu = createMenu();
@@ -148,12 +186,7 @@ public class ParkingGui extends Application {
         borderPane.setTop(vBox);
         borderPane.setPrefHeight(vBox.getHeight());
 
-        //generate parking
-        Collection<GridPane> parking = generateParking();
-        //active floor
-        GridPane currentFloor = parking.iterator().next();
-
-        borderPane.setCenter(currentFloor);
+        borderPane.setCenter(gridPane);
 
         Scene scene = new Scene(
                 borderPane,
