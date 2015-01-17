@@ -1,9 +1,10 @@
 package parking.implementation.gui.controls;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -15,29 +16,28 @@ public class MainSplash extends Stage {
     public static final int NEW = 2;
 
     private int result = 0;
-    private final BorderPane pane;
+    private final VBox vbox;
 
     public MainSplash() {
-        Button openButton = new Button("Open scenario");
-        Button newButton = new Button("New scenario");
-        Button exitButton = new Button("Exit");
+        Text title = new Text("LPDS Parking");
+        Hyperlink openLink = new Hyperlink ("Open scenario");
+        Hyperlink newLink = new Hyperlink ("New scenario");
+        Hyperlink exitLink = new Hyperlink ("Exit");
 
-        openButton.setPrefWidth(120);
-        newButton.setPrefWidth(120);
-        exitButton.setPrefWidth(120);
+        vbox = new VBox(newLink, openLink, exitLink);
 
-        exitButton.setOnAction(event -> result = 0);
-        openButton.setOnAction(event -> result = 1);
-        newButton.setOnAction(event -> result = 2);
 
-        VBox vbox = new VBox(newButton, openButton, exitButton);
+        vbox.setMargin(openLink, new Insets(0, 0, 0, 8));
+        vbox.setMargin(newLink, new Insets(0, 0, 0, 8));
+        vbox.setMargin(exitLink, new Insets(0, 0, 0, 8));
 
-        pane = new BorderPane();
-        pane.setCenter(vbox);
+        exitLink.setOnAction(event -> result = 0);
+        openLink.setOnAction(event -> result = 1);
+        newLink.setOnAction(event -> result = 2);
     }
 
     public void run(Stage primaryStage) {
-        Scene scene = new Scene(pane, 120, 0);
+        Scene scene = new Scene(vbox);
 
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
