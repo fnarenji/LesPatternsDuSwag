@@ -2,6 +2,7 @@ package parking.api.business.contract;
 
 import org.joda.time.DateTime;
 import parking.api.business.concrete.Booking;
+import parking.api.business.contract.observer.Observable;
 import parking.api.exceptions.SpotBookedException;
 import parking.api.exceptions.SpotNotBookedException;
 import parking.api.exceptions.SpotNotEmptyException;
@@ -12,7 +13,7 @@ import java.io.Serializable;
 /**
  * Created by SKNZ on 28/12/2014.
  */
-public interface ParkingSpot extends Serializable {
+public interface ParkingSpot extends Serializable, Observable {
     /**
      * Get the id of the parking spot
      * @return The id of the parking spot

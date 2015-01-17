@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Created by SKNZ on 29/12/2014.
  */
-public abstract class BaseParkingSpot implements ParkingSpot {
+public abstract class BaseParkingSpot extends BaseObservable implements ParkingSpot {
     protected Map<Class, Boolean> vehicleTypeFits = new HashMap<>();
     protected int id;
     private Vehicle vehicle = null;
@@ -102,11 +102,6 @@ public abstract class BaseParkingSpot implements ParkingSpot {
 
         bookings.remove(booking);
         return booking;
-    }
-
-    @Override
-    public void registerObserver(Observer parkingSpotObserver) {
-
     }
 
     @Override
