@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.implementation.gui.stages;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.implementation.gui.stages;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,7 +22,7 @@ import java.util.Collection;
 /**
  * Created by loick on 14/01/15.
  */
-class ClientStage extends Stage {
+public class ClientStage extends Stage {
 
     private Collection<String> civility_list = new ArrayList<>();
 

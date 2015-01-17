@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.implementation.gui.stages;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,6 +17,7 @@ import parking.api.business.concrete.ParkingManager;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
+import parking.implementation.gui.controls.ButtonSpot;
 import parking.implementation.logic.Client;
 import parking.implementation.logic.ParkingSpotFactory;
 

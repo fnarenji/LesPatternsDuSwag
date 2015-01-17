@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.implementation.gui.stages;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.UnknownVehicleException;
+import parking.implementation.gui.VehicleFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;

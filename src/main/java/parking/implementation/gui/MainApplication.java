@@ -8,12 +8,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import parking.api.business.concrete.ParkingManager;
 import parking.api.exceptions.ParkingExistsException;
+import parking.implementation.gui.controls.ParkingGrid;
+import parking.implementation.gui.controls.TopMenuBar;
 import parking.implementation.logic.FloorParkingSpotIdProvider;
 import parking.implementation.logic.ParkingSpotFactory;
 
 //Created by on 30/12/14.
 
-public class ParkingGUI extends Application {
+public class MainApplication extends Application {
     public static void main(String[] args) {
         launch(args);
     }

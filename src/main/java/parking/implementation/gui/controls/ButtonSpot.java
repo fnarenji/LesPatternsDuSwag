@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.implementation.gui.controls;
 
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -8,6 +8,9 @@ import javafx.stage.Window;
 import org.joda.time.DateTime;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.*;
+import parking.implementation.gui.stages.ClientListStage;
+import parking.implementation.gui.stages.SpotStage;
+import parking.implementation.gui.stages.VehicleStage;
 import parking.implementation.logic.CarParkingSpot;
 import parking.implementation.logic.CarrierParkingSpot;
 
@@ -17,7 +20,7 @@ import java.util.Map;
 /**
  * Created by on 14/01/15.
  */
-class ButtonSpot extends MenuButton {
+public class ButtonSpot extends MenuButton {
     private static Map<Class<? extends ParkingSpot>, String> colors = new HashMap<>();
 
     static {

@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.implementation.gui.stages;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,7 +15,7 @@ import parking.api.business.contract.ParkingSpot;
 /**
  * Created by loick on 14/01/15.
  */
-class SpotStage extends Stage {
+public class SpotStage extends Stage {
     private ParkingSpot parkingSpot;
     private Label title;
     private Label id;

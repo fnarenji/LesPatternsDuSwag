@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.implementation.gui.controls;
 
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -6,6 +6,7 @@ import parking.api.business.concrete.Parking;
 import parking.api.business.concrete.ParkingManager;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.ParkingNotPresentException;
+import parking.implementation.gui.controls.ButtonSpot;
 
 /**
  * Created by sknz on 1/17/15.

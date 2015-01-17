@@ -1,7 +1,11 @@
-package parking.implementation.gui;
+package parking.implementation.gui.controls;
 
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import parking.implementation.gui.stages.ClientListStage;
+import parking.implementation.gui.ClientManager;
+import parking.implementation.gui.stages.ClientStage;
+import parking.implementation.gui.stages.ParkingListStage;
 
 import java.util.Optional;
 
