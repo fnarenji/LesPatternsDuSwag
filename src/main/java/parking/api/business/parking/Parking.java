@@ -142,6 +142,10 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
         return parkingSpotSelector.select(vehicle, availableParkingSpots);
     }
 
+    /**
+     * Reorganize the parking and optimise it
+     * @throws ReorganizationException Raised if no spot empty or if the vehicle doesn't match with the spot or if the spot is booked
+     */
     public void reorganizeParking() throws ReorganizationException {
         try {
             parkingSpotsById.values().stream()
