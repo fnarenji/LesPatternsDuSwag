@@ -11,6 +11,7 @@ public class BaseVehicle implements Vehicle {
     private String model;
     private Object owner;
 
+
     @Override
     public String getPlate() {
         return plate;

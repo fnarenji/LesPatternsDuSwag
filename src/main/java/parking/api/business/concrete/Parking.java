@@ -22,31 +22,62 @@ public class Parking implements Serializable {
     private Map<Integer, ParkingSpot> parkingSpotsById = new HashMap<>();
     private ParkingSpotSelector parkingSpotSelector;
 
+    /**
+     * Create a parking
+     * @param id id of the parking
+     * @param name name of the parking
+     */
     Parking(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * Get the id of the parking
+     * @return the id of the parking
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Get the name of the parking
+     * @return the name of the parking
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set the name of the parking
+     * @param name the name of the parking
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Compute the number of spots of the parking
+     * @return The number of spots of the parking
+     */
     public Integer countParkingSpots() {
         return parkingSpotsById.size();
     }
 
+    /**
+     * Compute the amount of spots where the predicate respond true
+     * @param predicate condition to be tested
+     * @return The amount of spots where the predicate respond true
+     */
     public Integer countParkingSpots(Predicate<ParkingSpot> predicate) {
         return Long.valueOf(parkingSpotsById.values().stream().filter(predicate).count()).intValue();
     }
 
+    /**
+     * Add the spot in the parking from the parkingSpotFactory
+     * @param parkingSpotFactory Give the spot to add
+     * @return The parking spot created
+     */
     public ParkingSpot newParkingSpot(ParkingSpotFactory parkingSpotFactory) {
         ParkingSpot parkingSpot = parkingSpotFactory.createParkingSpot();
 
@@ -55,6 +86,12 @@ public class Parking implements Serializable {
         return parkingSpot;
     }
 
+    /**
+     * Add the spot in the parking from the parkingSpotFactory
+     * @param parkingSpotFactory Give the spots to add
+     * @param amount Amount of places to add
+     * @return The spots created
+     */
     public Collection<ParkingSpot> newParkingSpot(ParkingSpotFactory parkingSpotFactory, Integer amount) {
         if (amount < 1)
             throw new IllegalArgumentException("Amount must be > 1, is " + amount);
@@ -67,6 +104,11 @@ public class Parking implements Serializable {
         return parkingSpots;
     }
 
+    /**
+     *
+     * @param parkingSpotId
+     * @return
+     */
     public ParkingSpot getSpotBySpotId(Integer parkingSpotId) {
         return parkingSpotsById.getOrDefault(parkingSpotId, null);
     }

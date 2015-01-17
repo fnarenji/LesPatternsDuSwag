@@ -12,6 +12,11 @@ public class Booking {
     private Object owner;
     private Interval interval;
 
+    /**
+     * Create a reservation
+     * @param owner owner of the booking
+     * @param until end date of the booking
+     */
     public Booking(Object owner, DateTime until) {
         this.owner = owner;
 
@@ -21,10 +26,18 @@ public class Booking {
         this.interval = new Interval(DateTime.now(), until);
     }
 
+    /**
+     * Get the interval of the booking
+     * @return interval which the duration of the booking
+     */
     public Interval getInterval() {
         return interval;
     }
 
+    /**
+     *Assign the date of the end of the booking to the interval
+     * @param until date of the end of the boking
+     */
     public void setUntil(DateTime until) {
         MutableInterval mutableInterval = interval.toMutableInterval();
 
@@ -36,14 +49,27 @@ public class Booking {
         interval = mutableInterval.toInterval();
     }
 
+    /**
+     * Get the owner of the booking
+     * @return the owner of the booking
+     */
     public Object getOwner() {
         return owner;
     }
 
+    /**
+     * Set the owner of the booking
+     * @param owner the person which own the booking
+     */
     public void setOwner(Object owner) {
         this.owner = owner;
     }
 
+    /**
+     * Check the owner of the booking
+     * @param owner the owner we want to test
+     * @return true if the booking is owned by the owner passed as parameter
+     */
     public boolean isOwnedBy(Object owner) {
         return this.owner.equals(owner);
     }
