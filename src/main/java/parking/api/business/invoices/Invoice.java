@@ -3,7 +3,7 @@ package parking.api.business.invoices;
 import java.io.Serializable;
 
 /**
- * Created by loicpauletto on 17/01/15.
+ * Created by loic on 17/01/15.
  */
 public class Invoice implements Serializable{
 

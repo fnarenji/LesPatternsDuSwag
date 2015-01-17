@@ -16,13 +16,14 @@ import parking.implementation.business.Client;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Created by loick on 14/01/15.
  */
 public class ClientListStage extends Stage {
 
-    private Collection<Client> clients;
+    private Collection<Client> clients = new ArrayList<>();
 
     private Label titleLabel;
     private Label label;
@@ -34,7 +35,6 @@ public class ClientListStage extends Stage {
 
     public ClientListStage(Window owner) {
         this.initOwner(owner);
-        this.clients = clients;
 
         init();
 
@@ -83,8 +83,15 @@ public class ClientListStage extends Stage {
 
     private void createSelect() {
         clientChoiceBox = new ChoiceBox<>();
-        if (ClientManager.getInstance().count() != 0)
-            clientChoiceBox.getItems().setAll(clients);
+        if (ClientManager.getInstance().count() != 0){
+            Iterator<Client> clientIterator = ClientManager.getInstance().iterator();
+            while (clientIterator.hasNext()){
+                Client tmp = clientIterator.next();
+                clientChoiceBox.getItems().add(tmp);
+                clients.add(tmp);
+            }
+        }
+            
     }
 
     private void updateState() {

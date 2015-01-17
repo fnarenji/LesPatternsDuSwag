@@ -20,6 +20,7 @@ import java.util.*;
 
 /**
  * Created by on 14/01/15.
+ * This class cares about the button in the GUI
  */
 public class ButtonSpot extends MenuButton {
     private static Map<Class<? extends ParkingSpot>, String> colors = new HashMap<>();
@@ -140,8 +141,7 @@ public class ButtonSpot extends MenuButton {
                 );
                 alert.show();
             } catch (SpotBookedException e1) {
-                try {
-                    if(parkStage.getVehicle().equals((Client) parkingSpot.getCurrentBooking().getOwner())){
+                    if(parkStage.getClient().equals((Client)parkingSpot.getCurrentBooking().getOwner())){
                         try {
                             parkingSpot.unbook();
                             parkingSpot.park(parkStage.getVehicle());
@@ -163,16 +163,13 @@ public class ButtonSpot extends MenuButton {
                         );
                         alert.show();
                     }
-                    else{
+                    else {
                         Alert alert = new Alert(
                                 Alert.AlertType.ERROR,
                                 "Place reservée."
                         );
                         alert.show();
                     }
-                } catch (UnknownVehicleException e) {
-                    e.printStackTrace();
-                }
             } catch (UnknownVehicleException e1) {
                 Alert alert = new Alert(
                         Alert.AlertType.ERROR,
