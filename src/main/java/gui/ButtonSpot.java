@@ -74,7 +74,7 @@ public class ButtonSpot extends MenuButton {
     }
 
     private void updateState() {
-        if (this.parkingSpot.isVehicleParked())
+        if (this.parkingSpot.isVehicleParked() && !parkingSpot.getVehicle().getBrand().equals(""))
             this.setBusy();
         else if (this.parkingSpot.isBooked())
             this.setBooked();
@@ -89,7 +89,8 @@ public class ButtonSpot extends MenuButton {
                 if (this.park.getText().equalsIgnoreCase("park")) {
                     VehiculeStage parkStage = new VehiculeStage(this.parent);
                     parkStage.showAndWait();
-                    parkingSpot.park(parkStage.getVehicule());
+                    if (!parkStage.getVehicule().getBrand().equals(""))
+                        parkingSpot.park(parkStage.getVehicule());
                 } else if (this.park.getText().equalsIgnoreCase("unpark")) {
                     parkingSpot.unpark();
 
@@ -137,7 +138,8 @@ public class ButtonSpot extends MenuButton {
                 if (this.book.getText().equalsIgnoreCase("book")) {
                     ClientListStage clientListStage = new ClientListStage(this.parent,clientCollection);
                     clientListStage.showAndWait();
-                    parkingSpot.book(clientListStage.getClient(),new DateTime(DateTime.now().plusDays(clientListStage.getDuration())));
+                    if (clientListStage.getClient() != null)
+                        parkingSpot.book(clientListStage.getClient(),new DateTime(DateTime.now().plusDays(clientListStage.getDuration())));
                     
                 } else if (this.book.getText().equalsIgnoreCase("unbook")) {
                     this.parkingSpot.unbook();
