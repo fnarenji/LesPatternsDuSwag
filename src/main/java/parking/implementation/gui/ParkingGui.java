@@ -31,7 +31,7 @@ public class ParkingGui extends Application {
     private Collection<Collection<GridPane>> gridPaneParking = new ArrayList<>();
 
     private Collection<Client> clients = new ArrayList<>();
-    private ParkingManager parkingManager;
+    private ParkingManager parkingManager = ParkingManager.getInstance();
     private ParkingSpotFactory parkingSpotFactory;
 
     public static void main(String[] args) {
@@ -173,7 +173,7 @@ public class ParkingGui extends Application {
             e.printStackTrace();
         }
 
-        updateGrid(1, 1);
+        updateGrid(0, 1);
 
         //create root
         BorderPane borderPane = new BorderPane();
