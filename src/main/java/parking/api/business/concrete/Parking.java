@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by SKNZ on 28/12/2014.
@@ -114,8 +115,13 @@ public class Parking implements Serializable {
             throw e;
         }
     }
+
     public void forEach(Consumer<ParkingSpot> consumer) {
         parkingSpotsById.values().forEach(consumer);
+    }
+
+    public Stream stream() {
+        return parkingSpotsById.values().stream();
     }
 
 }
