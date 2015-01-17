@@ -24,7 +24,8 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
 
     /**
      * Create a parking
-     * @param id id of the parking
+     *
+     * @param id   id of the parking
      * @param name name of the parking
      */
     Parking(Integer id, String name) {
@@ -34,6 +35,7 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
 
     /**
      * Get the id of the parking
+     *
      * @return the id of the parking
      */
     public Integer getId() {
@@ -42,6 +44,7 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
 
     /**
      * Get the name of the parking
+     *
      * @return the name of the parking
      */
     public String getName() {
@@ -50,6 +53,7 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
 
     /**
      * Set the name of the parking
+     *
      * @param name the name of the parking
      */
     public void setName(String name) {
@@ -58,6 +62,7 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
 
     /**
      * Compute the number of spots of the parking
+     *
      * @return The number of spots of the parking
      */
     public Integer countParkingSpots() {
@@ -66,6 +71,7 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
 
     /**
      * Compute the amount of spots where the predicate respond true
+     *
      * @param predicate condition to be tested
      * @return The amount of spots where the predicate respond true
      */
@@ -75,6 +81,7 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
 
     /**
      * Add the spot in the parking from the parkingSpotFactory
+     *
      * @param parkingSpotFactory Give the spot to add
      * @return The parking spot created
      */
@@ -88,8 +95,9 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
 
     /**
      * Add the spot in the parking from the parkingSpotFactory
+     *
      * @param parkingSpotFactory Give the spots to add
-     * @param amount Amount of places to add
+     * @param amount             Amount of places to add
      * @return The spots created
      */
     public Collection<ParkingSpot> newParkingSpot(ParkingSpotFactory parkingSpotFactory, Integer amount) {
@@ -105,7 +113,6 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
     }
 
     /**
-     *
      * @param parkingSpotId
      * @return
      */
@@ -162,7 +169,9 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
         return parkingSpotsById.values().stream();
     }
 
-    public Collection<ParkingSpot> getSpots() { return parkingSpotsById.values(); }
+    public Collection<ParkingSpot> getSpots() {
+        return parkingSpotsById.values();
+    }
 
     @Override
     public Iterator<ParkingSpot> iterator() {

@@ -16,32 +16,37 @@ import java.io.Serializable;
 public interface ParkingSpot extends Serializable, Observable<ParkingSpot> {
     /**
      * Get the id of the parking spot
+     *
      * @return The id of the parking spot
      */
     public Integer getId();
 
     /**
      * Whether a vehicle is parked
+     *
      * @return true if vehicle parked, false if no vehicle parked
      */
     public Boolean isVehicleParked();
 
     /**
      * Gets the parked vehicle
+     *
      * @return Vehicle object if vehicle parked, null otherwise
      */
     public Vehicle getVehicle();
 
     /**
      * Parks the vehicle.
+     *
      * @param vehicle The vehicle to be parked
      * @throws parking.api.exceptions.SpotNotEmptyException if a vehicle is already parked in the spot or if the spot is booked.
-     * @throws parking.api.exceptions.SpotBookedException if the spot is booked by someone else.
+     * @throws parking.api.exceptions.SpotBookedException   if the spot is booked by someone else.
      */
     public void park(Vehicle vehicle) throws SpotNotEmptyException, SpotBookedException, VehicleNotFitException;
 
     /**
      * Removes the vehicle that is parked.
+     *
      * @return the parked vehicle that was removed, or null if no vehicle parked.
      */
     public Vehicle unpark();
@@ -55,15 +60,17 @@ public interface ParkingSpot extends Serializable, Observable<ParkingSpot> {
 
     /**
      * Checks if the parking spot is booked.
+     *
      * @return true if booked; false if not booked
      */
     public Boolean isBooked();
 
     /**
      * Books an empty parking from now until a certain time.
+     *
      * @param owner the owner who is booking
      * @param until the date until the booking ends, null for infinite
-     * @throws parking.api.exceptions.SpotBookedException if the spot is already booked
+     * @throws parking.api.exceptions.SpotBookedException   if the spot is already booked
      * @throws parking.api.exceptions.SpotNotEmptyException if the spot is not empty
      */
     public void book(Object owner, DateTime until) throws SpotNotEmptyException, SpotBookedException;

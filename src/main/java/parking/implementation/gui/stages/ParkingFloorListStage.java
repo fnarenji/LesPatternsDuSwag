@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.implementation.gui.stages;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -17,6 +17,7 @@ import parking.api.business.concrete.ParkingManager;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
+import parking.implementation.gui.controls.ButtonSpot;
 import parking.implementation.logic.Client;
 import parking.implementation.logic.ParkingSpotFactory;
 
@@ -42,6 +43,41 @@ public class ParkingFloorListStage extends Stage {
 
     private ParkingManager parkingManager;
     private ParkingSpotFactory parkingSpotFactory;
+
+    public ParkingFloorListStage(Window owner, Collection<GridPane> parking, Collection<Client> clients) {
+        this.initOwner(owner);
+        this.parking = parking;
+        this.clients = clients;
+
+        init();
+
+        BorderPane borderPane = new BorderPane();
+        FlowPane flowPane = new FlowPane();
+
+        //add Nodes to FlowPane
+        flowPane.getChildren().addAll(
+                title,
+                select,
+                label,
+                create,
+                ok
+        );
+
+        updateState();
+
+        flowPane.setMaxSize(200, 400);
+
+        //add FlowPane
+        flowPane.alignmentProperty().setValue(Pos.CENTER);
+        borderPane.setCenter(flowPane);
+
+        //create scene
+        Scene scene = new Scene(borderPane, 300, 200);
+
+        this.setResizable(false);
+        this.setScene(scene);
+        this.setTitle("Parking");
+    }
 
     private GridPane generateFloor() {
         //create GridPane
@@ -169,41 +205,6 @@ public class ParkingFloorListStage extends Stage {
         createSelect();
         createButtonCreate();
         createButtonOK();
-    }
-
-    public ParkingFloorListStage(Window owner, Collection<GridPane> parking, Collection<Client> clients) {
-        this.initOwner(owner);
-        this.parking = parking;
-        this.clients = clients;
-
-        init();
-
-        BorderPane borderPane = new BorderPane();
-        FlowPane flowPane = new FlowPane();
-
-        //add Nodes to FlowPane
-        flowPane.getChildren().addAll(
-                title,
-                select,
-                label,
-                create,
-                ok
-        );
-
-        updateState();
-
-        flowPane.setMaxSize(200, 400);
-
-        //add FlowPane
-        flowPane.alignmentProperty().setValue(Pos.CENTER);
-        borderPane.setCenter(flowPane);
-
-        //create scene
-        Scene scene = new Scene(borderPane, 300, 200);
-
-        this.setResizable(false);
-        this.setScene(scene);
-        this.setTitle("Parking");
     }
 
     public GridPane getFloor() {

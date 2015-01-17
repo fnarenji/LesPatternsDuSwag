@@ -6,6 +6,7 @@ package parking.api.business.contract;
 public interface ParkingSpotFactory {
     /**
      * Create a new parking
+     *
      * @param provider id provider which will be used during the creation of the parking spot
      */
     void setIdProvider(ParkingSpotIdProvider provider);

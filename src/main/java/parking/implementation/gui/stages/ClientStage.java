@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.implementation.gui.stages;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,7 +22,7 @@ import java.util.Collection;
 /**
  * Created by loick on 14/01/15.
  */
-class ClientStage extends Stage {
+public class ClientStage extends Stage {
 
     private Collection<String> civility_list = new ArrayList<>();
 
@@ -33,6 +33,41 @@ class ClientStage extends Stage {
     private TextField firstname;
     private Button submit;
     private Button cancel;
+
+    public ClientStage(Window owner) {
+        this.initOwner(owner);
+
+        init();
+
+        BorderPane borderPane = new BorderPane();
+        FlowPane flowPane = new FlowPane();
+
+        //add Nodes to FlowPane
+        flowPane.getChildren().addAll(
+                title,
+                civility,
+                lastname,
+                firstname,
+                submit,
+                cancel
+        );
+
+        flowPane.setMaxSize(200, 400);
+
+        //add FlowPane
+        flowPane.alignmentProperty().setValue(Pos.CENTER);
+        borderPane.setCenter(flowPane);
+        //add Label error
+        borderPane.setBottom(label);
+        borderPane.setAlignment(label, Pos.CENTER);
+
+        //create scene
+        Scene scene = new Scene(borderPane, 300, 200);
+
+        this.setResizable(false);
+        this.setScene(scene);
+        this.setTitle("New Client");
+    }
 
     private void createTitle() {
         title = new Label("New Client");
@@ -95,11 +130,11 @@ class ClientStage extends Stage {
 
     private EventHandler<ActionEvent> createSubmitEventHandler() {
         return event -> {
-            if(!lastname.getText().isEmpty()
+            if (!lastname.getText().isEmpty()
                     && !firstname.getText().isEmpty()
                     ) {
                 this.close();
-            }else {
+            } else {
                 label.setText("Tous les champs ne sont pas renseignés");
             }
         };
@@ -117,41 +152,6 @@ class ClientStage extends Stage {
         createFirstName();
         createButtonCreate();
         createButtonCancel();
-    }
-
-    public ClientStage(Window owner) {
-        this.initOwner(owner);
-
-        init();
-
-        BorderPane borderPane = new BorderPane();
-        FlowPane flowPane = new FlowPane();
-
-        //add Nodes to FlowPane
-        flowPane.getChildren().addAll(
-                title,
-                civility,
-                lastname,
-                firstname,
-                submit,
-                cancel
-        );
-
-        flowPane.setMaxSize(200, 400);
-
-        //add FlowPane
-        flowPane.alignmentProperty().setValue(Pos.CENTER);
-        borderPane.setCenter(flowPane);
-        //add Label error
-        borderPane.setBottom(label);
-        borderPane.setAlignment(label, Pos.CENTER);
-
-        //create scene
-        Scene scene = new Scene(borderPane, 300, 200);
-
-        this.setResizable(false);
-        this.setScene(scene);
-        this.setTitle("New Client");
     }
 
     public Client getClient() {

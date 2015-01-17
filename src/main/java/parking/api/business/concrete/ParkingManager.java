@@ -31,6 +31,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
 
     /**
      * Get the instance of the parking manager
+     *
      * @return The instance of the parking manager
      */
     public static ParkingManager getInstance() {
@@ -39,6 +40,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
 
     /**
      * Get the name of the company
+     *
      * @return The name of the company
      */
     public String getCompanyName() {
@@ -47,6 +49,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
 
     /**
      * Set the name of the company
+     *
      * @param companyName The name of the company
      */
     public void setCompanyName(String companyName) {
@@ -55,6 +58,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
 
     /**
      * Create a new parking
+     *
      * @param name name of the parking
      * @return the new parking
      * @throws ParkingExistsException raised if such a parking already exist
@@ -66,7 +70,8 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
 
     /**
      * Create a new parking
-     * @param id id of the parking
+     *
+     * @param id   id of the parking
      * @param name name of the parking
      * @return The new parking
      * @throws ParkingExistsException raised if a parking with the same id already exist
@@ -83,8 +88,9 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
 
     /**
      * Delete a parking
+     *
      * @param id Id of the parking to delete
-     * @throws ParkingNotPresentException Raised when the parking to delete doesn't exist
+     * @throws ParkingNotPresentException   Raised when the parking to delete doesn't exist
      * @throws ParkingBookedSpotsExceptions Raised when there are booked spots in the parking
      */
     public void deleteParking(Integer id) throws ParkingNotPresentException, ParkingBookedSpotsExceptions {
@@ -99,7 +105,6 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
     }
 
     /**
-     *
      * @param id
      * @return
      */

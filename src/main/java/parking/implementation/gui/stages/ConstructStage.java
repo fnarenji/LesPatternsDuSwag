@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.implementation.gui.stages;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,6 +22,40 @@ class ConstructStage extends Stage {
     private Button cancelButton;
     private TextField truckNumberField;
     private TextField carNumberField;
+
+    public ConstructStage(Window owner) {
+        this.initOwner(owner);
+
+        init();
+
+        BorderPane borderPane = new BorderPane();
+        FlowPane flowPane = new FlowPane();
+        //add Nodes to FlowPane
+        flowPane.getChildren().addAll(
+                titleLabel,
+                carNumberField,
+                truckNumberField,
+                constructButton,
+                cancelButton
+        );
+
+        flowPane.setMaxSize(200, 400);
+
+        //add FlowPane
+        flowPane.alignmentProperty().setValue(Pos.CENTER);
+        borderPane.setCenter(flowPane);
+        //add Label error
+        borderPane.setBottom(label);
+        borderPane.setAlignment(label, Pos.CENTER);
+
+
+        //create scene
+        Scene scene = new Scene(borderPane, 300, 200);
+
+        this.setResizable(false);
+        this.setScene(scene);
+        this.setTitle("New Parking");
+    }
 
     private void createTitle() {
         titleLabel = new Label("New Parking");
@@ -81,7 +115,6 @@ class ConstructStage extends Stage {
         cancelButton.setTextFill(Color.WHITE);
     }
 
-
     private void init() {
 
         createTitle();
@@ -91,40 +124,6 @@ class ConstructStage extends Stage {
         createTextFieldBrand();
         createConstructButton();
         createButtonCancel();
-    }
-
-    public ConstructStage(Window owner) {
-        this.initOwner(owner);
-
-        init();
-
-        BorderPane borderPane = new BorderPane();
-        FlowPane flowPane = new FlowPane();
-        //add Nodes to FlowPane
-        flowPane.getChildren().addAll(
-                titleLabel,
-                carNumberField,
-                truckNumberField,
-                constructButton,
-                cancelButton
-        );
-
-        flowPane.setMaxSize(200, 400);
-
-        //add FlowPane
-        flowPane.alignmentProperty().setValue(Pos.CENTER);
-        borderPane.setCenter(flowPane);
-        //add Label error
-        borderPane.setBottom(label);
-        borderPane.setAlignment(label, Pos.CENTER);
-
-
-        //create scene
-        Scene scene = new Scene(borderPane, 300, 200);
-
-        this.setResizable(false);
-        this.setScene(scene);
-        this.setTitle("New Parking");
     }
 
     public int getTruckNumberField() {

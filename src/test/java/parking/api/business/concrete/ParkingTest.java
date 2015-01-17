@@ -47,6 +47,7 @@ public class ParkingTest {
     public void testCountParkingSpots() {
         ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory() {
             int i = 0;
+
             @Override
             public void setIdProvider(ParkingSpotIdProvider provider) {
 
@@ -74,6 +75,7 @@ public class ParkingTest {
     public void testCountParkingSpotsPredicate() {
         ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory() {
             int i = 0;
+
             @Override
             public void setIdProvider(ParkingSpotIdProvider provider) {
 
@@ -96,6 +98,7 @@ public class ParkingTest {
     public void testGetSpotBySpotId() {
         ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory() {
             int i = 451;
+
             @Override
             public void setIdProvider(ParkingSpotIdProvider provider) {
 
@@ -117,6 +120,7 @@ public class ParkingTest {
     public void testGetSpotByVehiclePlate() {
         ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory() {
             int i = 0;
+
             @Override
             public void setIdProvider(ParkingSpotIdProvider provider) {
 
@@ -129,7 +133,7 @@ public class ParkingTest {
                 when(parkingSpot.isVehicleParked()).thenReturn(true);
                 when(parkingSpot.getVehicle()).thenAnswer(invocationOnMock -> {
                     Vehicle vehicle = mock(Vehicle.class);
-                    Integer id=parkingSpot.getId();
+                    Integer id = parkingSpot.getId();
                     when(vehicle.getPlate()).thenReturn(id.toString());
                     return vehicle;
                 });
