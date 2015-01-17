@@ -19,6 +19,8 @@ hs_err_pid*
 
 src/main/java/parking.implementation.gui/truck.png
 
+target/
+
 target/MANIFEST.MF
 
 target/MANIFEST.MF
