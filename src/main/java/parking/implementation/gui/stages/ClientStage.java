@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import parking.implementation.business.Client;
+import parking.implementation.gui.ClientManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -133,6 +134,7 @@ public class ClientStage extends Stage {
             if (!lastname.getText().isEmpty()
                     && !firstname.getText().isEmpty()
                     ) {
+                ClientManager.getInstance().addClient(new Client(civility.getValue(),firstname.getText(),lastname.getText()));
                 this.close();
             } else {
                 label.setText("Tous les champs ne sont pas renseignés");

@@ -140,7 +140,7 @@ public class ButtonSpot extends MenuButton {
                 );
                 alert.show();
             } catch (SpotBookedException e1) {
-                    if(parkStage.getClient().equals((Client) parkingSpot.getCurrentBooking().getOwner())){
+                    if(parkStage.getClient().equals((Client)parkingSpot.getCurrentBooking().getOwner())){
                         try {
                             parkingSpot.unbook();
                             parkingSpot.park(parkStage.getVehicle());
