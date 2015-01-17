@@ -30,7 +30,7 @@ public class ParkingGui extends Application {
     }
 
     private Collection<GridPane> generateParking() {
-        ParkingListStage parkingListStage = new ParkingListStage(stage);
+        ParkingListStage parkingListStage = new ParkingListStage(stage, clients);
         parkingListStage.showAndWait();
 
         return parkingListStage.getParking();

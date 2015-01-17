@@ -15,6 +15,7 @@ import javafx.stage.Window;
 import parking.api.business.concrete.ParkingManager;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
+import parking.implementation.Client;
 import parking.implementation.ParkingSpotFactory;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.Map;
  */
 public class ParkingListStage extends Stage {
 
+    private Collection<Client> clients;
     private Collection<GridPane> parking = new ArrayList<>();
 
     private Label title;
@@ -91,7 +93,8 @@ public class ParkingListStage extends Stage {
                                         ButtonSpot buttonSpot = new ButtonSpot(
                                                 spot,
                                                 vehicule,
-                                                this
+                                                this,
+                                                clients
                                         );
 
                                         gridPane.add(
@@ -184,8 +187,9 @@ public class ParkingListStage extends Stage {
         createButtonOK();
     }
 
-    public ParkingListStage(Window owner) {
+    public ParkingListStage(Window owner, Collection<Client> clients) {
         this.initOwner(owner);
+        this.clients = clients;
 
         init();
 
