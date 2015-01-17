@@ -25,7 +25,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
     }
 
     // For unit testing purposes only, PACKAGE LOCAL
-    static void resetSingleton() {
+    public static void resetSingleton() {
         instance = new ParkingManager();
     }
 
