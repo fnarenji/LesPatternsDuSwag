@@ -17,33 +17,15 @@ import java.util.Map;
 /**
  * Created by SKNZ on 29/12/2014.
  */
-public abstract class BaseParkingSpot extends BaseObservable implements ParkingSpot {
+public abstract class BaseParkingSpot extends BaseObservable<ParkingSpot> implements ParkingSpot {
     protected Map<Class, Boolean> vehicleTypeFits = new HashMap<>();
     protected int id;
     private Vehicle vehicle = null;
     private Collection<Booking> bookings = new HashSet<>();
     private DateTime enteredHour = null;
-<<<<<<< Updated upstream
 
     public DateTime getEnteredHour() {
         return enteredHour;
-=======
-
-<<<<<<< HEAD
-
-    @Override
-    public Object getBookOwner() {
-        return this.bookOwner;
-    }
-
-    @Override
-    public void setBookOwner(Object owner) {
-        this.bookOwner = owner;
-=======
-    public DateTime getEnteredHour() {
-        return enteredHour;
->>>>>>> FETCH_HEAD
->>>>>>> Stashed changes
     }
 
     @Override

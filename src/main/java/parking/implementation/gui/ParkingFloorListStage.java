@@ -12,7 +12,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import parking.api.business.concrete.Parking;
 import parking.api.business.concrete.ParkingManager;
+import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
 import parking.implementation.logic.Client;
@@ -53,7 +55,6 @@ public class ParkingFloorListStage extends Stage {
 
         //create parking
         if (nbCar != 0 || nbCarrier != 0) {
-
             try {
                 parkingManager = ParkingManager.getInstance();
                 parkingSpotFactory = new ParkingSpotFactory();
@@ -61,54 +62,40 @@ public class ParkingFloorListStage extends Stage {
                 parkingManager.setCompanyName("SWAG COMPANY");
                 int idParking = parkingManager.count();
                 parkingManager.newParking("Parking " + ++idParking);
-
             } catch (ParkingExistsException e) {
                 e.printStackTrace();
             }
 
-            Collection<String> vehicles = new ArrayList<>();
-            Map<String, Integer> nbVehicles = new HashMap<>();
-            vehicles.add("Car");
-            nbVehicles.put("Car", nbCar);
-            vehicles.add("Carrier");
-            nbVehicles.put("Carrier", nbCarrier);
+            Collection<String> vehicleTypes = new ArrayList<>();
+            Map<String, Integer> vehicleCountByType = new HashMap<>();
+            vehicleTypes.add("Car");
+            vehicleCountByType.put("Car", nbCar);
+            vehicleTypes.add("Carrier");
+            vehicleCountByType.put("Carrier", nbCarrier);
 
-            final int[] x = {0};
-            final int[] y = {0};
-            vehicles.forEach(vehicle -> {
+            int x = 0;
+            int y = 0;
+
+            for (String vehicleType : vehicleTypes) {
                 try {
-                    parkingManager.getParkingById(parkingManager.count())
-                            .newParkingSpot(
-                                    this.parkingSpotFactory,
-                                    nbVehicles.get(vehicle))
-                            .forEach(
-                                    spot -> {
-                                        if (x[0] == maxInLine) {
-                                            x[0] = 0;
-                                            y[0]++;
-                                        }
+                    Parking parking = parkingManager.getParkingById(parkingManager.count());
+                    Collection<ParkingSpot> parkingSpots = parking.newParkingSpot(parkingSpotFactory, vehicleCountByType.get(vehicleType));
 
-                                        ButtonSpot buttonSpot = new ButtonSpot(
-                                                spot,
-                                                vehicle,
-                                                this
-                                        );
+                    for (ParkingSpot parkingSpot : parkingSpots) {
+                        if (x == maxInLine) {
+                            x = 0;
+                            y++;
+                        }
 
-                                        gridPane.add(
-                                                buttonSpot,
-                                                x[0]++,
-                                                y[0]
-                                        );
-                                    }
-                            );
+                        ButtonSpot buttonSpot = new ButtonSpot(parkingSpot, this);
+                        gridPane.add(buttonSpot, x++, y);
+                    }
                 } catch (ParkingNotPresentException e) {
                     e.printStackTrace();
                 }
-            });
+            }
 
-            setHeight(
-                    y[0] * 50 + 80  //50: button height & 80: menu height
-            );
+            setHeight(y * 50 + 80);  //50: button height & 80: menu height
         }
         return gridPane;
     }

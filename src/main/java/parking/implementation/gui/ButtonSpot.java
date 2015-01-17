@@ -64,12 +64,12 @@ class ButtonSpot extends MenuButton {
     }
 
     private void setAvailable() {
-        this.setStyle("-fx-background-color: " + this.colors.getOrDefault(this.type, this.defaultColor));
+        this.setStyle("-fx-background-color: " + colors.get(type));
         this.park.setText("Park");
     }
 
     private void setAvailableBook() {
-        this.setStyle("-fx-background-color: " + this.colors.getOrDefault(this.type, this.defaultColor));
+        this.setStyle("-fx-background-color: " + colors.get(type));
         this.book.setText("Book");
     }
     

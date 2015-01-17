@@ -9,7 +9,7 @@ import java.util.HashSet;
 /**
  * Created by sknz on 1/17/15.
  */
-public class BaseObservable implements Observable {
+public class BaseObservable<T extends Observable> implements Observable<T> {
     private Collection<Observer> observers = new HashSet<>();
 
     @Override

@@ -22,7 +22,7 @@ public class ParkingSpotFactory implements parking.api.business.contract.Parking
     @Override
     public ParkingSpot createParkingSpot() {
         Integer id = idProvider.nextId();
-        System.out.println(id);
+
         if (nextVehicleType.equals("Car"))
             return new CarParkingSpot(id);
         else if (nextVehicleType.equals("Carrier"))
