@@ -24,13 +24,22 @@ import java.util.stream.Collectors;
 //Created by on 30/12/14.
 
 public class ParkingGui extends Application {
+    private static Stage mainStage;
+
+    public static Stage getMainStage() {
+        return mainStage;
+    }
+
+    public static void setMainStage(Stage mainStage) {
+        ParkingGui.mainStage = mainStage;
+    }
+
     private Stage stage;
     private GridPane gridPane;
     private int nbMaxLine = 10;
 
     private Collection<Collection<GridPane>> gridPaneParking = new ArrayList<>();
 
-    private Collection<Client> clients = new ArrayList<>();
     private ParkingManager parkingManager = ParkingManager.getInstance();
     private ParkingSpotFactory parkingSpotFactory;
 
@@ -38,22 +47,12 @@ public class ParkingGui extends Application {
         launch(args);
     }
 
-    private MenuBar createMenu() {
-        Menu menuClient = createMenuClient();
-        Menu menuParking = createMenuParking();
-        Menu menuSelector = createMenuSelector();
-        Menu menuQuit = createMenuQuit();
-
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(
-                menuClient,
-                menuParking,
-                menuSelector,
-                menuQuit
-        );
-
-        return menuBar;
+    private Collection<GridPane> generateParking() {
+        ParkingListStage parkingListStage = new ParkingListStage(stage);
+        parkingListStage.showAndWait();
+        return parkingListStage.getParking();
     }
+
 
     private Menu createMenuClient() {
         Menu menuClient = new Menu("Client");
@@ -158,10 +157,10 @@ public class ParkingGui extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        this.stage = primaryStage;
+        mainStage = primaryStage;
 
-        //add data
-        clients.add(new Client("", "Anonyme", ""));
+        //generate parkings
+        Collection<GridPane> parkingPanes = generateParking();
 
         try {
             ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory();
@@ -174,33 +173,33 @@ public class ParkingGui extends Application {
         }
 
         updateGrid(0, 1);
+        //active floor
+        GridPane currentFloorPane = parkingPanes.iterator().next();
 
         //create root
         BorderPane borderPane = new BorderPane();
 
         //create top menu
         MenuBar menu = createMenu();
+
+        // vertical layout box
         VBox vBox = new VBox();
         vBox.getChildren().add(menu);
         vBox.setPrefHeight(menu.getHeight());
+
         borderPane.setTop(vBox);
         borderPane.setPrefHeight(vBox.getHeight());
 
         borderPane.setCenter(gridPane);
 
-        Scene scene = new Scene(
-                borderPane,
-                600,
-                400
-        );
+        Scene scene = new Scene(borderPane, 600, 400);
 
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
-        primaryStage.setTitle("SWAG Parking");
+        primaryStage.setTitle("LesPatternsDuSwag - Parking de qualité since 1889");
 
         primaryStage.setOnCloseRequest(event -> Platform.exit());
-        primaryStage.show();
-
+        primaryStage.show(); // show time !
     }
 
 }

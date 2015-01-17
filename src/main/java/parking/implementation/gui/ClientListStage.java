@@ -132,7 +132,7 @@ class ClientListStage extends Stage {
         createDurationChoixBox();
     }
 
-    public ClientListStage(Window owner, Collection<Client> clients) {
+    public ClientListStage(Window owner) {
         this.initOwner(owner);
         this.clients = clients;
 

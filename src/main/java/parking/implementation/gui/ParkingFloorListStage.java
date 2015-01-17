@@ -32,7 +32,7 @@ public class ParkingFloorListStage extends Stage {
 
     private Label title;
     private Label label;
-    private ChoiceBox select;
+    private ChoiceBox<GridPane> select;
     private Button create;
     private Button ok;
 
@@ -128,7 +128,7 @@ public class ParkingFloorListStage extends Stage {
     }
 
     private void createSelect() {
-        select = new ChoiceBox();
+        select = new ChoiceBox<>();
         if (!parking.isEmpty()) {
             select.getItems().setAll(parking);
         }
@@ -221,6 +221,6 @@ public class ParkingFloorListStage extends Stage {
     }
 
     public GridPane getFloor() {
-        return (GridPane) this.select.getValue();
+        return this.select.getValue();
     }
 }

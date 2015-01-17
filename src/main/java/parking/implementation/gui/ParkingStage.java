@@ -1,5 +1,6 @@
 package parking.implementation.gui;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,6 +13,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+
+import javax.swing.*;
 
 /**
  * Created by  on 15/01/15.
@@ -54,7 +57,7 @@ public class ParkingStage extends Stage {
         label.alignmentProperty().setValue(Pos.CENTER);
     }
 
-    private EventHandler createSubmitEventHandler() {
+    private EventHandler<ActionEvent> createSubmitEventHandler() {
         return event -> {
             if(!nbCar.getText().isEmpty()
                     && !nbTruck.getText().isEmpty()
@@ -78,16 +81,12 @@ public class ParkingStage extends Stage {
         construct.setTextFill(Color.WHITE);
     }
 
-    private EventHandler createCancelEventHandler() {
-        return event -> this.close();
-    }
-
     private void createButtonCancel() {
         cancel = new Button();
         cancel.setText("Cancel");
 
         //add action
-        cancel.setOnAction(createCancelEventHandler());
+        cancel.setOnAction(event -> this.close());
 
         //style
         cancel.setStyle("-fx-background-color: red");
