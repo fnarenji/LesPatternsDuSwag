@@ -25,8 +25,8 @@ public class ParkingGrid extends GridPane {
 
             Parking parking = ParkingManager.getInstance().getParkingById(parkingId);
             for (ParkingSpot parkingSpot : parking) {
-                if (y == MAX_LINE) {
-                    y++;
+                if (x == MAX_LINE) {
+                    ++y;
                     x = 0;
                 }
 
