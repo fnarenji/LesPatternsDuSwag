@@ -9,8 +9,6 @@ import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
-import parking.implementation.CarParkingSpot;
-import parking.implementation.SerializeParkingManager;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
