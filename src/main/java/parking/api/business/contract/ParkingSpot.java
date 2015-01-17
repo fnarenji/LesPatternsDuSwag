@@ -7,10 +7,12 @@ import parking.api.exceptions.SpotNotBookedException;
 import parking.api.exceptions.SpotNotEmptyException;
 import parking.api.exceptions.VehicleNotFitException;
 
+import java.io.Serializable;
+
 /**
  * Created by SKNZ on 28/12/2014.
  */
-public interface ParkingSpot {
+public interface ParkingSpot extends Serializable{
     /**
      * Get the Object owner if this spot is booked
      * @return Object (owner) null otherwise

@@ -6,6 +6,7 @@ import parking.api.business.contract.ParkingSpotSelector;
 import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.*;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Created by SKNZ on 28/12/2014.
  */
-public class Parking {
+public class Parking implements Serializable {
     private final Integer id;
     private String name;
     private Map<Integer, ParkingSpot> parkingSpotsById = new HashMap<>();
@@ -111,5 +112,31 @@ public class Parking {
 
             throw e;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Parking parking = (Parking) o;
+
+        if (!id.equals(parking.id)) return false;
+        if (name != null ? !name.equals(parking.name) : parking.name != null) return false;
+        if (parkingSpotSelector != null ? !parkingSpotSelector.equals(parking.parkingSpotSelector) : parking.parkingSpotSelector != null)
+            return false;
+        if (parkingSpotsById != null ? !parkingSpotsById.equals(parking.parkingSpotsById) : parking.parkingSpotsById != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (parkingSpotsById != null ? parkingSpotsById.hashCode() : 0);
+        result = 31 * result + (parkingSpotSelector != null ? parkingSpotSelector.hashCode() : 0);
+        return result;
     }
 }

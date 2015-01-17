@@ -45,7 +45,7 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
     }
 
     /**
-     * Check every spot to find the bests spots (the booked spots first=
+     * Check every spot to find the bests spots (the booked spots first)
      * @param vehicle
      * @param parkingSpots
      * @return Collection of the parking spots available for the user and with the booked spots first

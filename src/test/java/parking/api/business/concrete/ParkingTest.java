@@ -2,8 +2,6 @@ package parking.api.business.concrete;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.business.contract.ParkingSpotFactory;
 import parking.api.business.contract.ParkingSpotIdProvider;
@@ -11,7 +9,8 @@ import parking.api.business.contract.Vehicle;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
-import parking.implementation.CarrierParkingSpot;
+import parking.implementation.CarParkingSpot;
+import parking.implementation.SerializeParkings;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -45,6 +44,30 @@ public class ParkingTest {
         assertEquals(parking.getName(), "Prk MARSEILLE");
     }
 
+    @Test
+    public void testSerializeParking(){
+        ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory() {
+            int i = 0;
+            @Override
+            public void setIdProvider(ParkingSpotIdProvider provider) {
+
+            }
+
+            @Override
+            public ParkingSpot createParkingSpot(String type) {
+                ParkingSpot parkingSpot = new CarParkingSpot(i++);
+                return parkingSpot;
+            }
+        };
+
+        parking.newParkingSpot(parkingSpotFactory, null);
+        SerializeParkings.serialize(parking);
+
+        Parking p = SerializeParkings.deserialize();
+
+        assertEquals(parking, p);
+    }
+
     // Also tests newParkingSpot(
     @Test
     public void testCountParkingSpots() {
@@ -72,6 +95,7 @@ public class ParkingTest {
         assertEquals(new Integer(43), parking.countParkingSpots());
         parking.newParkingSpot(parkingSpotFactory,null);
     }
+
 
     @Test
     public void testCountParkingSpotsPredicate() {
