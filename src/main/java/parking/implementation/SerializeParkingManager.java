@@ -1,22 +1,23 @@
 package parking.implementation;
 
 import parking.api.business.concrete.Parking;
+import parking.api.business.concrete.ParkingManager;
 
 import java.io.*;
 
 /**
  * Created by thomasmunoz on 17/01/15.
  */
-public class SerializeParkings {
+public class SerializeParkingManager {
 
-    public static void serialize(Parking parking) {
+    public static void serialize(ParkingManager parkingManager) {
         ObjectOutputStream oos = null;
         try {
 
-            OutputStream file = new FileOutputStream("save/parking.ser");
+            OutputStream file = new FileOutputStream("save/parkingManager.ser");
             oos =  new ObjectOutputStream(file);
 
-            oos.writeObject(parking);
+            oos.writeObject(parkingManager);
             oos.flush();
 
         } catch (FileNotFoundException | NotSerializableException e) {
@@ -36,13 +37,13 @@ public class SerializeParkings {
         }
     }
 
-    public static Parking deserialize() {
+    public static ParkingManager deserialize() {
         ObjectInputStream ois = null;
-        Parking parking = null;
+        ParkingManager parkingManager = null;
 
             InputStream file = null;
             try {
-                file = new FileInputStream("save/parking.ser");
+                file = new FileInputStream("save/parkingManager.ser");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -53,13 +54,13 @@ public class SerializeParkings {
             }
 
             try {
-                parking = (Parking) ois.readObject();
+                parkingManager = (ParkingManager) ois.readObject();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
-        return parking;
+        return parkingManager;
     }
 }

@@ -4,6 +4,7 @@ import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -12,7 +13,7 @@ import java.util.function.Predicate;
 /**
  * Created by SKNZ on 28/12/2014.
  */
-public class ParkingManager {
+public class ParkingManager implements Serializable {
     private static ParkingManager instance = new ParkingManager();
     private String companyName;
     private Map<Integer, Parking> parkingsById = new HashMap<>();
@@ -85,5 +86,25 @@ public class ParkingManager {
                 ++i;
         }
         return i;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ParkingManager that = (ParkingManager) o;
+
+        if (companyName != null ? !companyName.equals(that.companyName) : that.companyName != null) return false;
+        if (parkingsById != null ? !parkingsById.equals(that.parkingsById) : that.parkingsById != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = companyName != null ? companyName.hashCode() : 0;
+        result = 31 * result + (parkingsById != null ? parkingsById.hashCode() : 0);
+        return result;
     }
 }

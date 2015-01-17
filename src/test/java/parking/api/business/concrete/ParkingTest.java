@@ -10,7 +10,7 @@ import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
 import parking.implementation.CarParkingSpot;
-import parking.implementation.SerializeParkings;
+import parking.implementation.SerializeParkingManager;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -42,29 +42,6 @@ public class ParkingTest {
     public void testSetName() {
         parking.setName("Prk MARSEILLE");
         assertEquals(parking.getName(), "Prk MARSEILLE");
-    }
-
-    @Test
-    public void testSerializeParking(){
-        ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory() {
-            int i = 0;
-            @Override
-            public void setIdProvider(ParkingSpotIdProvider provider) {
-
-            }
-
-            @Override
-            public ParkingSpot createParkingSpot() {
-                return new CarParkingSpot(i++);
-            }
-        };
-
-        parking.newParkingSpot(parkingSpotFactory);
-        SerializeParkings.serialize(parking);
-
-        Parking p = SerializeParkings.deserialize();
-
-        assertEquals(parking, p);
     }
 
     // Also tests newParkingSpot(

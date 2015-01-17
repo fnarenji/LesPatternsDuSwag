@@ -114,27 +114,4 @@ public class Parking implements Serializable {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Parking parking = (Parking) o;
-
-        if (!id.equals(parking.id)) return false;
-        if (name != null ? !name.equals(parking.name) : parking.name != null) return false;
-        if (parkingSpotSelector != null ? !parkingSpotSelector.equals(parking.parkingSpotSelector) : parking.parkingSpotSelector != null)
-            return false;
-
-        return !(parkingSpotsById != null ? !parkingSpotsById.equals(parking.parkingSpotsById) : parking.parkingSpotsById != null);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (parkingSpotsById != null ? parkingSpotsById.hashCode() : 0);
-        result = 31 * result + (parkingSpotSelector != null ? parkingSpotSelector.hashCode() : 0);
-        return result;
-    }
 }

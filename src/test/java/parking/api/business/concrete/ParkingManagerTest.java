@@ -9,6 +9,9 @@ import parking.api.business.concrete.ParkingManager;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
+import parking.implementation.SerializeParkingManager;
+
+import java.io.Serializable;
 
 import static org.junit.Assert.*;
 
@@ -78,5 +81,12 @@ public class ParkingManagerTest {
 
         thrown.expect(ParkingNotPresentException.class);
         parkingManager.getParkingById(Integer.MAX_VALUE);
+    }
+
+    @Test
+    public void testSerializeParking(){
+        SerializeParkingManager.serialize(parkingManager);
+
+        assertEquals(parkingManager, SerializeParkingManager.deserialize());
     }
 }
