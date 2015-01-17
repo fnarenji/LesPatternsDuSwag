@@ -1,14 +1,14 @@
 package parking.api.business.invoices;
 
 /**
- * Created by loicpauletto on 17/01/15.
+ * Created by loic on 17/01/15.
  */
 public class Invoice {
 
     private int invoiceNumber;
     private double invoicePrice;
 
-    public Invoice(int invoiceNuber, double invoicePrice) {
+    public Invoice(int invoiceNumber, double invoicePrice) {
         this.invoiceNumber = invoiceNumber;
         this.invoicePrice = invoicePrice;
     }

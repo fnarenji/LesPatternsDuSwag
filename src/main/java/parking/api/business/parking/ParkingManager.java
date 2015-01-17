@@ -105,13 +105,22 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
     }
 
     /**
-     * @param id
-     * @return
+     * Test if parking manager contains the parking passed as parameter
+     *
+     * @param id Id of the parking to test
+     * @return True if contains the parking, false otherwise
      */
     public Boolean containsParking(Integer id) {
         return parkingsById.containsKey(id);
     }
 
+    /**
+     * Get the parking with the id passed as parameter
+     *
+     * @param id Id of the parking to get
+     * @return the parking with the id passed as parameter
+     * @throws ParkingNotPresentException Raised if no parking found
+     */
     public Parking getParkingById(Integer id) throws ParkingNotPresentException {
         if (!parkingsById.containsKey(id))
             throw new ParkingNotPresentException(id);
@@ -119,10 +128,21 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         return parkingsById.get(id);
     }
 
+    /**
+     * Count the number of parking in parking manager
+     *
+     * @return the number of parking in parking manager
+     */
     public int count() {
         return count(parking -> true);
     }
 
+    /**
+     * Count the number of parking in parking manager where the predicate respond true
+     *
+     * @param predicate condition to be tested
+     * @return the number of parking in parking manager where the predicate respond true
+     */
     public int count(Predicate<Parking> predicate) {
         int i = 0;
         for (Parking parking : parkingsById.values()) {

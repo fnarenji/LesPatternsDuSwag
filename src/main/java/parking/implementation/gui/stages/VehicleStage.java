@@ -16,10 +16,13 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import parking.api.business.vehicle.Vehicle;
 import parking.api.exceptions.UnknownVehicleException;
+import parking.implementation.business.Client;
+import parking.implementation.gui.ClientManager;
 import parking.implementation.gui.VehicleFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Created by loick on 14/01/15.
@@ -30,6 +33,7 @@ public class VehicleStage extends Stage {
 
     private Label titleLabel;
     private Label label;
+    private ChoiceBox<Client> clientChoiceBox;
     private ChoiceBox<String> vehicleChoiceBox;
     private TextField plateField;
     private TextField brandField;
@@ -52,6 +56,7 @@ public class VehicleStage extends Stage {
                 plateField,
                 brandField,
                 modelField,
+                clientChoiceBox,
                 submitButton,
                 cancelButton
         );
@@ -73,6 +78,17 @@ public class VehicleStage extends Stage {
         setTitle("New Vehicle");
     }
 
+    private void createClientChoiceBox() {
+        clientChoiceBox = new ChoiceBox<>();
+        if (ClientManager.getInstance().count() != 0){
+            Iterator<Client> clientIterator = ClientManager.getInstance().iterator();
+            while (clientIterator.hasNext()){
+                Client tmp = clientIterator.next();
+                clientChoiceBox.getItems().add(tmp);
+            }
+        }
+
+    }
     private void createTitle() {
         titleLabel = new Label("New Vehicle");
         titleLabel.setFont(Font.font("Arial", 30));
@@ -170,6 +186,7 @@ public class VehicleStage extends Stage {
         createTextFieldModel();
         createButtonCreate();
         createButtonCancel();
+        createClientChoiceBox();
     }
 
     public Vehicle getVehicle() throws UnknownVehicleException {
@@ -188,4 +205,9 @@ public class VehicleStage extends Stage {
 
         return vehicle;
     }
+    
+    public Client getClient(){
+        return clientChoiceBox.getValue();
+    }
+    
 }

@@ -9,6 +9,7 @@ import parking.api.exceptions.ParkingNotPresentException;
 
 /**
  * Created by sknz on 1/17/15.
+ * This class create the gird which will determinate the parking
  */
 public class ParkingGrid extends GridPane {
     private static final int MAX_LINE = 10;

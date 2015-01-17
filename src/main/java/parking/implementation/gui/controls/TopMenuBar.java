@@ -11,6 +11,7 @@ import java.util.Optional;
 
 /**
  * Created by sknz on 1/17/15.
+ * This class is about the functions in the top menu
  */
 public class TopMenuBar extends MenuBar {
     private Stage primaryStage;
