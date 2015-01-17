@@ -113,24 +113,41 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
     }
 
     /**
-     * @param parkingSpotId
-     * @return
+     *Get the spot corresponding to the id passed as parameter
+     * @param parkingSpotId Id of the spot we want to get the spot
+     * @return the spot corresponding to the id passed as parameter
      */
     public ParkingSpot getSpotBySpotId(Integer parkingSpotId) {
         return parkingSpotsById.getOrDefault(parkingSpotId, null);
     }
 
+    /**
+     * Get the spot of the vehicle which had the plate passed as parameter
+     * @param plate Plate of the vehicle to search
+     * @return The the spot of the vehicle which had the plate passed as parameter
+     */
     public ParkingSpot getSpotByVehiclePlate(String plate) {
         return parkingSpotsById.values().stream().filter(parkingSpot ->
                         parkingSpot.isVehicleParked() && parkingSpot.getVehicle().getPlate().equals(plate)
         ).findFirst().orElse(null);
     }
 
+    /**
+     * Set the new parkingSpotSelector to use
+     * @param parkingSpotSelector the new parkingSpotSelector to use
+     */
+
     public void setParkingSpotSelector(ParkingSpotSelector parkingSpotSelector) {
         this.parkingSpotSelector = parkingSpotSelector;
     }
 
     // Undefined behaviour if vehicle already parked
+    /**
+     *Find a place for a vehicle passed as parameter
+     * @param vehicle
+     * @return A parking spot available for the vehicle
+     * @throws NoSpotAvailableException Raised when no spot available
+     */
     public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle) throws NoSpotAvailableException {
         List<ParkingSpot> availableParkingSpots = parkingSpotsById.values().stream()
                 .filter(parkingSpot -> parkingSpot.fits(vehicle) && !parkingSpot.isVehicleParked())
