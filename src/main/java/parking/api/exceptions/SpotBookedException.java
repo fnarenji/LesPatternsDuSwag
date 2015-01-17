@@ -1,6 +1,6 @@
 package parking.api.exceptions;
 
-import parking.api.business.contract.ParkingSpot;
+import parking.api.business.parkingspot.ParkingSpot;
 
 /**
  * Created by SKNZ on 02/01/2015.

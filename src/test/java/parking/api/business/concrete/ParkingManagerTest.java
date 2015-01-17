@@ -4,10 +4,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import parking.api.business.parking.Parking;
+import parking.api.business.parking.ParkingManager;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
-import parking.implementation.logic.SerializeParkingManager;
+import parking.implementation.business.SerializeParkingManager;
 
 import static org.junit.Assert.*;
 

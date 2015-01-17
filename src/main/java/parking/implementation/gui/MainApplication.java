@@ -6,12 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import parking.api.business.concrete.ParkingManager;
+import parking.api.business.parking.ParkingManager;
 import parking.api.exceptions.ParkingExistsException;
 import parking.implementation.gui.controls.ParkingGrid;
 import parking.implementation.gui.controls.TopMenuBar;
-import parking.implementation.logic.FloorParkingSpotIdProvider;
-import parking.implementation.logic.ParkingSpotFactory;
+import parking.implementation.business.logistic.floor.FloorParkingSpotIdProvider;
+import parking.implementation.business.parkingspot.ParkingSpotFactory;
 
 //Created by on 30/12/14.
 

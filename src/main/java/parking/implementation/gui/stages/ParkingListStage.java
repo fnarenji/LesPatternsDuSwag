@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import parking.api.business.concrete.ParkingManager;
+import parking.api.business.parking.ParkingManager;
 
 /**
  * Created by loick on 14/01/15.

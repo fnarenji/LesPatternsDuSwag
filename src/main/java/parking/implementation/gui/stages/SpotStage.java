@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import parking.api.business.contract.ParkingSpot;
+import parking.api.business.parkingspot.ParkingSpot;
 
 /**
  * Created by loick on 14/01/15.

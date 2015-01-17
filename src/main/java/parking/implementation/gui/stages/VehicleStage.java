@@ -14,7 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import parking.api.business.contract.Vehicle;
+import parking.api.business.vehicle.Vehicle;
 import parking.api.exceptions.UnknownVehicleException;
 import parking.implementation.gui.VehicleFactory;
 
@@ -179,7 +179,7 @@ public class VehicleStage extends Stage {
                 || modelField.getText() == null)
             return null;
 
-        VehicleFactory vehicleFactory = new parking.implementation.logic.VehicleFactory();
+        VehicleFactory vehicleFactory = new parking.implementation.business.vehicle.VehicleFactory();
 
         Vehicle vehicle = vehicleFactory.createVehicle(vehicleChoiceBox.getValue().toString());
         vehicle.setPlate(plateField.getText());

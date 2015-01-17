@@ -6,13 +6,13 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Window;
 import org.joda.time.DateTime;
-import parking.api.business.contract.ParkingSpot;
+import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.exceptions.*;
 import parking.implementation.gui.stages.ClientListStage;
 import parking.implementation.gui.stages.SpotStage;
 import parking.implementation.gui.stages.VehicleStage;
-import parking.implementation.logic.CarParkingSpot;
-import parking.implementation.logic.CarrierParkingSpot;
+import parking.implementation.business.parkingspot.CarParkingSpot;
+import parking.implementation.business.parkingspot.CarrierParkingSpot;
 
 import java.util.HashMap;
 import java.util.Map;

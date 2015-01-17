@@ -1,6 +1,6 @@
 package parking.implementation.gui;
 
-import parking.implementation.logic.Client;
+import parking.implementation.business.Client;
 
 import java.util.Collection;
 import java.util.HashSet;

@@ -2,10 +2,12 @@ package parking.api.business.concrete;
 
 import org.junit.Before;
 import org.junit.Test;
-import parking.api.business.contract.ParkingSpot;
-import parking.api.business.contract.ParkingSpotFactory;
-import parking.api.business.contract.ParkingSpotIdProvider;
-import parking.api.business.contract.Vehicle;
+import parking.api.business.parking.Parking;
+import parking.api.business.parking.ParkingManager;
+import parking.api.business.parkingspot.ParkingSpot;
+import parking.api.business.parkingspot.ParkingSpotFactory;
+import parking.api.business.parkingspot.ParkingSpotIdProvider;
+import parking.api.business.vehicle.Vehicle;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;

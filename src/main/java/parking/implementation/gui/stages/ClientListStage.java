@@ -12,7 +12,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import parking.implementation.gui.ClientManager;
-import parking.implementation.logic.Client;
+import parking.implementation.business.Client;
 
 import java.util.ArrayList;
 import java.util.Collection;

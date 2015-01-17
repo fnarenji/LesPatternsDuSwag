@@ -1,7 +1,7 @@
 package parking.api.exceptions;
 
-import parking.api.business.contract.ParkingSpot;
-import parking.api.business.contract.Vehicle;
+import parking.api.business.parkingspot.ParkingSpot;
+import parking.api.business.vehicle.Vehicle;
 
 /**
  * Created by sknz on 16/01/15.
