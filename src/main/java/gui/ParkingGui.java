@@ -8,9 +8,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import parking.api.business.concrete.ParkingManager;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
+
 import parking.implementation.Client;
 import parking.implementation.ParkingSpotFactory;
 
@@ -79,7 +81,8 @@ public class ParkingGui extends Application {
                                     ButtonSpot buttonSpot = new ButtonSpot(
                                             spot,
                                             vehicule,
-                                            primaryStage
+                                            primaryStage,
+                                            clients
                                     );
 
                                     gridPane.add(
@@ -121,6 +124,7 @@ public class ParkingGui extends Application {
         nouveau.setOnAction(event -> {
             ClientStage clientStage = new ClientStage(primaryStage);
             clientStage.showAndWait();
+            clients.add(clientStage.getClient());
         });
 
         this.menuClient.getItems().addAll(
