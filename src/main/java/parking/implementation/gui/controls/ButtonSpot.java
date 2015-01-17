@@ -20,6 +20,7 @@ import java.util.*;
 
 /**
  * Created by on 14/01/15.
+ * This class cares about the button in the GUI
  */
 public class ButtonSpot extends MenuButton {
     private static Map<Class<? extends ParkingSpot>, String> colors = new HashMap<>();
