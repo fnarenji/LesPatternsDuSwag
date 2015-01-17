@@ -26,20 +26,17 @@ class ButtonSpot extends MenuButton {
 
     private ParkingSpot parkingSpot;
     private String type;
-    
-    private Collection<Client> clientCollection;
 
     private Window parent;
     private MenuItem park;
     private MenuItem book;
     private MenuItem infos;
 
-    public ButtonSpot(ParkingSpot parkingSpot, String type, Window parent, Collection<Client> clientCollection) {
+    public ButtonSpot(ParkingSpot parkingSpot, String type, Window parent) {
         super(parkingSpot.getId().toString());
         this.parkingSpot = parkingSpot;
         this.type = type;
         this.parent = parent;
-        this.clientCollection = clientCollection;
 
         this.colors.put(Car.class.toString(), "#60ff05");
         this.colors.put(Carrier.class.toString(), "#0e4fff");
@@ -145,7 +142,7 @@ class ButtonSpot extends MenuButton {
         book.setOnAction(event -> {
             try {
                 if (this.book.getText().equalsIgnoreCase("book")) {
-                    ClientListStage clientListStage = new ClientListStage(this.parent,clientCollection);
+                    ClientListStage clientListStage = new ClientListStage(parent);
                     clientListStage.showAndWait();
                     if (clientListStage.getClient() != null)
                         parkingSpot.book(clientListStage.getClient(),new DateTime(DateTime.now().plusDays(clientListStage.getDuration())));

@@ -46,7 +46,7 @@ class ClientListStage extends Stage {
 
     private void createSelect() {
         clientChoiceBox = new ChoiceBox<>();
-        if (!clients.isEmpty())
+        if (ClientManager.getInstance().count() != 0)
             clientChoiceBox.getItems().setAll(clients);
     }
 

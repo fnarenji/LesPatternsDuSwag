@@ -30,9 +30,7 @@ import java.util.Map;
 public class ParkingListStage extends Stage {
 
     private Label title;
-    private Label label;
-    private ChoiceBox<GridPane> select;
-    private Button create;
+    private ChoiceBox select;
     private Button ok;
 
     private void createTitle() {
@@ -43,22 +41,12 @@ public class ParkingListStage extends Stage {
     }
 
     private void createSelect() {
-        select = new ChoiceBox<>();
-        if (!parking.isEmpty()) {
-            select.getItems().setAll(parking);
-        }
-    }
+        select = new ChoiceBox();
 
-    private void updateState() {
-        if (parking.isEmpty()) {
-            this.select.setVisible(false);
-            this.label.setVisible(true);
-        } else {
-            this.select.setVisible(true);
-            this.label.setVisible(false);
-
-            select.getItems().setAll(parking);
-        }
+        ParkingManager.getInstance().forEach(parking -> {
+                    select.getItems().add(parking.getId());
+                }
+        );
     }
 
     private void createButtonOK() {

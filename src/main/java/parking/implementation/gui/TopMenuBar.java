@@ -44,7 +44,10 @@ public class TopMenuBar extends MenuBar {
         MenuItem nouveau = new MenuItem("Nouveau");
 
         nouveau.setOnAction(event -> {
-            generateParking();
+            ParkingListStage parkingListStage = new ParkingListStage(ParkingGui.getMainStage());
+            parkingListStage.showAndWait();
+
+            System.out.println(parkingListStage.getChoice());
         });
 
         menuParking.getItems().addAll(
@@ -77,7 +80,7 @@ public class TopMenuBar extends MenuBar {
             );
             Optional<ButtonType> result = confirm.showAndWait();
             if (result.get() == ButtonType.OK)
-                stage.close();
+                ParkingGui.getMainStage().close();
         });
 
         menuQuit.setGraphic(quitLabel);

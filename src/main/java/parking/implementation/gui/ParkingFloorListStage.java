@@ -91,8 +91,7 @@ public class ParkingFloorListStage extends Stage {
                                         ButtonSpot buttonSpot = new ButtonSpot(
                                                 spot,
                                                 vehicle,
-                                                this,
-                                                clients
+                                                this
                                         );
 
                                         gridPane.add(

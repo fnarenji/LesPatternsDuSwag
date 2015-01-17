@@ -28,4 +28,6 @@ public class ClientManager {
     public void removeClient(Client e) {
         clients.remove(e);
     }
+
+    public int count() { return clients.size(); }
 }

@@ -47,87 +47,6 @@ public class ParkingGui extends Application {
         launch(args);
     }
 
-    private Collection<GridPane> generateParking() {
-        ParkingListStage parkingListStage = new ParkingListStage(stage);
-        parkingListStage.showAndWait();
-        return parkingListStage.getParking();
-    }
-
-
-    private Menu createMenuClient() {
-        Menu menuClient = new Menu("Client");
-        MenuItem list = new MenuItem("Selectionner");
-        list.setOnAction(event -> {
-            ClientListStage clientListStage = new ClientListStage(stage, clients);
-            clientListStage.showAndWait();
-
-            System.out.println(clients);
-        });
-
-        MenuItem nouveau = new MenuItem("Nouveau");
-        nouveau.setOnAction(event -> {
-            ClientStage clientStage = new ClientStage(stage);
-            clientStage.showAndWait();
-            clients.add(clientStage.getClient());
-        });
-
-        menuClient.getItems().addAll(
-                list,
-                nouveau
-        );
-
-        return menuClient;
-    }
-
-    private Menu createMenuParking() {
-        Menu menuParking = new Menu("Parking");
-        MenuItem nouveau = new MenuItem("Nouveau");
-
-        nouveau.setOnAction(event -> {
-            ParkingListStage parkingListStage = new ParkingListStage(stage);
-            parkingListStage.showAndWait();
-
-            System.out.println(parkingListStage.getChoice());
-        });
-
-        menuParking.getItems().addAll(
-                nouveau
-        );
-
-        return menuParking;
-    }
-
-    private Menu createMenuSelector() {
-        Menu menuSelector = new Menu("AutoSelector");
-        MenuItem find = new MenuItem("Find a place");
-        MenuItem undo = new MenuItem("Unselect place");
-
-        menuSelector.getItems().addAll(
-                find,
-                undo
-        );
-
-        return menuSelector;
-    }
-
-    private Menu createMenuQuit() {
-        Menu menuQuit = new Menu();
-        Label quitLabel = new Label("Quit");
-        quitLabel.setOnMouseClicked(event -> {
-            Alert confirm = new Alert(
-                    Alert.AlertType.CONFIRMATION,
-                    "Êtes vous sûr de vouloir quitter ?"
-            );
-            Optional<ButtonType> result = confirm.showAndWait();
-            if (result.get() == ButtonType.OK)
-                stage.close();
-        });
-
-        menuQuit.setGraphic(quitLabel);
-
-        return menuQuit;
-    }
-
     public void updateGrid(Integer parking, Integer floor) {
         try {
             final int[] x = {0};
@@ -143,8 +62,7 @@ public class ParkingGui extends Application {
                                 new ButtonSpot(
                                         spot,
                                         spot.getClass().toString(),
-                                        stage,
-                                        clients
+                                        stage
                                 ),
                                 x[0]++,
                                 y[0]
@@ -159,28 +77,26 @@ public class ParkingGui extends Application {
     public void start(Stage primaryStage) {
         mainStage = primaryStage;
 
-        //generate parkings
-        Collection<GridPane> parkingPanes = generateParking();
+        ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory();
+        parkingSpotFactory.setIdProvider(new FloorParkingSpotIdProvider());
+        parkingSpotFactory.setNextVehicleType("Car");
 
         try {
-            ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory();
-            parkingSpotFactory.setIdProvider(new FloorParkingSpotIdProvider());
-            parkingSpotFactory.setNextVehicleType("Car");
 
             ParkingManager.getInstance().newParking(1, "Parking 1").newParkingSpot(parkingSpotFactory, 10);
         } catch (ParkingExistsException e) {
             e.printStackTrace();
         }
 
-        updateGrid(0, 1);
+        gridPane = new GridPane();
+        updateGrid(1, 1);
         //active floor
-        GridPane currentFloorPane = parkingPanes.iterator().next();
 
         //create root
         BorderPane borderPane = new BorderPane();
 
         //create top menu
-        MenuBar menu = createMenu();
+        MenuBar menu = new TopMenuBar();
 
         // vertical layout box
         VBox vBox = new VBox();
