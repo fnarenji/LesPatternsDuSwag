@@ -22,6 +22,11 @@ public abstract class BaseParkingSpot implements ParkingSpot {
     protected int id;
     private Vehicle vehicle = null;
     private Collection<Booking> bookings = new HashSet<>();
+    private DateTime enteredHour = null;
+
+    public DateTime getEnteredHour() {
+        return enteredHour;
+    }
 
     @Override
     public Integer getId() {
@@ -50,12 +55,14 @@ public abstract class BaseParkingSpot implements ParkingSpot {
             throw new SpotBookedException(this);
 
         this.vehicle = vehicle;
+        enteredHour = DateTime.now();
     }
 
     @Override
     public Vehicle unpark() {
         Vehicle temp = vehicle;
         vehicle = null;
+        enteredHour = null;
         return temp;
     }
 
