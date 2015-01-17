@@ -4,6 +4,7 @@ import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -131,6 +132,13 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         return i;
     }
 
+    /**
+     * readResolve() is used for replacing te object read from the stream (for the serialization)
+     * @return
+     * @throws ObjectStreamException
+     */
+    protected Object readResolve() throws ObjectStreamException{return instance;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -160,4 +168,5 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
     public void forEach(Consumer<? super Parking> action) {
         parkingsById.values().forEach(action);
     }
+
 }
