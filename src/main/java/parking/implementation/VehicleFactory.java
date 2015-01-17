@@ -6,7 +6,7 @@ import parking.api.exceptions.UnknownVehicleException;
 /**
  * Created by loick on 15/01/15.
  */
-public class VehicleFactory implements gui.VehicleFactory {
+public class VehicleFactory implements parking.implementation.gui.VehicleFactory {
     @Override
     public Vehicle createVehicle(String name) throws UnknownVehicleException {
         if (name.equals("Voiture"))
