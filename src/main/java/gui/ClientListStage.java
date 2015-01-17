@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import parking.implementation.Client;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -25,6 +26,7 @@ public class ClientListStage extends Stage {
     private Label title;
     private Label label;
     private ChoiceBox select;
+    private ChoiceBox duration;
     private Button create;
     private Button submit;
     private Button cancel;
@@ -112,6 +114,14 @@ public class ClientListStage extends Stage {
         cancel.setStyle("-fx-background-color: red");
         cancel.setTextFill(Color.WHITE);
     }
+    
+    private void createDurationChoixBox(){
+        duration = new ChoiceBox();
+        Collection<Integer> during = new ArrayList<>();
+        for(int i = 1; i < 50; i++ )
+            during.add(new Integer(i));
+        duration.getItems().setAll(during);
+    }
 
     private void init() {
         createTitle();
@@ -120,6 +130,7 @@ public class ClientListStage extends Stage {
         createButtonSubmit();
         createButtonCreate();
         createButtonCancel();
+        createDurationChoixBox();
     }
 
     public ClientListStage(Window owner, Collection<Client> clients) {
@@ -135,6 +146,7 @@ public class ClientListStage extends Stage {
         flowPane.getChildren().addAll(
                 title,
                 select,
+                duration,
                 submit,
                 label,
                 create,
@@ -159,5 +171,10 @@ public class ClientListStage extends Stage {
 
     public Client getClient() {
         return (Client) this.select.getValue();
+    }
+    
+    public Integer getDuration(){
+        return (Integer) this.duration.getValue();
+        
     }
 }

@@ -67,6 +67,7 @@ public class ParkingGui extends Application {
         nouveau.setOnAction(event -> {
             ClientStage clientStage = new ClientStage(stage);
             clientStage.showAndWait();
+            clients.add(clientStage.getClient());
         });
 
         menuClient.getItems().addAll(
