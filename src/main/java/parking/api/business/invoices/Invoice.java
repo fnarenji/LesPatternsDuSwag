@@ -5,16 +5,16 @@ package parking.api.business.invoices;
  */
 public class Invoice {
 
-    private int invoiceNuber;
+    private int invoiceNumber;
     private double invoicePrice;
 
     public Invoice(int invoiceNuber, double invoicePrice) {
-        this.invoiceNuber = invoiceNuber;
+        this.invoiceNumber = invoiceNumber;
         this.invoicePrice = invoicePrice;
     }
 
-    public int getInvoiceNuber() {
-        return invoiceNuber;
+    public int getInvoiceNumber() {
+        return invoiceNumber;
     }
 
     public double getInvoicePrice() {
