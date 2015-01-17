@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import parking.api.business.parking.ParkingManager;
 import parking.api.exceptions.ParkingExistsException;
 import parking.implementation.gui.controls.MainSplash;
@@ -24,10 +25,11 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("LesPatternsDuSwag - Parking qualitatif since 1889");
-        primaryStage.setOnCloseRequest(event -> Platform.exit());
-
-        MainSplash splash = new MainSplash();
-        splash.run(primaryStage);
+        primaryStage.setOnCloseRequest(event -> Platform.exit());MainSplash splash = new MainSplash();
+        
+        splash.initOwner(primaryStage);
+        splash.initStyle(StageStyle.UTILITY);
+        splash.showAndWait();
         switch (splash.getResult()) {
             case 1:
                 System.out.println(1);
@@ -39,7 +41,7 @@ public class MainApplication extends Application {
                 System.out.println("CASSOS !");
                 break;
         }
-/*
+
         ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory();
         parkingSpotFactory.setIdProvider(new FloorParkingSpotIdProvider());
         parkingSpotFactory.setNextVehicleType("Car");
@@ -67,6 +69,6 @@ public class MainApplication extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
-        primaryStage.show(); // show time !*/
+        primaryStage.show(); // show time !
     }
 }
