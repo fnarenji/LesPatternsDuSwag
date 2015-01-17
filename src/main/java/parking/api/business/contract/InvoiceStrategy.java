@@ -3,11 +3,13 @@ package parking.api.business.contract;
 import parking.api.business.concrete.BaseParkingSpot;
 import parking.api.business.concrete.BaseVehicle;
 
+import parking.implementation.Invoice;
+
 /**
  * Created by loic on 17/01/15.
  */
-public interface Invoice {
+public interface InvoiceStrategy {
 
-    public double computeInvoice(Vehicle baseVehicle, ParkingSpot baseParkingSpot,double priceHour);
+    public Invoice computeInvoice(Vehicle baseVehicle, ParkingSpot baseParkingSpot,double priceHour);
     
 }
