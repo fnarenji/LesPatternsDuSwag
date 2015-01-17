@@ -8,10 +8,19 @@ import parking.api.business.vehicle.BaseVehicle;
 public class Carrier extends BaseVehicle {
     private double weight;
 
+    /**
+     * Get the weight of the vehicle
+     *
+     * @return the weight of the vehicle
+     */
     public double getWeight() {
         return weight;
     }
 
+    /**
+     * Set the weight of the vehicle
+     * @param weight weight of the vehicle
+     */
     public void setWeight(double weight) {
         this.weight = weight;
     }

@@ -9,20 +9,42 @@ public class Client {
     private String lastName;
     private String firstName;
 
+    /**
+     * Construct a client
+     *
+     * @param civility civility of a client
+     * @param lastName lastName of a client
+     * @param firstName firstName of a client
+     */
     public Client(String civility, String lastName, String firstName) {
         this.civility = civility;
         this.lastName = lastName;
         this.firstName = firstName;
     }
 
+    /**
+     * Get the civility of the client
+     *
+     * @return the civility of the client
+     */
     public String getCivility() {
         return civility;
     }
 
+    /**
+     * Get the LastName of the client
+     *
+     * @return the LastName of the client
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Get the FirstName of the client
+     *
+     * @return the FirstName of the client
+     */
     public String getFirstName() {
         return firstName;
     }
