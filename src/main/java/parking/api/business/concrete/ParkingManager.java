@@ -6,6 +6,8 @@ import parking.api.exceptions.ParkingNotPresentException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Created by SKNZ on 28/12/2014.
@@ -66,5 +68,22 @@ public class ParkingManager {
             throw new ParkingNotPresentException(id);
 
         return parkingsById.get(id);
+    }
+
+    public void forEach(Consumer<Parking> consumer) {
+        parkingsById.values().forEach(consumer);
+    }
+
+    public int count() {
+        return count(parking -> true);
+    }
+
+    public int count(Predicate<Parking> predicate) {
+        int i = 0;
+        for (Parking parking : parkingsById.values()) {
+            if (predicate.test(parking))
+                ++i;
+        }
+        return i;
     }
 }
