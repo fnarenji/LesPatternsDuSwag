@@ -25,10 +25,9 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("LesPatternsDuSwag - Parking qualitatif since 1889");
-        primaryStage.setOnCloseRequest(event -> Platform.exit());MainSplash splash = new MainSplash();
-        
-        splash.initOwner(primaryStage);
-        splash.initStyle(StageStyle.UTILITY);
+        primaryStage.setOnCloseRequest(event -> Platform.exit());
+
+        MainSplash splash = new MainSplash(primaryStage);
         splash.showAndWait();
         switch (splash.getResult()) {
             case 1:

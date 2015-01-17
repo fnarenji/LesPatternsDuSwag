@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * Created by sknz on 1/17/15.
@@ -20,8 +21,10 @@ public class MainSplash extends Stage {
     private int result = 0;
     private final VBox vbox;
 
-    public MainSplash() {
+    public MainSplash(Stage owner) {
         initModality(Modality.WINDOW_MODAL);
+        initOwner(owner);
+        initStyle(StageStyle.UTILITY);
 
         Text title = new Text("LPDS Parking");
         Hyperlink openLink = new Hyperlink ("Open scenario");
@@ -38,6 +41,7 @@ public class MainSplash extends Stage {
         exitLink.setOnAction(event -> result = 0);
         openLink.setOnAction(event -> result = 1);
         newLink.setOnAction(event -> result = 2);
+
     }
 
     public int getResult() {
