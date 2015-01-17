@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by loic on 17/01/15.
  */
-public class Invoice implements Serializable{
+public class Invoice {
 
     private int invoiceNumber;
     private double invoicePrice;
