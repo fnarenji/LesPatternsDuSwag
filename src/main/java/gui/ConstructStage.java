@@ -70,16 +70,12 @@ class ConstructStage extends Stage {
         constructButton.setTextFill(Color.WHITE);
     }
 
-    private EventHandler createCancelEventHandler() {
-        return event -> this.close();
-    }
-
     private void createButtonCancel() {
         cancelButton = new Button();
         cancelButton.setText("Cancel");
 
         //add action
-        cancelButton.setOnAction(createCancelEventHandler());
+        cancelButton.setOnAction(event -> close());
 
         //style
         cancelButton.setStyle("-fx-background-color: red");
