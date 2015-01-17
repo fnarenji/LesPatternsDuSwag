@@ -16,7 +16,7 @@ import javafx.stage.Window;
 /**
  * Created by  on 15/01/15.
  */
-public class ConstructStage extends Stage {
+public class ParkingStage extends Stage {
 
     Label title;
     Label label;
@@ -106,7 +106,7 @@ public class ConstructStage extends Stage {
         createButtonCancel();
     }
 
-    public ConstructStage(Window owner) {
+    public ParkingStage(Window owner) {
         this.initOwner(owner);
 
         init();

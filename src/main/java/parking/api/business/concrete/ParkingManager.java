@@ -38,6 +38,11 @@ public class ParkingManager {
         this.companyName = companyName;
     }
 
+    public Parking newParking(String name) throws ParkingExistsException {
+        int id = this.count();
+        return this.newParking(++id, name);
+    }
+
     public Parking newParking(Integer id, String name) throws ParkingExistsException {
         if (parkingsById.containsKey(id))
             throw new ParkingExistsException(id);
