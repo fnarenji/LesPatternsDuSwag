@@ -27,7 +27,12 @@ public class Booking {
 
     public void setUntil(DateTime until) {
         MutableInterval mutableInterval = interval.toMutableInterval();
+
+        if (until == null)
+            until = INFINITE;
+
         mutableInterval.setEnd(until.toInstant());
+
         interval = mutableInterval.toInterval();
     }
 
