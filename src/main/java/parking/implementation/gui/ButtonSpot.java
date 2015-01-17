@@ -48,10 +48,7 @@ class ButtonSpot extends MenuButton {
         createBook();
         createInfos();
 
-        parkingSpot.registerObserver(observable -> {
-            // ICI CHANGER LA COULEUR DES BIDULES LEAULE
-            System.out.println(observable.getId());
-        });
+        parkingSpot.registerObserver(observable -> updateState());
 
         getItems().addAll(park, book, infos);
     }
