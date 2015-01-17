@@ -13,6 +13,7 @@ import parking.api.exceptions.VehicleNotFitException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 public class BaseParkingSpotTest {
@@ -26,6 +27,11 @@ public class BaseParkingSpotTest {
             @Override
             public Integer getId() {
                 return 1;
+            }
+
+            @Override
+            public Boolean fits(Vehicle v) {
+                return true;
             }
         };
     }
