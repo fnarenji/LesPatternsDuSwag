@@ -29,7 +29,7 @@ public class SimpleInvoiceStrategy implements InvoiceStrategy {
         htPrice = p.getHours() * priceHour;
         double ttcPrice = htPrice + (htPrice * TVA);
 
-        return new Invoice(countInvoice++, ttcPrice);
+        return new Invoice(countInvoice++, ttcPrice, new Object());
     }
 
 }

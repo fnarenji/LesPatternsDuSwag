@@ -9,6 +9,10 @@ import java.io.*;
  */
 public class SerializeParkingManager {
 
+    /**
+     * Serialize a Parking Manager
+     * @param parkingManager
+     */
     public static void serialize(ParkingManager parkingManager) {
         ObjectOutputStream oos = null;
         try {
@@ -36,6 +40,10 @@ public class SerializeParkingManager {
         }
     }
 
+    /**
+     * Deserialize a ParkingManager object stored in save/parkingManager.ser
+     * @return ParkingManager contained in save/parkingManager.ser
+     */
     public static ParkingManager deserialize() {
         ObjectInputStream ois = null;
         ParkingManager parkingManager = null;
