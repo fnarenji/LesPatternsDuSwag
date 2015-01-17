@@ -8,14 +8,15 @@ import javafx.stage.Window;
 import org.joda.time.DateTime;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.exceptions.*;
+import parking.implementation.business.Client;
+import parking.implementation.gui.ClientManager;
 import parking.implementation.gui.stages.ClientListStage;
 import parking.implementation.gui.stages.SpotStage;
 import parking.implementation.gui.stages.VehicleStage;
 import parking.implementation.business.parkingspot.CarParkingSpot;
 import parking.implementation.business.parkingspot.CarrierParkingSpot;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by on 14/01/15.
@@ -32,6 +33,11 @@ public class ButtonSpot extends MenuButton {
     private ParkingSpot parkingSpot;
     private String type;
 
+    private DateTime dateTimeEnd = null;
+    private Client client = null;
+
+    private Collection<Client> clientCollection;
+    
     private Window parent;
     private MenuItem park;
     private MenuItem book;
@@ -50,6 +56,7 @@ public class ButtonSpot extends MenuButton {
         createPark();
         createBook();
         createInfos();
+        createClientCollection();
 
         parkingSpot.registerObserver(observable -> updateState());
 
@@ -74,14 +81,21 @@ public class ButtonSpot extends MenuButton {
         this.setStyle("-fx-background-color: #fcff00");
         this.book.setText("Unbook");
     }
-
+    
     private void setBusy() {
         this.setStyle("-fx-background-color: #ff0030");
         this.park.setText("Unpark");
     }
 
+    private void createClientCollection(){
+        clientCollection = new ArrayList<>();
+        Iterator<Client> iteratorClient = ClientManager.getInstance().iterator();
+        while (iteratorClient.hasNext()){
+            clientCollection.add(iteratorClient.next());
+        }
+    }
+
     private void updateState() {
-        System.out.println("lol");
         if (this.parkingSpot.isVehicleParked() && !parkingSpot.getVehicle().getBrand().equals(""))
             this.setBusy();
         else if (this.parkingSpot.isBooked())
@@ -95,9 +109,10 @@ public class ButtonSpot extends MenuButton {
     private void createPark() {
         this.park = new MenuItem("Park");
         this.park.setOnAction(event -> {
+            VehicleStage parkStage = null;
             try {
                 if (this.park.getText().equalsIgnoreCase("park")) {
-                    VehicleStage parkStage = new VehicleStage(parent);
+                    parkStage = new VehicleStage(parent);
                     parkStage.showAndWait();
                     parkingSpot.park(parkStage.getVehicle());
                 } else if (this.park.getText().equalsIgnoreCase("unpark")) {
@@ -108,6 +123,12 @@ public class ButtonSpot extends MenuButton {
                             "Place libérée."
                     );
                     alert.show();
+
+                    if(client != null){
+                        long diffInMillis =  dateTimeEnd.getMillis() - DateTime.now().getMillis();
+                        parkingSpot.book(client,new DateTime(DateTime.now().plusMillis((int)diffInMillis)));
+                        this.park.setText("Park");
+                    }
                 }
 
                 updateState();
@@ -119,11 +140,39 @@ public class ButtonSpot extends MenuButton {
                 );
                 alert.show();
             } catch (SpotBookedException e1) {
-                Alert alert = new Alert(
-                        Alert.AlertType.ERROR,
-                        "Place reservée."
-                );
-                alert.show();
+                try {
+                    if(parkStage.getVehicle().equals((Client) parkingSpot.getCurrentBooking().getOwner())){
+                        try {
+                            parkingSpot.unbook();
+                            parkingSpot.park(parkStage.getVehicle());
+                            updateState();
+                        } catch (SpotNotEmptyException e) {
+                            e.printStackTrace();
+                        } catch (SpotBookedException e) {
+                            e.printStackTrace();
+                        } catch (VehicleNotFitException e) {
+                            e.printStackTrace();
+                        } catch (UnknownVehicleException e) {
+                            e.printStackTrace();
+                        } catch (SpotNotBookedException e) {
+                            e.printStackTrace();
+                        }
+                        Alert alert = new Alert(
+                                Alert.AlertType.INFORMATION,
+                                "Vehicule garrée."
+                        );
+                        alert.show();
+                    }
+                    else{
+                        Alert alert = new Alert(
+                                Alert.AlertType.ERROR,
+                                "Place reservée."
+                        );
+                        alert.show();
+                    }
+                } catch (UnknownVehicleException e) {
+                    e.printStackTrace();
+                }
             } catch (UnknownVehicleException e1) {
                 Alert alert = new Alert(
                         Alert.AlertType.ERROR,
@@ -147,11 +196,15 @@ public class ButtonSpot extends MenuButton {
                 if (this.book.getText().equalsIgnoreCase("book")) {
                     ClientListStage clientListStage = new ClientListStage(parent);
                     clientListStage.showAndWait();
-                    if (clientListStage.getClient() != null)
-                        parkingSpot.book(clientListStage.getClient(), new DateTime(DateTime.now().plusDays(clientListStage.getDuration())));
-
+                    if (clientListStage.getClient() != null){
+                        dateTimeEnd = new DateTime(DateTime.now().plusDays(clientListStage.getDuration()));
+                        client = clientListStage.getClient();
+                        parkingSpot.book(clientListStage.getClient(),new DateTime(DateTime.now().plusDays(clientListStage.getDuration())));
+                    }
                 } else if (this.book.getText().equalsIgnoreCase("unbook")) {
                     this.parkingSpot.unbook();
+                    dateTimeEnd = null;
+                    client = null;
 
                     Alert alert = new Alert(
                             Alert.AlertType.INFORMATION,
