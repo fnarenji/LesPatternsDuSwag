@@ -1,4 +1,4 @@
-package parking.implementation;
+package parking.implementation.logic;
 
 /**
  * Created by  on 14/01/15.

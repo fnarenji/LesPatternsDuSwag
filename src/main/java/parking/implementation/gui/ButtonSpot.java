@@ -8,7 +8,7 @@ import javafx.stage.Window;
 import org.joda.time.DateTime;
 import parking.api.business.contract.ParkingSpot;
 import parking.api.exceptions.*;
-import parking.implementation.Client;
+import parking.implementation.logic.Client;
 
 import java.util.Collection;
 import java.util.HashMap;

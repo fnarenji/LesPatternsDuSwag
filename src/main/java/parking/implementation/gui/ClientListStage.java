@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import parking.implementation.Client;
+import parking.implementation.logic.Client;
 
 import java.util.ArrayList;
 import java.util.Collection;

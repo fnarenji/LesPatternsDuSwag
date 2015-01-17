@@ -1,9 +1,6 @@
 package parking.api.business.contract;
 
-import parking.api.business.concrete.BaseParkingSpot;
-import parking.api.business.concrete.BaseVehicle;
-
-import parking.implementation.Invoice;
+import parking.implementation.logic.Invoice;
 
 /**
  * Created by loic on 17/01/15.

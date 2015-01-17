@@ -178,7 +178,7 @@ public class VehicleStage extends Stage {
                 || modelField.getText() == null)
             return null;
 
-        VehicleFactory vehicleFactory = new parking.implementation.VehicleFactory();
+        VehicleFactory vehicleFactory = new parking.implementation.logic.VehicleFactory();
 
         Vehicle vehicle = vehicleFactory.createVehicle(vehicleChoiceBox.getValue().toString());
         vehicle.setPlate(plateField.getText());

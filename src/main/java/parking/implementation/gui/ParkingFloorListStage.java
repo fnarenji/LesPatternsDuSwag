@@ -15,8 +15,8 @@ import javafx.stage.Window;
 import parking.api.business.concrete.ParkingManager;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
-import parking.implementation.Client;
-import parking.implementation.ParkingSpotFactory;
+import parking.implementation.logic.Client;
+import parking.implementation.logic.ParkingSpotFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;

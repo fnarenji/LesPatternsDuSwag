@@ -1,4 +1,4 @@
-package parking.implementation;
+package parking.implementation.logic;
 
 import parking.api.business.contract.ParkingSpotIdProvider;
 

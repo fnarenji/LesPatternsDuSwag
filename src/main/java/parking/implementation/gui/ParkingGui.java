@@ -9,8 +9,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import parking.api.business.concrete.ParkingManager;
-import parking.implementation.Client;
-import parking.implementation.ParkingSpotFactory;
+import parking.implementation.logic.Client;
+import parking.implementation.logic.ParkingSpotFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;

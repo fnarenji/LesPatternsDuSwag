@@ -1,4 +1,4 @@
-package parking.implementation;
+package parking.implementation.logic;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;

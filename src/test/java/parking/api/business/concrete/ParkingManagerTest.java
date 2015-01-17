@@ -7,9 +7,7 @@ import org.junit.rules.ExpectedException;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
-import parking.implementation.SerializeParkingManager;
-
-import java.io.Serializable;
+import parking.implementation.logic.SerializeParkingManager;
 
 import static org.junit.Assert.*;
 
