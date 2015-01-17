@@ -78,6 +78,7 @@ public class ParkingListStage extends Stage {
             final int[] y = {0};
             vehicules.forEach(vehicule -> {
                 try {
+                    parkingSpotFactory.setNextVehicleType(vehicule);
                     parkingManager.getParkingById(parkingManager.count())
                             .newParkingSpot(
                                     this.parkingSpotFactory,

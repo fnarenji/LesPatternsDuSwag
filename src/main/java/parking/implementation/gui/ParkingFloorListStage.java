@@ -27,7 +27,6 @@ import java.util.Map;
  * Created by loick on 14/01/15.
  */
 public class ParkingFloorListStage extends Stage {
-
     private Collection<Client> clients;
     private Collection<GridPane> parking = new ArrayList<>();
 
