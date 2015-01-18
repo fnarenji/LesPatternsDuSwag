@@ -119,11 +119,12 @@ public class ButtonSpot extends MenuButton {
                     if(!parkStage.getVehicle().getBrand().equals(""))
                         parkingSpot.park(parkStage.getVehicle());
                 } else if (this.park.getText().equalsIgnoreCase("unpark")) {
-                    
-                    InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
-                    Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(),parkingSpot,5);
-                    InvoiceStage  test = new InvoiceStage(parent,parkingSpot,invoice);
-                    test.showAndWait();
+                    if(client == null) {
+                        InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
+                        Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(), parkingSpot, 5);
+                        InvoiceStage test = new InvoiceStage(parent, parkingSpot, invoice);
+                        test.showAndWait();
+                    }
                     
                     parkingSpot.unpark();
                     Alert alert = new Alert(
@@ -206,6 +207,12 @@ public class ButtonSpot extends MenuButton {
                         parkingSpot.book(bookStage.getClient(),new DateTime(DateTime.now().plusDays(bookStage.getDuration())));
                     }
                 } else if (this.book.getText().equalsIgnoreCase("unbook")) {
+                    if(client != null) {
+                        InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
+                        Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(), parkingSpot, 5);
+                        InvoiceStage test = new InvoiceStage(parent, parkingSpot, invoice);
+                        test.showAndWait();
+                    }
                     this.parkingSpot.unbook();
                     dateTimeEnd = null;
                     client = null;
