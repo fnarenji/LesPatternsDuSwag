@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Created by sknz on 1/18/15.
  *
- * Form for the creation of a new parkings
+ * Form for the creation/edition of parkings
  */
 public class NewParkingStage extends Stage {
     private Parking parking;
@@ -102,7 +102,8 @@ public class NewParkingStage extends Stage {
 
     private void applyChanges() {
         SimpleParkingSpotFactory factory = new SimpleParkingSpotFactory();
-        factory.setIdProvider(new FloorParkingSpotIdProvider());
+        FloorParkingSpotIdProvider spotIdProvider = new FloorParkingSpotIdProvider();
+        factory.setIdProvider(spotIdProvider);
 
         Map<Integer, Integer> countByFloor = new HashMap<>();
 
@@ -121,6 +122,7 @@ public class NewParkingStage extends Stage {
 
             if (finalQuantity != 0) {
                 factory.setParkingSpotType(row.getParkingSpotType());
+                spotIdProvider.setFloor(row.getFloor());
                 parking.newParkingSpot(factory, finalQuantity);
             }
         });

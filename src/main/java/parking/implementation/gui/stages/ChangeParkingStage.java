@@ -21,8 +21,6 @@ import parking.api.business.parking.Parking;
 import parking.api.business.parking.ParkingManager;
 import parking.api.exceptions.ParkingNotPresentException;
 
-import java.awt.*;
-
 /**
  * Created by loick on 14/01/15.
  *

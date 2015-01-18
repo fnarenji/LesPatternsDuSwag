@@ -7,9 +7,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import parking.api.business.parking.Parking;
@@ -55,6 +58,8 @@ public class MainApplication extends Application {
     private ParkingGrid parkingGrid;
     private TopMenuBar menu;
     private Stage primaryStage;
+    private Text currentFloor;
+    private Text parkingTitle;
 
     public static void main(String[] args) {
         launch(args);
@@ -66,35 +71,49 @@ public class MainApplication extends Application {
         // create root
         BorderPane pane = new BorderPane();
 
+        // Parking title label
+        parkingTitle = new Text("");
+        parkingTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        VBox.setMargin(parkingTitle, new Insets(2, 10, 2, 10));
+
         // create grid
         parkingGrid = new ParkingGrid(primaryStage);
+        VBox.setMargin(parkingGrid, new Insets(2, 10, 2, 10));
+
+        // Vertical container for the center of the window
+        VBox vBox = new VBox(parkingTitle, parkingGrid);
+        vBox.setAlignment(Pos.CENTER);
 
         // create top menu
         menu = new TopMenuBar(primaryStage, parkingGrid);
-        menu.setOnChangeParking(this::setCurrentParking);
+        menu.setOnChangeParking(this::parkingChangeHandler);
 
         // create bottom bar
+        currentFloor = new Text();
         Button floorUpButton = new Button("Etage +1");
         Button floorDownButton = new Button("Etage -1");
 
-        floorUpButton.setOnAction(event -> {
+        floorDownButton.setOnAction(event -> {
             parkingGrid.floorDown();
-            parkingGrid.updateGrid();
+            updateFloorLabel();
         });
 
         floorUpButton.setOnAction(event -> {
             parkingGrid.floorUp();
-            parkingGrid.updateGrid();
+            updateFloorLabel();
         });
 
-        HBox hBox = new HBox(floorUpButton, floorDownButton);
-        HBox.setMargin(floorDownButton, new Insets(0, 10, 0, 10));
-        HBox.setMargin(floorUpButton, new Insets(2, 10, 2, 10));
+        // Horizontal container for bottom bar content
+        HBox hBox = new HBox(floorUpButton, currentFloor, floorDownButton);
         hBox.setAlignment(Pos.CENTER);
+        HBox.setMargin(floorDownButton, new Insets(2, 10, 2, 10));
+        HBox.setMargin(currentFloor, new Insets(2, 10, 2, 10));
+        HBox.setMargin(floorUpButton, new Insets(2, 10, 2, 10));
 
+        // Put it all in the shape in the pane
         pane.setTop(menu);
         pane.setPrefHeight(menu.getHeight());
-        pane.setCenter(parkingGrid);
+        pane.setCenter(vBox);
         pane.setBottom(hBox);
 
         Scene scene = new Scene(pane);
@@ -104,13 +123,14 @@ public class MainApplication extends Application {
         primaryStage.setTitle("LesPatternsDuSwag - Parking qualitatif since 1889");
         primaryStage.setOnCloseRequest(event -> Platform.exit());
 
+        // Show the splash page...
         StartSplashStage splash = new StartSplashStage(primaryStage);
         splash.showAndWait();
         switch (splash.getResult()) {
             case StartSplashStage.NEW:
                 NewParkingStage newParkingStage = new NewParkingStage(primaryStage);
                 newParkingStage.showAndWait();
-                setCurrentParking(newParkingStage.getParking());
+                parkingChangeHandler(newParkingStage.getParking());
                 break;
             case StartSplashStage.OPEN:
                 FileChooser fileChooser = new FileChooser();
@@ -123,7 +143,7 @@ public class MainApplication extends Application {
                     if (ParkingManager.getInstance().count() == 0)
                         throw new ParkingNotPresentException(0);
 
-                    setCurrentParking(ParkingManager.getInstance().getParkingById(1));
+                    parkingChangeHandler(ParkingManager.getInstance().getParkingById(1));
                 } catch (ParkingNotPresentException e) {
                     new Alert(Alert.AlertType.ERROR, "Le fichier ne contenait pas de parking valide.");
                 }
@@ -135,15 +155,27 @@ public class MainApplication extends Application {
         }
 
         parkingGrid.updateGrid();
+        currentFloor.setText("Etage 1/" + parkingGrid.floorCount());
 
         primaryStage.setResizable(false);
         primaryStage.show(); // show time !
     }
 
-    private void setCurrentParking(Parking parking) {
+    private void updateFloorLabel() {
+        currentFloor.setText("Etage " + parkingGrid.getFloor() + "/" + parkingGrid.floorCount());
+    }
+
+    private void parkingChangeHandler(Parking parking) {
+        if (currentParking != null)
+            parkingGrid.updateGrid();
+
+        if (parking.equals(currentParking))
+            return;
+
         this.currentParking = parking;
         parkingGrid.observeParkingChange(parking);
         menu.observeParkingChange(parking);
-        primaryStage.sizeToScene();
+        updateFloorLabel();
+        parkingTitle.setText(currentParking.getName());
     }
 }
