@@ -30,8 +30,8 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
         ParkingSpot selectedSpot = null;
         Iterator<Class> parkingSpotType = priorityMap.whereTo(vehicle.getClass());
 
-        //parkingSpots = cleanAndSortSpotList(vehicle, parkingSpots);
-        System.out.println("what "+parkingSpots);
+        parkingSpots = cleanAndSortSpotList(vehicle, parkingSpots);
+        //System.out.println("what " + parkingSpots);
 
         while (selectedSpot == null && parkingSpotType.hasNext()) {
             Class currentParkingSpotType = parkingSpotType.next();
@@ -56,15 +56,26 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
      * @param parkingSpots
      * @return Collection of the parking spots available for the user and with the booked spots first
      */
-    private List<ParkingSpot> cleanAndSortSpotList(Vehicle vehicle, Collection<ParkingSpot> parkingSpots) {
+    private Collection<ParkingSpot> cleanAndSortSpotList(Vehicle vehicle, Collection<ParkingSpot> parkingSpots) {
         List<ParkingSpot> selectedSpots = new ArrayList<ParkingSpot>();
 
-        selectedSpots.addAll(
+        /*selectedSpots.addAll(
                 parkingSpots.stream()
                         .filter(currentSpot -> currentSpot.isBooked() && currentSpot.getCurrentBooking().getOwner().equals(vehicle.getOwner()))
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList()));*/
+
+        for(ParkingSpot currentSpot : parkingSpots){
+            if(currentSpot.isVehicleParked() || currentSpot.isBooked() && currentSpot.getCurrentBooking().getOwner().equals(vehicle.getOwner())){
+                continue;
+            } else {
+                selectedSpots.add(currentSpot);
+            }
+        }
 
         Collections.sort(selectedSpots, (a, b) -> a.isBooked().compareTo(b.isBooked()));
+
+        System.out.println("QUOI? ");
+        System.out.println(selectedSpots);
 
         return selectedSpots;
     }
