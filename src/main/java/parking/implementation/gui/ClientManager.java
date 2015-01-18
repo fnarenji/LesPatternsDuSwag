@@ -9,6 +9,8 @@ import java.util.function.Consumer;
 
 /**
  * Created by sknz on 1/17/15.
+ *
+ * Groups all the functions which manage the clients
  */
 public class ClientManager implements Iterable<Client> {
     private static ClientManager instance = new ClientManager();
