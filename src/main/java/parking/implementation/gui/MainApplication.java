@@ -90,7 +90,6 @@ public class MainApplication extends Application {
                 File file = fileChooser.showOpenDialog(primaryStage);
 
                 String fileName = (file == null) ? "save/parkingManager.ser" : String.valueOf(file);
-
                 ParkingManagerSerializer.deserialize(fileName);
                 break;
             case StartSplashStage.EXIT:
