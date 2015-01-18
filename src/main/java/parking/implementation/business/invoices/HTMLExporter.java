@@ -22,7 +22,8 @@ public class HTMLExporter implements InvoiceExporter {
     @Override
     public String export(){
         StringTokenizer st = new StringTokenizer(translatedExporter.export());
-        String toExport = "";
+        String toExport = "<html>\n";
+        toExport += "<body>\n";
 
         List<String> document = new ArrayList<>();
 
@@ -47,7 +48,8 @@ public class HTMLExporter implements InvoiceExporter {
             }
         }
         toExport += "</h" + hValue + ">\n";
-
+        toExport += "</body>\n";
+        toExport += "</html>";
         return toExport;
     }
 }

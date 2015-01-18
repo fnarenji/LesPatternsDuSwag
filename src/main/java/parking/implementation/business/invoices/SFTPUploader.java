@@ -85,7 +85,9 @@ public class SFTPUploader implements InvoiceExporter {
         String content = htmlExporter.export();
         int invoiceNumber = htmlExporter.getTranslatedExporter().getInvoice().getInvoiceNumber();
 
-        String fileName = "save/invoices/" + invoiceNumber + ".html";
+        String extension = (content.contains("html")) ? ".html" : ".txt";
+
+        String fileName = "save/invoices/" + invoiceNumber + extension;
         OutputStream os = null;
 
         try {
