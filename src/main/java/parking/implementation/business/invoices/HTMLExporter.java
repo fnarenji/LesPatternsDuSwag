@@ -1,5 +1,6 @@
 package parking.implementation.business.invoices;
 
+import parking.api.business.invoices.Invoice;
 import parking.api.business.invoices.InvoiceExporter;
 
 import java.util.ArrayList;
@@ -51,5 +52,10 @@ public class HTMLExporter implements InvoiceExporter {
         toExport += "</body>\n";
         toExport += "</html>";
         return toExport;
+    }
+
+    @Override
+    public Invoice getInvoice() {
+        return translatedExporter.getInvoice();
     }
 }
