@@ -20,13 +20,14 @@ public class ParkingGrid extends GridPane {
     private Stage primaryStage;
     private Parking currentParking;
     private Map<Integer, ButtonSpot> buttonSpotMap = new TreeMap<>();
+    private int floor = 1;
 
     public ParkingGrid(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
     private Integer x, y;
-    public void updateGrid(Integer floor) {
+    public void updateGrid() {
         x = 0;
         y = 0;
 
@@ -50,10 +51,32 @@ public class ParkingGrid extends GridPane {
 
     public void observeParkingChange(Parking parking) {
         currentParking = parking;
-        updateGrid(1);
+        updateGrid();
     }
 
     public ButtonSpot highlightButton(Integer id) {
         return buttonSpotMap.get(id);
+    }
+
+    public void floorDown() {
+        floor = Math.max(floor - 1, 1);
+        floorUp();
+        floorDown();
+        updateGrid();
+    }
+
+    public void floorUp() {
+        int maxFloor = buttonSpotMap.keySet().stream()
+                .map(FloorParkingSpotIdProvider::ExtractFloor)
+                .max(Integer::compareTo)
+                .get();
+
+        floor = Math.min(floor + 1, maxFloor);
+        updateGrid();
+    }
+
+    public void floorOne() {
+        floor = 1;
+        floorOne();
     }
 }
