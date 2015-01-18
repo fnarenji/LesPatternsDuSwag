@@ -13,16 +13,16 @@ import java.util.StringTokenizer;
  */
 public class HTMLExporter implements InvoiceExporter {
 
-    private TranslatedExporter translatedExporter;
+    private InvoiceExporter invoiceExporter;
 
-    public HTMLExporter(TranslatedExporter translatedExporter){
-        this.translatedExporter = translatedExporter;
+    public HTMLExporter(InvoiceExporter invoiceExporter){
+        this.invoiceExporter = invoiceExporter;
     }
 
-    public TranslatedExporter getTranslatedExporter(){ return translatedExporter; }
+    public InvoiceExporter getTranslatedExporter(){ return invoiceExporter; }
     @Override
     public String export(){
-        StringTokenizer st = new StringTokenizer(translatedExporter.export());
+        StringTokenizer st = new StringTokenizer(invoiceExporter.export());
         String toExport = "<html>\n";
         toExport += "<body>\n";
 
@@ -56,6 +56,6 @@ public class HTMLExporter implements InvoiceExporter {
 
     @Override
     public Invoice getInvoice() {
-        return translatedExporter.getInvoice();
+        return invoiceExporter.getInvoice();
     }
 }
