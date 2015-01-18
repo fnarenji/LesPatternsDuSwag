@@ -15,10 +15,13 @@ import javafx.stage.Stage;
 
 import javafx.stage.Window;
 import parking.api.business.parkingspot.ParkingSpot;
+import parking.implementation.business.Client;
+import parking.implementation.gui.ClientManager;
 import parking.implementation.gui.controls.ButtonSpot;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Created by loic on 18/01/15.
@@ -34,6 +37,8 @@ public class AutoSelectorStage extends Stage {
     private Button submitButton;
     private Label title;
 
+    private ChoiceBox<Client> clientChoiceBox;
+
     private void createTitle() {
         title = new Label("Select type of vehicle");
         title.setFont(Font.font("Arial", 30));
@@ -47,6 +52,13 @@ public class AutoSelectorStage extends Stage {
         vehicleChoiceBox.setValue(vehicles.iterator().next());
     }
     
+    private void createChoiceBoxClient() {
+        clientChoiceBox = new ChoiceBox<Client>();
+        Iterator<Client> clientIterator = ClientManager.getInstance().iterator();
+        while (clientIterator.hasNext()){
+            clientChoiceBox.getItems().add(clientIterator.next());
+        }
+    }
 
     private void createButtonCreate() {
         submitButton = new Button();
@@ -70,6 +82,7 @@ public class AutoSelectorStage extends Stage {
 
         createButtonCreate();
         createChoiceBoxVehicle();
+        createChoiceBoxClient();
         createTitle();
     }
 
@@ -85,6 +98,7 @@ public class AutoSelectorStage extends Stage {
         flowPane.getChildren().addAll(
                 title,
                 vehicleChoiceBox,
+                clientChoiceBox,
                 submitButton
         );
 
@@ -105,5 +119,7 @@ public class AutoSelectorStage extends Stage {
     public String getVehicleType(){
         return vehicleChoiceBox.getValue();
     }
+    
+    public Client getClient() { return clientChoiceBox.getValue(); }
     
 }
