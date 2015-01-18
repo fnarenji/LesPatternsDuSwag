@@ -31,6 +31,8 @@ import java.util.Map;
 
 /**
  * Created by sknz on 1/18/15.
+ *
+ * Form for the creation of a new parkings
  */
 public class NewParkingStage extends Stage {
     private Parking parking;
