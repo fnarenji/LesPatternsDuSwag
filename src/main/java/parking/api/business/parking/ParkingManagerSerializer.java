@@ -6,16 +6,18 @@ import java.io.*;
  * Created by Thomas on 18/01/2015.
  */
 public class ParkingManagerSerializer {
+    private static String filename;
+
     /**
      * Deserialize a ParkingManager object stored in save/parkingManager.ser
      * @return ParkingManager contained in save/parkingManager.ser
      */
-    public static void deserialize() {
+    public static void deserialize(String filename) {
         ObjectInputStream ois = null;
 
         InputStream file = null;
         try {
-            file = new ObjectInputStream(new FileInputStream("save/parkingManager.ser"));
+            file = new ObjectInputStream(new FileInputStream(filename));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
