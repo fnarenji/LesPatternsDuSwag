@@ -19,7 +19,7 @@ import parking.api.business.parking.ParkingManager;
 public class ParkingListStage extends Stage {
 
     private Label title;
-    private ChoiceBox select;
+    private ChoiceBox<Integer> select;
     private Button ok;
 
     public ParkingListStage(Window owner) {
@@ -59,7 +59,7 @@ public class ParkingListStage extends Stage {
     }
 
     private void createSelect() {
-        select = new ChoiceBox();
+        select = new ChoiceBox<>();
 
         ParkingManager.getInstance().forEach(parking -> {
                     select.getItems().add(parking.getId());
@@ -87,7 +87,7 @@ public class ParkingListStage extends Stage {
         createButtonOK();
     }
 
-    public Object getChoice() {
+    public Integer getChoice() {
         return select.getValue();
     }
 }
