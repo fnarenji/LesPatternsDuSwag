@@ -72,13 +72,16 @@ public class TopMenuBar extends MenuBar {
     }
 
     private Menu createMenuSelector() {
-        Menu menuSelector = new Menu("AutoSelector");
-        MenuItem find = new MenuItem("Find a place");
-        MenuItem undo = new MenuItem("Unselect place");
+        Menu menuSelector = new Menu("EasySelector");
+        MenuItem find = new MenuItem("AutoPark");
+        MenuItem book = new MenuItem("AutoBook");
         
         find.setOnAction(event ->{
             VehicleStage vehicleStage = new VehicleStage(primaryStage);
             vehicleStage.showAndWait();
+
+            if (vehicleStage.getCancelled())
+                return;
 
             Vehicle vehicle = null;
             vehicle = vehicleStage.getVehicle();
@@ -96,9 +99,34 @@ public class TopMenuBar extends MenuBar {
             }
         });
 
-        menuSelector.getItems().addAll(find, undo);
+        book.setOnAction(event -> {
+            BookStage bookStage = new BookStage(primaryStage, true);
+            bookStage.showAndWait();
 
-        undo.setOnAction(event -> tmpButton.setStyle("-fx-background-color: #60ff05"));
+            if (bookStage.getCancelled())
+                return;
+
+            Vehicle vehicle = null;
+            try {
+                vehicle = bookStage.getVehicleType().newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                new Alert(Alert.AlertType.ERROR, "Erreur interne: " + e).show();
+            }
+
+            ParkingSpot parkingSpot = null;
+            try {
+                parkingSpot = currentParking.findAvailableParkingSpotForVehicle(vehicle);
+                parkingSpot.park(vehicle);
+            } catch (NoSpotAvailableException e) {
+                new Alert(Alert.AlertType.ERROR, "Pas de place disponible.").show();
+            } catch (ParkingNoVehicleParkingStrategyException e) {
+                new Alert(Alert.AlertType.ERROR, "Pas de VehicleParkingStrategy configuré.").show();
+            } catch (SpotNotEmptyException | VehicleNotFitException | SpotBookedException e) {
+                new Alert(Alert.AlertType.ERROR, "Erreur interne: " + e).show();
+            }
+        });
+
+        menuSelector.getItems().addAll(find, book);
         return menuSelector;
     }
 

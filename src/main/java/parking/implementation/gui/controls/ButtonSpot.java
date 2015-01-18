@@ -163,12 +163,12 @@ public class ButtonSpot extends MenuButton {
         book.setOnAction(event -> {
             try {
                 if (this.book.getText().equalsIgnoreCase("book")) {
-                    BookStage bookStage = new BookStage(parent);
+                    BookStage bookStage = new BookStage(parent, false);
                     bookStage.showAndWait();
                     if (bookStage.getClient() != null){
-                        dateTimeEnd = new DateTime(DateTime.now().plusDays(bookStage.getDuration()));
+                        dateTimeEnd = bookStage.getDuration();
                         client = bookStage.getClient();
-                        parkingSpot.book(bookStage.getClient(), new DateTime(DateTime.now().plusDays(bookStage.getDuration())));
+                        parkingSpot.book(bookStage.getClient(), dateTimeEnd);
                     }
                 } else if (this.book.getText().equalsIgnoreCase("unbook")) {
                     if(client != null) {

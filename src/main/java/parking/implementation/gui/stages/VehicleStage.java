@@ -35,6 +35,7 @@ public class VehicleStage extends Stage {
     private TextField modelField;
     private Button submitButton;
     private Button cancelButton;
+    private Boolean cancelled = false;
 
     public VehicleStage(Window owner) {
         this.initOwner(owner);
@@ -159,7 +160,10 @@ public class VehicleStage extends Stage {
         cancelButton.setText("Cancel");
 
         //add action
-        cancelButton.setOnAction(createCancelEventHandler());
+        cancelButton.setOnAction(event -> {
+            cancelled = true;
+            close();
+        });
 
         //style
         cancelButton.setStyle("-fx-background-color: red");
@@ -177,10 +181,6 @@ public class VehicleStage extends Stage {
                 label.setText("Tous les champs ne sont pas renseignés");
             }
         };
-    }
-
-    private EventHandler<ActionEvent> createCancelEventHandler() {
-        return event -> close();
     }
 
     private void init() {
@@ -221,5 +221,8 @@ public class VehicleStage extends Stage {
     public Client getClient(){
         return clientChoiceBox.getValue();
     }
-    
+
+    public Boolean getCancelled() {
+        return cancelled;
+    }
 }
