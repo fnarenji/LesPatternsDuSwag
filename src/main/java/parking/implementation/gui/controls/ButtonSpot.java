@@ -122,8 +122,8 @@ public class ButtonSpot extends MenuButton {
                     if(client == null) {
                         InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
                         Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(), parkingSpot, 5);
-                        InvoiceStage test = new InvoiceStage(parent, parkingSpot, invoice);
-                        test.showAndWait();
+                        InvoiceStage invoiceStage = new InvoiceStage(parent, parkingSpot, invoice);
+                        invoiceStage.showAndWait();
                     }
                     
                     parkingSpot.unpark();
@@ -210,8 +210,8 @@ public class ButtonSpot extends MenuButton {
                     if(client != null) {
                         InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
                         Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(), parkingSpot, 5);
-                        InvoiceStage test = new InvoiceStage(parent, parkingSpot, invoice);
-                        test.showAndWait();
+                        InvoiceStage invoiceStage = new InvoiceStage(parent, parkingSpot, invoice);
+                        invoiceStage.showAndWait();
                     }
                     this.parkingSpot.unbook();
                     dateTimeEnd = null;
