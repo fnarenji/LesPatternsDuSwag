@@ -12,11 +12,6 @@ public class FrenchExporter extends TranslatedExporter {
     }
 
     public String export() {
-
-        String toExport = "#Facture n°" + getInvoice().getInvoiceNumber();
-        toExport += "\n";
-        toExport += "##Prix : " + getInvoice().getInvoicePrice();
-
-        return toExport;
+       return super.translate("Facture", "Prix");
     }
 }

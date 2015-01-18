@@ -12,10 +12,6 @@ public class EnglishExporter extends TranslatedExporter {
     }
 
     public String export() {
-        String toExport = "#Invoice n°" + getInvoice().getInvoiceNumber();
-        toExport += "\n";
-        toExport += "##Price : " + getInvoice().getInvoicePrice();
-
-        return toExport;
+        return super.translate("Invoice", "Price");
     }
 }
