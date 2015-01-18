@@ -24,7 +24,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>parking.implementation.parking.implementation.gui.MainApplication</mainClass>
+                            <mainClass>parking.implementation.gui.MainApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

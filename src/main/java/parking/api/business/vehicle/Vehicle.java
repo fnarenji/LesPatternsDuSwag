@@ -1,9 +1,11 @@
 package parking.api.business.vehicle;
 
+import java.io.Serializable;
+
 /**
  * Created by SKNZ on 29/12/2014.
  */
-public interface Vehicle {
+public interface Vehicle extends Serializable {
     /**
      * Get the plate of the vehicle.
      *
