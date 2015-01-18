@@ -27,8 +27,8 @@ public class ButtonSpot extends MenuButton {
     private static Map<Class<? extends ParkingSpot>, String> colors = new HashMap<>();
 
     static {
-        colors.put(CarParkingSpot.class, "#60FF05");
-        colors.put(CarrierParkingSpot.class, "#0E4FFF");
+        colors.put(CarParkingSpot.class, "#60ff05");
+        colors.put(CarrierParkingSpot.class, "#0e4fff");
         colors.put(ParkingSpot.class, "yellow");
     }
 
@@ -70,12 +70,12 @@ public class ButtonSpot extends MenuButton {
     }
 
     private void setAvailable() {
-        this.setStyle("-fx-background-color: " + colors.get(type));
+        this.setStyle("-fx-background-color: " + colors.get(parkingSpot.getClass()));
         this.park.setText("Park");
     }
 
     private void setAvailableBook() {
-        this.setStyle("-fx-background-color: " + colors.get(type));
+        this.setStyle("-fx-background-color: " + colors.get(parkingSpot.getClass()));
         this.book.setText("Book");
     }
 
