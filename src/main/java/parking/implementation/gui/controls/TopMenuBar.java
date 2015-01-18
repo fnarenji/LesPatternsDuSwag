@@ -110,7 +110,7 @@ public class TopMenuBar extends MenuBar {
             
             try {
                 parkingSpot = currentParking.findAvailableParkingSpotForVehicle(vehicle);
-                tmpButton = parkingGrid.highlightId(parkingSpot.getId());
+                tmpButton = parkingGrid.highlightButton(parkingSpot.getId());
                 tmpButton.setStyle("-fx-background-color: #00ccff");
             } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Pas de place disponible ou type non défini.").show();
