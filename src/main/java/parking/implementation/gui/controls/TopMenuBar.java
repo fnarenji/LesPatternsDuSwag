@@ -36,11 +36,6 @@ public class TopMenuBar extends MenuBar {
 
     private Menu createMenuClient() {
         Menu menuClient = new Menu("Client");
-        MenuItem list = new MenuItem("Selectionner");
-        list.setOnAction(event -> {
-            ClientListStage clientListStage = new ClientListStage(primaryStage);
-            clientListStage.showAndWait();
-        });
 
         MenuItem nouveau = new MenuItem("Nouveau");
         nouveau.setOnAction(event -> {
@@ -51,7 +46,6 @@ public class TopMenuBar extends MenuBar {
         });
 
         menuClient.getItems().addAll(
-                list,
                 nouveau
         );
 

@@ -108,13 +108,13 @@ public class ButtonSpot extends MenuButton {
     private void createPark() {
         this.park = new MenuItem("Park");
         this.park.setOnAction(event -> {
-            VehicleStage parkStage = null;
+            VehicleStage vehicleStage = null;
             try {
                 if (this.park.getText().equalsIgnoreCase("park")) {
-                    parkStage = new VehicleStage(parent);
-                    parkStage.showAndWait();
-                    if(!parkStage.getVehicle().getBrand().equals(""))
-                        parkingSpot.park(parkStage.getVehicle());
+                    vehicleStage = new VehicleStage(parent);
+                    vehicleStage.showAndWait();
+                    if(!vehicleStage.getVehicle().getBrand().equals(""))
+                        parkingSpot.park(vehicleStage.getVehicle());
                 } else if (this.park.getText().equalsIgnoreCase("unpark")) {
                     if(client == null) {
                         InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
@@ -142,10 +142,10 @@ public class ButtonSpot extends MenuButton {
                 );
                 alert.show();
             } catch (SpotBookedException e1) {
-                    if(parkStage.getClient().equals((Client)parkingSpot.getCurrentBooking().getOwner())){
+                    if(vehicleStage.getClient().equals((Client)parkingSpot.getCurrentBooking().getOwner())){
                         try {
                             parkingSpot.unbook();
-                            parkingSpot.park(parkStage.getVehicle());
+                            parkingSpot.park(vehicleStage.getVehicle());
                             updateState();
                         } catch (SpotNotEmptyException | SpotBookedException | UnknownVehicleException | SpotNotBookedException | VehicleNotFitException e) {
                             e.printStackTrace();

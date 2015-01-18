@@ -84,11 +84,8 @@ public class VehicleStage extends Stage {
     private void createClientChoiceBox() {
         clientChoiceBox = new ChoiceBox<>();
         if (ClientManager.getInstance().count() != 0){
-            Iterator<Client> clientIterator = ClientManager.getInstance().iterator();
-            while (clientIterator.hasNext()){
-                Client tmp = clientIterator.next();
-                clientChoiceBox.getItems().add(tmp);
-            }
+            for(Client client : ClientManager.getInstance())
+                clientChoiceBox.getItems().add(client);
         }
 
     }

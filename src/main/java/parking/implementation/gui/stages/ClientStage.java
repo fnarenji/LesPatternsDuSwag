@@ -136,7 +136,6 @@ public class ClientStage extends Stage {
             if (!lastname.getText().isEmpty()
                     && !firstname.getText().isEmpty()
                     ) {
-                ClientManager.getInstance().addClient(new Client(civility.getValue(),firstname.getText(),lastname.getText()));
                 this.close();
             } else {
                 label.setText("Tous les champs ne sont pas renseignés");
