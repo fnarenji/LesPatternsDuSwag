@@ -27,6 +27,8 @@ import java.util.Iterator;
 
 /**
  * Created by loick on 14/01/15.
+ *
+ * Enter information when park a vehicle
  */
 public class VehicleStage extends Stage {
 
