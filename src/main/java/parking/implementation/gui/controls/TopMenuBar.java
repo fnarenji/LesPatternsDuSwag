@@ -147,7 +147,10 @@ public class TopMenuBar extends MenuBar {
     }
 
     public void observeParkingChange(Parking parking) {
-        System.out.println("MENUOLDPRK " + currentParking != null ? (currentParking.getId() + " " + currentParking.getName()) : null);
+        if (currentParking != null)
+            System.out.println("MENUOLDPRK " + currentParking.getId() + " " + currentParking.getName());
+        else System.out.println("MENUOLDPRK NULL");
+
         currentParking = parking;
         System.out.println("MENUNEWPRK " + currentParking.getId() + " " + currentParking.getName());
     }

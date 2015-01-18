@@ -35,7 +35,8 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
         while (selectedSpot == null && parkingSpotType.hasNext()) {
             Class currentParkingSpotType = parkingSpotType.next();
 
-            selectedSpot = parkingSpots.stream().filter(parkingSpot -> parkingSpot.getClass().equals(currentParkingSpotType))
+            selectedSpot = parkingSpots.stream()
+                    .filter(parkingSpot -> parkingSpot.getClass().equals(currentParkingSpotType))
                     .findFirst()
                     .orElse(null);
         }
@@ -56,7 +57,7 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
      * @return Collection of the parking spots available for the user and with the booked spots first
      */
     private Collection<ParkingSpot> cleanAndSortSpotList(Vehicle vehicle, Collection<ParkingSpot> parkingSpots) {
-        List<ParkingSpot> selectedSpots = new ArrayList<ParkingSpot>();
+        List<ParkingSpot> selectedSpots = new ArrayList<>();
 
         /*selectedSpots.addAll(
                 parkingSpots.stream()

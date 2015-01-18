@@ -32,13 +32,34 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
         typeColumn.setPrefWidth(100);
 
         floorColumn.setCellFactory(cell -> unsignedIntegerTextFieldTableCell());
-        floorColumn.setOnEditCommit(event -> getItems().get(event.getTablePosition().getRow()).setFloor(event.getNewValue()));
+        floorColumn.setOnEditCommit(event -> {
+            ParkingTableViewRow row = getItems().get(event.getTablePosition().getRow());
+
+            if (row.getLocked())
+                new Alert(Alert.AlertType.ERROR, "Vous ne pouvez modifier une place déjà existante.").show();
+
+            row.setFloor(event.getNewValue());
+        });
 
         quantityColumn.setCellFactory(cell -> unsignedIntegerTextFieldTableCell());
-        quantityColumn.setOnEditCommit(event -> getItems().get(event.getTablePosition().getRow()).setQuantity(event.getNewValue()));
+        quantityColumn.setOnEditCommit(event -> {
+            ParkingTableViewRow row = getItems().get(event.getTablePosition().getRow());
+
+            if (row.getLocked())
+                new Alert(Alert.AlertType.ERROR, "Vous ne pouvez modifier une place déjà existante.").show();
+
+            row.setQuantity(event.getNewValue());
+        });
 
         typeColumn.setCellFactory(cell -> parkingSpotClassComboBoxTableCell());
-        typeColumn.setOnEditCommit(event -> getItems().get(event.getTablePosition().getRow()).setParkingSpotType(event.getNewValue()));
+        typeColumn.setOnEditCommit(event -> {
+            ParkingTableViewRow row = getItems().get(event.getTablePosition().getRow());
+
+            if (row.getLocked())
+                new Alert(Alert.AlertType.ERROR, "Vous ne pouvez modifier une place déjà existante.").show();
+
+            row.setParkingSpotType(event.getNewValue());
+        });
 
         getColumns().add(floorColumn);
         getColumns().add(quantityColumn);
