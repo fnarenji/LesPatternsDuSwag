@@ -19,6 +19,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
     private static ParkingManager instance = new ParkingManager();
     private String companyName;
     private Map<Integer, Parking> parkingsById = new HashMap<>();
+    private Map<String, Object> config = new HashMap<>();
 
     private ParkingManager() {
 
@@ -227,5 +228,18 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public Integer getInt(String key){
+        return (Integer) config.get(key);
+    }
+    public Boolean getBool(String key){
+        return (Boolean) config.get(key);
+    }
+    public Double getDouble(String key){
+        return (Double) config.get(key);
+    }
+    public String getString(String key){
+        return (String) config.get(key);
     }
 }
