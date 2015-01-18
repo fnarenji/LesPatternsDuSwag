@@ -22,6 +22,8 @@ import java.util.Collection;
 
 /**
  * Created by loick on 14/01/15.
+ *
+ * Groups all the functions related to the creation of clients
  */
 public class ClientStage extends Stage {
 
