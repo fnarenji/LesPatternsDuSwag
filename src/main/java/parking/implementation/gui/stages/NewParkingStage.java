@@ -19,9 +19,13 @@ import parking.api.business.parking.Parking;
 import parking.api.business.parking.ParkingManager;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.implementation.business.logistic.floor.FloorParkingSpotIdProvider;
+import parking.implementation.business.logistic.simple.SimpleParkingSpotFactory;
 import parking.implementation.business.logistic.simple.SimpleParkingSpotSelector;
 import parking.implementation.gui.controls.ParkingFloorTableView;
 import parking.implementation.gui.controls.ParkingTableViewRow;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sknz on 1/18/15.
@@ -44,17 +48,21 @@ public class NewParkingStage extends Stage {
         if (parking != null)
             readFromParking(parking);
 
-        parkingName = parkingName != null ? parking.getName() : "Mon premier parking";
+        parkingName = parking != null ? parking.getName() : "Mon premier parking";
 
         Text titleLabel = new Text("Titre du parking");
         TextField titleField = new TextField(parkingName);
         titleField.setOnAction(event -> parkingName = titleField.getText());
         titleField.setMaxWidth(Double.MAX_VALUE);
+
         Button newTableLine = new Button("Nouvelle entrée");
         Button removeTableLine = new Button("Suppr. séléction");
 
         newTableLine.setOnAction(event -> parkingFloorTableView.addNewLine());
         removeTableLine.setOnAction(event -> parkingFloorTableView.removeSelectedLine());
+
+        Button okButton = new Button("Done !");
+        okButton.setOnAction(event -> hide());
 
         GridPane pane = new GridPane();
         pane.add(titleLabel, 0, 0);
@@ -68,8 +76,9 @@ public class NewParkingStage extends Stage {
         Text windowTitle = new Text("Création/édition de parking");
         windowTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         VBox.setMargin(windowTitle, new Insets(10));
+        VBox.setMargin(okButton, new Insets(10));
 
-        VBox vBox = new VBox(windowTitle, pane, parkingFloorTableView);
+        VBox vBox = new VBox(windowTitle, pane, parkingFloorTableView, okButton);
         vBox.setAlignment(Pos.CENTER);
 
         setScene(new Scene(vBox));
@@ -99,13 +108,31 @@ public class NewParkingStage extends Stage {
     }
 
     public void applyChanges() {
+        SimpleParkingSpotFactory factory = new SimpleParkingSpotFactory();
+
+        Map<Integer, Integer> countByFloor = new HashMap<>();
+
         if (parking != null) {
             parking.setName(getParkingName());
         }
         else {
             parking = ParkingManager.getInstance().newParking(getParkingName());
             parking.setParkingSpotSelector(new SimpleParkingSpotSelector());
+
+            parkingFloorTableView.getItems().forEach(row -> {
+                factory.setParkingSpotType(row.getParkingSpotType());
+                parking.newParkingSpot(factory, row.getQuantity());
+            });
         }
+        parkingFloorTableView.getItems().stream().filter(row -> !row.isLocked()).forEach(row -> {
+            Integer currentCount = countByFloor.getOrDefault(row.getFloor(), 0);
+            int finalQuantity = Math.min(99 - currentCount, row.getQuantity());
+
+            if (finalQuantity != 0) {
+                factory.setParkingSpotType(row.getParkingSpotType());
+                parking.newParkingSpot(factory, finalQuantity);
+            }
+        });
     }
 
     public String getParkingName() {

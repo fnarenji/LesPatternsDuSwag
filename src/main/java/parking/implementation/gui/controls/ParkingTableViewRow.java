@@ -11,16 +11,16 @@ public class ParkingTableViewRow {
     private boolean locked = false;
     private SimpleIntegerProperty floor = new SimpleIntegerProperty();
     private SimpleIntegerProperty quantity = new SimpleIntegerProperty();
-    private SimpleObjectProperty<Class<? extends ParkingSpot>> type = new SimpleObjectProperty<>();
+    private SimpleObjectProperty<Class<? extends ParkingSpot>> parkingSpotType = new SimpleObjectProperty<>();
 
-    public ParkingTableViewRow(Integer floor, Integer quantity, Class<? extends ParkingSpot> type) {
+    public ParkingTableViewRow(Integer floor, Integer quantity, Class<? extends ParkingSpot> parkingSpotType) {
         setFloor(floor);
         setQuantity(quantity);
-        setType(type);
+        setParkingSpotType(parkingSpotType);
     }
 
-    public ParkingTableViewRow(Integer floor, Integer quantity, Class<? extends ParkingSpot> type, boolean locked) {
-        this(floor, quantity, type);
+    public ParkingTableViewRow(Integer floor, Integer quantity, Class<? extends ParkingSpot> parkingSpotType, boolean locked) {
+        this(floor, quantity, parkingSpotType);
         this.locked = locked;
     }
 
@@ -40,12 +40,12 @@ public class ParkingTableViewRow {
         this.quantity.set(quantity);
     }
 
-    public Class<? extends ParkingSpot> getType() {
-        return type.get();
+    public Class<? extends ParkingSpot> getParkingSpotType() {
+        return parkingSpotType.get();
     }
 
-    public void setType(Class<? extends ParkingSpot> type) {
-        this.type.set(type);
+    public void setParkingSpotType(Class<? extends ParkingSpot> parkingSpotType) {
+        this.parkingSpotType.set(parkingSpotType);
     }
 
     public boolean isLocked() {

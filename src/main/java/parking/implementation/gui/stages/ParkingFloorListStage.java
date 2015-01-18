@@ -17,7 +17,7 @@ import parking.api.business.parking.ParkingManager;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.exceptions.ParkingNotPresentException;
 import parking.implementation.business.Client;
-import parking.implementation.business.parkingspot.ParkingSpotFactory;
+import parking.implementation.business.logistic.simple.SimpleParkingSpotFactory;
 import parking.implementation.gui.controls.ButtonSpot;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class ParkingFloorListStage extends Stage {
     private int maxInLine = 10;
 
     private ParkingManager parkingManager;
-    private ParkingSpotFactory parkingSpotFactory;
+    private SimpleParkingSpotFactory parkingSpotFactory;
 
     public ParkingFloorListStage(Window owner, Collection<GridPane> parking, Collection<Client> clients) {
         this.initOwner(owner);
@@ -91,7 +91,7 @@ public class ParkingFloorListStage extends Stage {
         //create parking
         if (nbCar != 0 || nbCarrier != 0) {
             parkingManager = ParkingManager.getInstance();
-            parkingSpotFactory = new ParkingSpotFactory();
+            parkingSpotFactory = new SimpleParkingSpotFactory();
 
             parkingManager.setCompanyName("SWAG COMPANY");
             int idParking = parkingManager.count();

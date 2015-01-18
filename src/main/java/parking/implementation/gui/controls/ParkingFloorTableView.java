@@ -1,7 +1,6 @@
 package parking.implementation.gui.controls;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
@@ -34,7 +33,7 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
 
         floorColumn.setCellValueFactory(new PropertyValueFactory<>("floor"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        typeColumn.setCellValueFactory(new PropertyValueFactory<>("Type"));
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("parkingSpotType"));
 
         quantityColumn.setSortable(false);
         typeColumn.setSortable(false);
@@ -47,7 +46,7 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
         quantityColumn.setOnEditCommit(event -> getItems().get(event.getTablePosition().getRow()).setQuantity(event.getNewValue()));
 
         typeColumn.setCellFactory(cell -> parkingSpotClassComboBoxTableCell());
-        typeColumn.setOnEditCommit(event -> getItems().get(event.getTablePosition().getRow()).setType(event.getNewValue()));
+        typeColumn.setOnEditCommit(event -> getItems().get(event.getTablePosition().getRow()).setParkingSpotType(event.getNewValue()));
 
         getColumns().add(floorColumn);
         getColumns().add(quantityColumn);
@@ -100,7 +99,7 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
 
     public void addNewLine() {
         int position = data.contains(getSelectionModel().getSelectedItem())
-                ? data.indexOf(getSelectionModel().getSelectedItem())
+                ? data.indexOf(getSelectionModel().getSelectedItem()) + 1
                 : data.size();
 
         if (position + 1 < data.size()) {
