@@ -230,6 +230,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         }
     }
 
+    public Object get(String key){ return config.get(key); }
     public Integer getInt(String key){
         return (Integer) config.get(key);
     }
