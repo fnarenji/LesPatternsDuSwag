@@ -22,6 +22,8 @@ import java.util.Collection;
 
 /**
  * Created by loic on 18/01/15.
+ *
+ * This create a choice box with the 3 type of vehicles, then find the best spot for the selected vehicle
  */
 public class AutoSelectorStage extends Stage {
 

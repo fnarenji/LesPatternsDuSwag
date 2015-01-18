@@ -53,7 +53,7 @@ public class ParkingGrid extends GridPane {
         updateGrid(1);
     }
 
-    public ButtonSpot highlightId(Integer id) {
+    public ButtonSpot highlightButton(Integer id) {
         return buttonSpotMap.get(id);
     }
 }

@@ -16,6 +16,8 @@ import parking.api.business.Utils;
 
 /**
  * Created by sknz on 1/18/15.
+ *
+ * This class groups the table which print the floor of a parking with the type  of the vehicle and the amount of vehicles inside it
  */
 public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
     public ParkingFloorTableView() {

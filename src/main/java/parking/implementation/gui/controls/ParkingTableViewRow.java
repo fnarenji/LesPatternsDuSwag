@@ -6,6 +6,8 @@ import parking.api.business.parkingspot.ParkingSpot;
 
 /**
  * Created by sknz on 1/18/15.
+ *
+ * This class represents the entries in the class ParkingFloorTableView (which manage the floor of a parking)
  */
 public class ParkingTableViewRow {
     private SimpleIntegerProperty floor = new SimpleIntegerProperty();

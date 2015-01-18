@@ -16,6 +16,8 @@ import parking.implementation.business.Client;
 
 /**
  * Created by loic on 18/01/15.
+ *
+ * This class groups the functions required to create bills
  */
 public class InvoiceStage extends Stage {
     private ParkingSpot parkingSpot;

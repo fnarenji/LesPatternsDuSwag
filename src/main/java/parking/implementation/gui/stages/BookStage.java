@@ -20,6 +20,8 @@ import java.util.Iterator;
 
 /**
  * Created by loic on 18/01/15.
+ *
+ * This class groups all the functions to create a booking
  */
 public class BookStage extends Stage {
     private Collection<Client> clients = new ArrayList<>();

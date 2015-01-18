@@ -25,6 +25,8 @@ import java.awt.*;
 
 /**
  * Created by loick on 14/01/15.
+ *
+ * Change the current parking
  */
 public class ChangeParkingStage extends Stage {
     ChoiceBox<Parking> parkingNumberChoiceBox;

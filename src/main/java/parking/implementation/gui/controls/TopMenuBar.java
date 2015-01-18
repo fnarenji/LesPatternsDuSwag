@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 /**
  * Created by sknz on 1/17/15.
- * This class is about the functions in the top menu
+ * This class is regroup the functions in the top menu, and create the top menu
  */
 public class TopMenuBar extends MenuBar {
     private Stage primaryStage;
@@ -110,7 +110,7 @@ public class TopMenuBar extends MenuBar {
             
             try {
                 parkingSpot = currentParking.findAvailableParkingSpotForVehicle(vehicle);
-                tmpButton = parkingGrid.highlightId(parkingSpot.getId());
+                tmpButton = parkingGrid.highlightButton(parkingSpot.getId());
                 tmpButton.setStyle("-fx-background-color: #00ccff");
             } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Pas de place disponible ou type non défini.").show();
