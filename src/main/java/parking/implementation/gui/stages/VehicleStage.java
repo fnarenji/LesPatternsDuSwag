@@ -4,26 +4,21 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.StringConverter;
+import parking.api.business.Utils;
+import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
 import parking.api.exceptions.UnknownVehicleException;
 import parking.implementation.business.Client;
-import parking.implementation.business.logistic.simple.SimpleVehicleFactory;
 import parking.implementation.gui.ClientManager;
-import parking.implementation.business.logistic.simple.VehicleFactory;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import parking.implementation.gui.MainApplication;
 
 /**
  * Created by loick on 14/01/15.
@@ -31,18 +26,16 @@ import java.util.Iterator;
  * Enter information when park a vehicle
  */
 public class VehicleStage extends Stage {
-
-    private Collection<String> vehicles = new ArrayList<>();
-
     private Label titleLabel;
     private Label label;
     private ChoiceBox<Client> clientChoiceBox;
-    private ChoiceBox<String> vehicleChoiceBox;
+    private ChoiceBox<Class<? extends Vehicle>> vehicleChoiceBox;
     private TextField plateField;
     private TextField brandField;
     private TextField modelField;
     private Button submitButton;
     private Button cancelButton;
+    private Boolean cancelled = false;
 
     public VehicleStage(Window owner) {
         this.initOwner(owner);
@@ -103,9 +96,27 @@ public class VehicleStage extends Stage {
     }
 
     private void createChoiceBoxVehicle() {
-        vehicleChoiceBox = new ChoiceBox<String>();
-        vehicleChoiceBox.getItems().addAll(vehicles);
-        vehicleChoiceBox.setValue(vehicles.iterator().next());
+        vehicleChoiceBox = new ChoiceBox<>();
+        vehicleChoiceBox.setConverter(new StringConverter<Class<? extends Vehicle>>() {
+            @Override
+            public String toString(Class<? extends Vehicle> object) {
+                return object.getSimpleName().replace("ParkingSpot", "");
+            }
+
+            @Override
+            public Class<? extends Vehicle> fromString(String string) {
+                try {
+                    Class type = Class.forName(string + "ParkingSpot");
+                    if (ParkingSpot.class.isAssignableFrom(type))
+                        return Utils.<Class<? extends Vehicle>>uncheckedCast(type);
+                } catch (ClassNotFoundException e) {
+                    return null;
+                }
+
+                return null;
+            }
+        });
+        vehicleChoiceBox.getItems().addAll(MainApplication.VehicleTypes);
     }
 
     private void createTextFieldPlate() {
@@ -149,7 +160,10 @@ public class VehicleStage extends Stage {
         cancelButton.setText("Cancel");
 
         //add action
-        cancelButton.setOnAction(createCancelEventHandler());
+        cancelButton.setOnAction(event -> {
+            cancelled = true;
+            close();
+        });
 
         //style
         cancelButton.setStyle("-fx-background-color: red");
@@ -169,15 +183,7 @@ public class VehicleStage extends Stage {
         };
     }
 
-    private EventHandler<ActionEvent> createCancelEventHandler() {
-        return event -> close();
-    }
-
     private void init() {
-        vehicles.add("Voiture");
-        vehicles.add("Moto");
-        vehicles.add("Camion");
-
         createTitle();
         createLabel();
         createChoiceBoxVehicle();
@@ -189,16 +195,22 @@ public class VehicleStage extends Stage {
         createClientChoiceBox();
     }
 
-    public Vehicle getVehicle() throws UnknownVehicleException {
+    public Vehicle getVehicle() {
         if (vehicleChoiceBox.getValue() == null
                 || plateField.getText() == null
                 || brandField.getText() == null
                 || modelField.getText() == null)
             return null;
 
-        VehicleFactory vehicleFactory = new SimpleVehicleFactory();
 
-        Vehicle vehicle = vehicleFactory.createVehicle(vehicleChoiceBox.getValue().toString());
+        Vehicle vehicle = null;
+        try {
+            vehicle = vehicleChoiceBox.getValue().newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            new Alert(Alert.AlertType.ERROR, e.toString());
+        }
+
+        assert vehicle != null;
         vehicle.setPlate(plateField.getText());
         vehicle.setBrand(brandField.getText());
         vehicle.setModel(brandField.getText());
@@ -209,5 +221,8 @@ public class VehicleStage extends Stage {
     public Client getClient(){
         return clientChoiceBox.getValue();
     }
-    
+
+    public Boolean getCancelled() {
+        return cancelled;
+    }
 }

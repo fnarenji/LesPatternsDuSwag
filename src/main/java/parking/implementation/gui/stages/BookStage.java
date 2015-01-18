@@ -1,19 +1,26 @@
 package parking.implementation.gui.stages;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.StringConverter;
+import org.joda.time.DateTime;
+import parking.api.business.Utils;
+import parking.api.business.parkingspot.ParkingSpot;
+import parking.api.business.vehicle.Vehicle;
 import parking.implementation.business.Client;
+import parking.implementation.business.vehicle.Car;
 import parking.implementation.gui.ClientManager;
+import parking.implementation.gui.MainApplication;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -29,44 +36,63 @@ public class BookStage extends Stage {
     private Label titleLabel;
     private Label label;
     private ChoiceBox<Client> clientChoiceBox;
-    private ChoiceBox<Integer> durationChoiceBox;
+    private DatePicker picker;
     private Button createButton;
     private Button submitButton;
     private Button cancelButton;
+    private CheckBox checkBox;
+    private ChoiceBox<Class<? extends Vehicle>> vehicleChoiceBox;
+    private Boolean cancelled = false;
 
-    public BookStage(Window owner) {
+    public BookStage(Window owner, Boolean askVehicle) {
         this.initOwner(owner);
 
-        init();
+        if (askVehicle) {
+            createChoiceBoxVehicle();
+            vehicleChoiceBox.getSelectionModel().select(Car.class);
+        }
 
-        BorderPane borderPane = new BorderPane();
-        FlowPane flowPane = new FlowPane();
+        createTitle();
+        createLabel();
+        createSelect();
+        createButtonSubmit();
+        createButtonCreate();
+        createButtonCancel();
+        createDatePicker();
+        createCheckBox();
 
-        //add Nodes to FlowPane
-        flowPane.getChildren().addAll(
-                titleLabel,
-                clientChoiceBox,
-                durationChoiceBox,
-                submitButton,
-                label,
-                createButton,
-                cancelButton
-        );
+        VBox vBoxCenter = new VBox(new HBox(clientChoiceBox, createButton), checkBox, picker);
+        if (askVehicle)
+            vBoxCenter.getChildren().add(vehicleChoiceBox);
+
+        HBox.setMargin(clientChoiceBox, new Insets(8));
+        HBox.setMargin(createButton, new Insets(8));
+        VBox.setMargin(clientChoiceBox, new Insets(8));
+        VBox.setMargin(checkBox, new Insets(8));
+        VBox.setMargin(picker, new Insets(8));
+        vBoxCenter.setAlignment(Pos.CENTER);
+
+        HBox hBoxBottom = new HBox(submitButton, cancelButton);
+        HBox.setMargin(submitButton, new Insets(8));
+        HBox.setMargin(cancelButton, new Insets(8));
+        hBoxBottom.setAlignment(Pos.CENTER);
+
+        BorderPane.setAlignment(titleLabel, Pos.CENTER);
+
+        BorderPane pane = new BorderPane();
+        pane.setTop(titleLabel);
+        pane.setCenter(vBoxCenter);
+        pane.setBottom(hBoxBottom);
 
         updateState();
 
-        flowPane.setMaxSize(200, 400);
-
-        //add FlowPane
-        flowPane.alignmentProperty().setValue(Pos.CENTER);
-        borderPane.setCenter(flowPane);
-
         //createButton scene
-        Scene scene = new Scene(borderPane, 300, 200);
+        Scene scene = new Scene(pane);
 
-        this.setResizable(false);
-        this.setScene(scene);
-        this.setTitle("Select Client");
+        setResizable(false);
+        sizeToScene();
+        setScene(scene);
+        setTitle("Select Client");
     }
 
     private void createTitle() {
@@ -80,6 +106,10 @@ public class BookStage extends Stage {
         label = new Label("Il n'y a pas de clients.");
         label.setTextFill(Color.RED);
         label.setAlignment(Pos.CENTER);
+    }
+
+    private void createDatePicker() {
+        picker = new DatePicker(LocalDate.now());
     }
 
     private void createSelect() {
@@ -109,6 +139,30 @@ public class BookStage extends Stage {
         }
     }
 
+    private void createChoiceBoxVehicle() {
+        vehicleChoiceBox = new ChoiceBox<>();
+        vehicleChoiceBox.setConverter(new StringConverter<Class<? extends Vehicle>>() {
+            @Override
+            public String toString(Class<? extends Vehicle> object) {
+                return object.getSimpleName().replace("ParkingSpot", "");
+            }
+
+            @Override
+            public Class<? extends Vehicle> fromString(String string) {
+                try {
+                    Class type = Class.forName(string + "ParkingSpot");
+                    if (ParkingSpot.class.isAssignableFrom(type))
+                        return Utils.<Class<? extends Vehicle>>uncheckedCast(type);
+                } catch (ClassNotFoundException e) {
+                    return null;
+                }
+
+                return null;
+            }
+        });
+        vehicleChoiceBox.getItems().addAll(MainApplication.VehicleTypes);
+    }
+
     private void createButtonCreate() {
         createButton = new Button();
         createButton.setText("New Client");
@@ -131,14 +185,18 @@ public class BookStage extends Stage {
         createButton.setTextFill(Color.WHITE);
     }
 
+    private void createCheckBox() {
+        checkBox = new CheckBox("Infini");
+        checkBox.setSelected(false);
+        checkBox.selectedProperty().addListener(event -> picker.setDisable(checkBox.isSelected()));
+    }
+
     private void createButtonSubmit() {
         submitButton = new Button();
         submitButton.setText("Select");
 
         //add action
-        submitButton.setOnAction(event -> {
-            this.close();
-        });
+        submitButton.setOnAction(event -> this.close());
 
         //style
         submitButton.setStyle("-fx-background-color: green");
@@ -151,6 +209,7 @@ public class BookStage extends Stage {
 
         //add action
         cancelButton.setOnAction(event -> {
+            cancelled = true;
             this.close();
         });
 
@@ -159,31 +218,20 @@ public class BookStage extends Stage {
         cancelButton.setTextFill(Color.WHITE);
     }
 
-    private void createDurationChoixBox() {
-        durationChoiceBox = new ChoiceBox<>();
-        Collection<Integer> during = new ArrayList<>();
-        for (int i = 1; i < 50; i++)
-            during.add(new Integer(i));
-        durationChoiceBox.getItems().setAll(during);
-    }
-
-    private void init() {
-        createTitle();
-        createLabel();
-        createSelect();
-        createButtonSubmit();
-        createButtonCreate();
-        createButtonCancel();
-        createDurationChoixBox();
-    }
-
     public Client getClient() {
         return this.clientChoiceBox.getValue();
     }
 
-    public Integer getDuration() {
-        return durationChoiceBox.getValue();
+    public DateTime getDuration() {
+        return checkBox.isSelected() ? null : new org.joda.time.LocalDate(picker.getValue()).toDateTimeAtCurrentTime();
+    }
 
+    public Class<? extends Vehicle> getVehicleType() {
+        return vehicleChoiceBox.getValue();
+    }
+
+    public Boolean getCancelled() {
+        return cancelled;
     }
 }
 

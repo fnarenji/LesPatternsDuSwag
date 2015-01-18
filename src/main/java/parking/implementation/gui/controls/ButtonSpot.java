@@ -1,6 +1,5 @@
 package parking.implementation.gui.controls;
 
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -63,10 +62,6 @@ public class ButtonSpot extends MenuButton {
         getItems().addAll(park, book, infos);
     }
 
-    ButtonSpot(String text, Node graphic) {
-        super(text, graphic);
-    }
-
     private void setAvailable() {
         this.setStyle("-fx-background-color: " + colors.get(parkingSpot.getClass()));
         this.park.setText("Park");
@@ -113,7 +108,8 @@ public class ButtonSpot extends MenuButton {
                 if (this.park.getText().equalsIgnoreCase("park")) {
                     vehicleStage = new VehicleStage(parent);
                     vehicleStage.showAndWait();
-                    if(!vehicleStage.getVehicle().getBrand().equals(""))
+
+                    if(vehicleStage.getVehicle() != null)
                         parkingSpot.park(vehicleStage.getVehicle());
                 } else if (this.park.getText().equalsIgnoreCase("unpark")) {
                     if(client == null) {
@@ -136,18 +132,14 @@ public class ButtonSpot extends MenuButton {
                 updateState();
 
             } catch (SpotNotEmptyException e1) {
-                Alert alert = new Alert(
-                        Alert.AlertType.ERROR,
-                        "La place est déjà prise."
-                );
-                alert.show();
+                new Alert(Alert.AlertType.ERROR, "La place est déjà prise.").show();
             } catch (SpotBookedException e1) {
-                    if(vehicleStage.getClient().equals((Client)parkingSpot.getCurrentBooking().getOwner())){
+                    if(vehicleStage.getClient().equals(parkingSpot.getCurrentBooking().getOwner())) {
                         try {
                             parkingSpot.unbook();
                             parkingSpot.park(vehicleStage.getVehicle());
                             updateState();
-                        } catch (SpotNotEmptyException | SpotBookedException | UnknownVehicleException | SpotNotBookedException | VehicleNotFitException e) {
+                        } catch (SpotNotEmptyException | SpotBookedException | SpotNotBookedException | VehicleNotFitException e) {
                             e.printStackTrace();
                         }
 
@@ -160,18 +152,8 @@ public class ButtonSpot extends MenuButton {
                         );
                         alert.show();
                     }
-            } catch (UnknownVehicleException e1) {
-                Alert alert = new Alert(
-                        Alert.AlertType.ERROR,
-                        "Véhicule inconnu."
-                );
-                alert.show();
             } catch (VehicleNotFitException e1) {
-                Alert alert = new Alert(
-                        Alert.AlertType.ERROR,
-                        "Place incorrecte."
-                );
-                alert.show();
+                new Alert(Alert.AlertType.ERROR, "Place incorrecte.").show();
             }
         });
     }
@@ -181,12 +163,12 @@ public class ButtonSpot extends MenuButton {
         book.setOnAction(event -> {
             try {
                 if (this.book.getText().equalsIgnoreCase("book")) {
-                    BookStage bookStage = new BookStage(parent);
+                    BookStage bookStage = new BookStage(parent, false);
                     bookStage.showAndWait();
                     if (bookStage.getClient() != null){
-                        dateTimeEnd = new DateTime(DateTime.now().plusDays(bookStage.getDuration()));
+                        dateTimeEnd = bookStage.getDuration();
                         client = bookStage.getClient();
-                        parkingSpot.book(bookStage.getClient(),new DateTime(DateTime.now().plusDays(bookStage.getDuration())));
+                        parkingSpot.book(bookStage.getClient(), dateTimeEnd);
                     }
                 } else if (this.book.getText().equalsIgnoreCase("unbook")) {
                     if(client != null) {
@@ -195,37 +177,22 @@ public class ButtonSpot extends MenuButton {
                         InvoiceStage invoiceStage = new InvoiceStage(parent, parkingSpot, invoice);
                         invoiceStage.showAndWait();
                     }
+
                     this.parkingSpot.unbook();
                     dateTimeEnd = null;
                     client = null;
 
-                    Alert alert = new Alert(
-                            Alert.AlertType.INFORMATION,
-                            "Place libérée."
-                    );
-                    alert.show();
+                    new Alert(Alert.AlertType.INFORMATION, "Place libérée").show();
                 }
 
                 updateState();
 
             } catch (SpotNotEmptyException e) {
-                Alert alert = new Alert(
-                        Alert.AlertType.ERROR,
-                        "Place deja occupée."
-                );
-                alert.show();
+                new Alert(Alert.AlertType.ERROR, "Place deja occupée.").show();
             } catch (SpotBookedException e) {
-                Alert alert = new Alert(
-                        Alert.AlertType.ERROR,
-                        "Place déjà réservée."
-                );
-                alert.show();
+                new Alert(Alert.AlertType.ERROR, "Place déjà réservée.").show();
             } catch (SpotNotBookedException e) {
-                Alert alert = new Alert(
-                        Alert.AlertType.ERROR,
-                        "Place non réservée."
-                );
-                alert.show();
+                new Alert(Alert.AlertType.ERROR, "Place non réservée.").show();
             }
         });
     }
@@ -240,5 +207,9 @@ public class ButtonSpot extends MenuButton {
 
     public ParkingSpot getParkingSpot() {
         return parkingSpot;
+    }
+
+    public void highlight() {
+        setStyle("-fx-background-color: #4D22A3");
     }
 }

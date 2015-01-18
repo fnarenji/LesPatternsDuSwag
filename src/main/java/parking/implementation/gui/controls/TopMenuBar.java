@@ -7,9 +7,7 @@ import parking.api.business.parking.Parking;
 import parking.api.business.parking.ParkingManagerSerializer;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
-import parking.implementation.business.vehicle.Car;
-import parking.implementation.business.vehicle.Carrier;
-import parking.implementation.business.vehicle.Motorbike;
+import parking.api.exceptions.*;
 import parking.implementation.gui.ClientManager;
 import parking.implementation.gui.stages.*;
 
@@ -76,47 +74,61 @@ public class TopMenuBar extends MenuBar {
     }
 
     private Menu createMenuSelector() {
-        Menu menuSelector = new Menu("AutoSelector");
-        MenuItem find = new MenuItem("Find a place");
-        MenuItem undo = new MenuItem("Unselect place");
+        Menu menuSelector = new Menu("EasySelector");
+        MenuItem find = new MenuItem("AutoPark");
+        MenuItem book = new MenuItem("AutoBook");
         
         find.setOnAction(event ->{
-            
-            AutoSelectorStage autoSelectorStage = new AutoSelectorStage(primaryStage);
-            autoSelectorStage.showAndWait();
-            
+            VehicleStage vehicleStage = new VehicleStage(primaryStage);
+            vehicleStage.showAndWait();
+
+            if (vehicleStage.getCancelled())
+                return;
+
             Vehicle vehicle = null;
-            
-            switch (autoSelectorStage.getVehicleType()){
-                case "Moto":
-                    vehicle = new Motorbike();
-                    break;
-                case "Voiture":
-                    vehicle = new Car();
-                    break;
-                case "Camion":
-                    vehicle = new Carrier();
-                    break;
-                default:
-                    break;
-            }
-            
+            vehicle = vehicleStage.getVehicle();
+
             ParkingSpot parkingSpot = null;
-            
             try {
                 parkingSpot = currentParking.findAvailableParkingSpotForVehicle(vehicle);
-                parkingGrid.highlightButton(parkingSpot.getId());
-            } catch (Exception e) {
-                new Alert(Alert.AlertType.ERROR, "Pas de place disponible ou type non défini.").show();
+                parkingSpot.park(vehicle);
+            } catch (NoSpotAvailableException e) {
+                new Alert(Alert.AlertType.ERROR, "Pas de place disponible.").show();
+            } catch (ParkingNoVehicleParkingStrategyException e) {
+                new Alert(Alert.AlertType.ERROR, "Pas de VehicleParkingStrategy configuré.").show();
+            } catch (SpotNotEmptyException | VehicleNotFitException | SpotBookedException e) {
+                new Alert(Alert.AlertType.ERROR, "Erreur interne: " + e).show();
             }
-            
         });
 
-        menuSelector.getItems().addAll(find, undo);
+        book.setOnAction(event -> {
+            BookStage bookStage = new BookStage(primaryStage, true);
+            bookStage.showAndWait();
 
-        undo.setOnAction(event ->{
-            tmpButton.setStyle("-fx-background-color: #60ff05");
+            if (bookStage.getCancelled())
+                return;
+
+            Vehicle vehicle = null;
+            try {
+                vehicle = bookStage.getVehicleType().newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                new Alert(Alert.AlertType.ERROR, "Erreur interne: " + e).show();
+            }
+
+            ParkingSpot parkingSpot = null;
+            try {
+                parkingSpot = currentParking.findAvailableParkingSpotForVehicle(vehicle);
+                parkingSpot.park(vehicle);
+            } catch (NoSpotAvailableException e) {
+                new Alert(Alert.AlertType.ERROR, "Pas de place disponible.").show();
+            } catch (ParkingNoVehicleParkingStrategyException e) {
+                new Alert(Alert.AlertType.ERROR, "Pas de VehicleParkingStrategy configuré.").show();
+            } catch (SpotNotEmptyException | VehicleNotFitException | SpotBookedException e) {
+                new Alert(Alert.AlertType.ERROR, "Erreur interne: " + e).show();
+            }
         });
+
+        menuSelector.getItems().addAll(find, book);
         return menuSelector;
     }
 

@@ -2,7 +2,9 @@ package parking.implementation.gui.stages;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -10,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -43,33 +47,28 @@ public class ClientStage extends Stage {
         init();
 
         BorderPane borderPane = new BorderPane();
-        FlowPane flowPane = new FlowPane();
 
-        //add Nodes to FlowPane
-        flowPane.getChildren().addAll(
-                title,
-                civility,
-                lastname,
-                firstname,
-                submit,
-                cancel
-        );
-
-        flowPane.setMaxSize(200, 400);
-
-        //add FlowPane
-        flowPane.alignmentProperty().setValue(Pos.CENTER);
-        borderPane.setCenter(flowPane);
-        //add Label error
+        HBox hBox = new HBox(submit, cancel);
+        VBox vBox = new VBox(title, civility, lastname, firstname, hBox);
+        for (Node node : hBox.getChildren()) {
+            HBox.setMargin(node, new Insets(8));
+        }
+        
+        vBox.alignmentProperty().setValue(Pos.CENTER);
+        for (Node node : vBox.getChildren()) {
+            VBox.setMargin(node, new Insets(10));
+        }
+        borderPane.setCenter(vBox);
         borderPane.setBottom(label);
         borderPane.setAlignment(label, Pos.CENTER);
 
         //create scene
-        Scene scene = new Scene(borderPane, 300, 200);
+        Scene scene = new Scene(borderPane);
 
-        this.setResizable(false);
-        this.setScene(scene);
-        this.setTitle("New Client");
+        setResizable(false);
+        sizeToScene();
+        setScene(scene);
+        setTitle("New Client");
     }
 
     private void createTitle() {
