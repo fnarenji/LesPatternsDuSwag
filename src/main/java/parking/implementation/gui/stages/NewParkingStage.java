@@ -118,12 +118,8 @@ public class NewParkingStage extends Stage {
         else {
             parking = ParkingManager.getInstance().newParking(getParkingName());
             parking.setParkingSpotSelector(new SimpleParkingSpotSelector());
-
-            parkingFloorTableView.getItems().forEach(row -> {
-                factory.setParkingSpotType(row.getParkingSpotType());
-                parking.newParkingSpot(factory, row.getQuantity());
-            });
         }
+        
         parkingFloorTableView.getItems().stream().filter(row -> !row.isLocked()).forEach(row -> {
             Integer currentCount = countByFloor.getOrDefault(row.getFloor(), 0);
             int finalQuantity = Math.min(99 - currentCount, row.getQuantity());
