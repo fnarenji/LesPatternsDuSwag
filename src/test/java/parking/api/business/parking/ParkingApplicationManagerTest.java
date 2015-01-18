@@ -108,7 +108,7 @@ public class ParkingApplicationManagerTest {
         } catch (ParkingExistsException e) {
             e.printStackTrace();
         }
-        ParkingManagerSerializer.serialize();
+        ParkingManagerSerializer.serialize("save/parkingManager.ser");
         ParkingManagerSerializer.deserialize("save/parkingManager.ser");
 
         assertEquals(ParkingApplicationManager.getInstance().containsParking(1), true);

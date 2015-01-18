@@ -187,7 +187,7 @@ public class InvoiceStage extends Stage {
             invoiceExporter = new HTMLExporter(invoiceExporter);
         }
 
-        if(uploadCheckBox.isSelected()){
+        if(uploadCheckBox.isSelected()) {
             SFTPUploader sftpUploader = new SFTPUploader(invoiceExporter);
             String url = sftpUploader.export();
 
@@ -197,8 +197,8 @@ public class InvoiceStage extends Stage {
             alert.setContentText("URL : " + url);
 
             alert.showAndWait();
-        } else {
 
+        } else {
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Facture générée");

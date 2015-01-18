@@ -36,11 +36,11 @@ public class ParkingManagerSerializer {
      * Serialize a Parking Manager
      * @param
      */
-    public static void serialize() {
+    public static void serialize(String filename) {
         ObjectOutputStream oos = null;
         try {
 
-            OutputStream file = new ObjectOutputStream(new FileOutputStream("save/parkingManager.ser"));
+            OutputStream file = new ObjectOutputStream(new FileOutputStream(filename));
             oos = new ObjectOutputStream(file);
 
             ParkingApplicationManager.getInstance().write(oos);

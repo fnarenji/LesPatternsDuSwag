@@ -1,6 +1,7 @@
 package parking.implementation.gui.controls;
 
 import javafx.scene.control.*;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import parking.api.business.parking.Parking;
 import parking.api.business.parking.ParkingManagerSerializer;
@@ -12,6 +13,7 @@ import parking.implementation.business.vehicle.Motorbike;
 import parking.implementation.gui.ClientManager;
 import parking.implementation.gui.stages.*;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -146,13 +148,36 @@ public class TopMenuBar extends MenuBar {
         Menu fileMenu = new Menu("File");
 
         MenuItem save = new MenuItem("Save");
-        save.setOnAction(event -> {
-            ParkingManagerSerializer.serialize();
-            new Alert(Alert.AlertType.INFORMATION, "Parking sauvegardé !").show();
-        });
+        save.setOnAction(event -> chooseFileToSave());
 
         fileMenu.getItems().addAll(save);
 
         return fileMenu;
+    }
+    private void chooseFileToSave(){
+        String path;
+        File selectedDirectory = null;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Selectionner le dossier de sauvegarde");
+        alert.setHeaderText("Veuillez selectionner le dossier dans lequel vous souhaitez effectuer la sauvegarde");
+
+        ButtonType buttonTypeOne = new ButtonType("Selectionner");
+        ButtonType buttonTypeDefault = new ButtonType("Par défaut");
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeDefault);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne){
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            selectedDirectory = directoryChooser.showDialog(primaryStage);
+            path = selectedDirectory.getAbsolutePath() + "/parkingManager.ser";
+
+        } else {
+            path = "save/parkingManager.ser";
+        }
+
+            ParkingManagerSerializer.serialize(path);
+            new Alert(Alert.AlertType.INFORMATION, "Parking sauvegardé !").show();
     }
 }
