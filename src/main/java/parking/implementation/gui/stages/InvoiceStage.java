@@ -88,7 +88,10 @@ public class InvoiceStage extends Stage {
     private void createInfos(){
         info = new Label();
         
-        info.setText("Information : " + parkingSpot.getVehicle() + '\n');
+        if(parkingSpot.getVehicle() == null)
+            info.setText("Information : " + " non disponible " + '\n');
+        else
+            info.setText("Information : " + parkingSpot.getVehicle() + '\n');
 
         info.alignmentProperty().setValue(Pos.CENTER);
     }
