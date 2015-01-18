@@ -38,7 +38,6 @@ public class NewParkingStage extends Stage {
         parseParking(parking);
         parkingName = parkingName != null ? parking.getName() : "Mon premier parking";
 
-
         TableView tableView = new TableView();
         TableColumn floorColumn = new TableColumn("Etage");
         TableColumn amountColumn = new TableColumn("Quantité");
