@@ -27,6 +27,10 @@ import java.util.Collection;
 
 //Created by on 30/12/14.
 
+/**
+ * Main application : launch everything to create the GUI
+ */
+
 public class MainApplication extends Application {
     public static Collection<Class<? extends ParkingSpot>> ParkingSpotTypes = new ArrayList<>();
     public static Collection<Class<? extends Vehicle>> VehicleTypes = new ArrayList<>();

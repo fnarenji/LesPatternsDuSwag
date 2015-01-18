@@ -95,11 +95,11 @@ public class ButtonSpot extends MenuButton {
     }
 
     private void updateState() {
-        if (this.parkingSpot.isVehicleParked() && !parkingSpot.getVehicle().getBrand().equals(""))
+        if (this.parkingSpot.isVehicleParked())
             this.setBusy();
         else if (this.parkingSpot.isBooked())
             this.setBooked();
-        else if (!this.parkingSpot.isVehicleParked() && park.getText().equals("Unpark"))
+        else if (!this.parkingSpot.isVehicleParked())
             this.setAvailable();
         else
             this.setAvailableBook();
