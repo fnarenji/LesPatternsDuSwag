@@ -1,7 +1,6 @@
 package parking.implementation.business.invoices;
 
 import parking.api.business.invoices.Invoice;
-import parking.api.business.invoices.InvoiceExporter;
 
 /**
  * Created by Thomas on 18/01/2015.
@@ -12,7 +11,12 @@ public class FrenchExporter extends TranslatedExporter {
     }
 
     @Override
-    public void export() {
+    public String export() {
 
+        String toExport = "#Facture n°" + getInvoice().getInvoiceNumber();
+        toExport += "\n";
+        toExport += "##Prix : " + getInvoice().getInvoicePrice();
+
+        return toExport;
     }
 }
