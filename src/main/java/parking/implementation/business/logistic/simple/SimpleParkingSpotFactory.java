@@ -1,7 +1,7 @@
 package parking.implementation.business.logistic.simple;
 
-import parking.api.business.parking.Parking;
 import parking.api.business.parkingspot.ParkingSpot;
+import parking.api.business.parkingspot.ParkingSpotFactory;
 import parking.api.business.parkingspot.ParkingSpotIdProvider;
 import parking.implementation.business.parkingspot.CarParkingSpot;
 import parking.implementation.business.parkingspot.CarrierParkingSpot;
@@ -9,7 +9,7 @@ import parking.implementation.business.parkingspot.CarrierParkingSpot;
 /**
  * Created by  on 15/01/15.
  */
-public class SimpleParkingSpotFactory implements parking.api.business.parkingspot.ParkingSpotFactory {
+public class SimpleParkingSpotFactory implements ParkingSpotFactory {
     private Class parkingSpotType;
     private ParkingSpotIdProvider idProvider = new SimpleParkingSpotIdProvider();
 

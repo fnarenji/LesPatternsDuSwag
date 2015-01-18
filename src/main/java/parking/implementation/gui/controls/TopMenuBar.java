@@ -2,12 +2,17 @@ package parking.implementation.gui.controls;
 
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import parking.api.business.parking.Parking;
+import parking.api.business.parking.ParkingManager;
+import parking.api.exceptions.ParkingNotPresentException;
+import parking.implementation.gui.stages.ChangeParkingStage;
 import parking.implementation.gui.stages.ClientListStage;
 import parking.implementation.gui.ClientManager;
 import parking.implementation.gui.stages.ClientStage;
-import parking.implementation.gui.stages.ParkingListStage;
+import parking.implementation.gui.stages.NewParkingStage;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Created by sknz on 1/17/15.
@@ -15,6 +20,7 @@ import java.util.Optional;
  */
 public class TopMenuBar extends MenuBar {
     private Stage primaryStage;
+    private Parking currentParking;
 
     public TopMenuBar(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -46,20 +52,23 @@ public class TopMenuBar extends MenuBar {
 
     private Menu createMenuParking() {
         Menu menuParking = new Menu("Parking");
-        MenuItem select = new MenuItem("Selectionner");
+        MenuItem modifyParkingMenuItem = new MenuItem("Modifier le parking");
+        MenuItem changeParkingMenuItem = new MenuItem("Changer de parking");
 
-        MenuItem nouveau = new MenuItem("Nouveau");
-
-        nouveau.setOnAction(event -> {
-            ParkingListStage parkingListStage = new ParkingListStage(primaryStage);
-            parkingListStage.showAndWait();
-
-            System.out.println(parkingListStage.getChoice());
+        modifyParkingMenuItem.setOnAction(event -> {
+            NewParkingStage newParkingStage = new NewParkingStage(primaryStage, currentParking);
+            newParkingStage.showAndWait();
+            parkingChangeListener.accept(newParkingStage.getParking());
         });
 
-        menuParking.getItems().addAll(
-                nouveau
-        );
+        changeParkingMenuItem.setOnAction(event -> {
+            ChangeParkingStage changeParkingStage = new ChangeParkingStage(primaryStage);
+            changeParkingStage.showAndWait();
+            Parking parking = changeParkingStage.getChoice();
+            parkingChangeListener.accept(parking);
+        });
+
+        menuParking.getItems().addAll(modifyParkingMenuItem, changeParkingMenuItem);
 
         return menuParking;
     }
@@ -69,10 +78,7 @@ public class TopMenuBar extends MenuBar {
         MenuItem find = new MenuItem("Find a place");
         MenuItem undo = new MenuItem("Unselect place");
 
-        menuSelector.getItems().addAll(
-                find,
-                undo
-        );
+        menuSelector.getItems().addAll(find, undo);
 
         return menuSelector;
     }
@@ -93,5 +99,14 @@ public class TopMenuBar extends MenuBar {
         menuQuit.setGraphic(quitLabel);
 
         return menuQuit;
+    }
+
+    private Consumer<Parking> parkingChangeListener;
+    public void setOnChangeParking(Consumer<Parking> parkingChangeListener) {
+        this.parkingChangeListener = parkingChangeListener;
+    }
+
+    public void observeParkingChange(Parking parking) {
+        this.currentParking = parking;
     }
 }

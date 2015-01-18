@@ -1,5 +1,6 @@
 package parking.implementation.gui.stages;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -47,13 +49,14 @@ public class NewParkingStage extends Stage {
 
         if (parking != null)
             readFromParking(parking);
+        else parkingFloorTableView.addNewLine(); // default line
 
         parkingName = parking != null ? parking.getName() : "Mon premier parking";
 
-        Text titleLabel = new Text("Titre du parking");
-        TextField titleField = new TextField(parkingName);
-        titleField.setOnAction(event -> parkingName = titleField.getText());
-        titleField.setMaxWidth(Double.MAX_VALUE);
+        Text parkingTitleLabel = new Text("Titre du parking");
+        TextField parkingTitleField = new TextField(parkingName);
+        parkingTitleField.textProperty().addListener((observable, oldValue, newValue) -> parkingName = newValue);
+        parkingTitleField.setMaxWidth(Double.MAX_VALUE);
 
         Button newTableLine = new Button("Nouvelle entrée");
         Button removeTableLine = new Button("Suppr. séléction");
@@ -63,10 +66,12 @@ public class NewParkingStage extends Stage {
 
         Button okButton = new Button("Done !");
         okButton.setOnAction(event -> hide());
+        okButton.setStyle("-fx-background-color: royalblue");
+        okButton.setTextFill(Color.WHITE);
 
         GridPane pane = new GridPane();
-        pane.add(titleLabel, 0, 0);
-        pane.add(titleField, 1, 0);
+        pane.add(parkingTitleLabel, 0, 0);
+        pane.add(parkingTitleField, 1, 0);
         pane.add(newTableLine, 0, 1);
         pane.add(removeTableLine, 1, 1);
 
@@ -81,34 +86,21 @@ public class NewParkingStage extends Stage {
         VBox vBox = new VBox(windowTitle, pane, parkingFloorTableView, okButton);
         vBox.setAlignment(Pos.CENTER);
 
+        Platform.runLater(okButton::requestFocus);
+
         setScene(new Scene(vBox));
         sizeToScene();
     }
 
-    private void readFromParking(Parking parking) {
-        ObservableList<ParkingTableViewRow> items = parkingFloorTableView.getItems();
-
-        int previousParkingSpotFloor = -1;
-        Class<? extends ParkingSpot> previousParkingSpotType = null;
-
-        for (ParkingSpot parkingSpot : parking) {
-            int floor = FloorParkingSpotIdProvider.ExtractFloor(parkingSpot.getId());
-            if (floor == previousParkingSpotFloor) {
-                if (parkingSpot.getClass().equals(previousParkingSpotType)) {
-                    ParkingTableViewRow row = items.get(items.size() - 1);
-                    row.setQuantity(row.getQuantity() + 1);
-                }
-            }
-
-            items.add(new ParkingTableViewRow(floor, 1, parkingSpot.getClass(), true));
-
-            previousParkingSpotFloor = floor;
-            previousParkingSpotType = parkingSpot.getClass();
-        }
+    @Override
+    public void showAndWait() {
+        super.showAndWait();
+        applyChanges();
     }
 
-    public void applyChanges() {
+    private void applyChanges() {
         SimpleParkingSpotFactory factory = new SimpleParkingSpotFactory();
+        factory.setIdProvider(new FloorParkingSpotIdProvider());
 
         Map<Integer, Integer> countByFloor = new HashMap<>();
 
@@ -119,10 +111,11 @@ public class NewParkingStage extends Stage {
             parking = ParkingManager.getInstance().newParking(getParkingName());
             parking.setParkingSpotSelector(new SimpleParkingSpotSelector());
         }
-        
-        parkingFloorTableView.getItems().stream().filter(row -> !row.isLocked()).forEach(row -> {
+
+        parkingFloorTableView.getItems().stream().filter(row -> !row.getLocked()).forEach(row -> {
             Integer currentCount = countByFloor.getOrDefault(row.getFloor(), 0);
             int finalQuantity = Math.min(99 - currentCount, row.getQuantity());
+            countByFloor.put(row.getFloor(), finalQuantity);
 
             if (finalQuantity != 0) {
                 factory.setParkingSpotType(row.getParkingSpotType());
@@ -131,7 +124,33 @@ public class NewParkingStage extends Stage {
         });
     }
 
-    public String getParkingName() {
+    private void readFromParking(Parking parking) {
+        ObservableList<ParkingTableViewRow> items = parkingFloorTableView.getItems();
+
+        int previousParkingSpotFloor = -1;
+        Class<? extends ParkingSpot> previousParkingSpotType = null;
+
+        for (ParkingSpot parkingSpot : parking) {
+            int floor = FloorParkingSpotIdProvider.ExtractFloor(parkingSpot.getId());
+
+            if (floor == previousParkingSpotFloor && parkingSpot.getClass().equals(previousParkingSpotType)) {
+                    ParkingTableViewRow row = items.get(items.size() - 1);
+                    row.setQuantity(row.getQuantity() + 1);
+            }
+            else {
+                items.add(new ParkingTableViewRow(floor, 1, parkingSpot.getClass(), true));
+            }
+
+            previousParkingSpotFloor = floor;
+            previousParkingSpotType = parkingSpot.getClass();
+        }
+    }
+
+    private String getParkingName() {
         return parkingName != null && !parkingName.isEmpty() ? parkingName : "Mon premier parking";
+    }
+
+    public Parking getParking() {
+        return parking;
     }
 }

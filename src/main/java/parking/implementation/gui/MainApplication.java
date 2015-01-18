@@ -3,15 +3,13 @@ package parking.implementation.gui;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import parking.api.business.parking.Parking;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
-import parking.implementation.business.logistic.floor.FloorParkingSpotIdProvider;
 import parking.implementation.business.parkingspot.CarParkingSpot;
 import parking.implementation.business.parkingspot.CarrierParkingSpot;
-import parking.implementation.business.logistic.simple.SimpleParkingSpotFactory;
 import parking.implementation.business.vehicle.Car;
 import parking.implementation.business.vehicle.Carrier;
 import parking.implementation.business.vehicle.Motorbike;
@@ -28,6 +26,7 @@ import java.util.Collection;
 public class MainApplication extends Application {
     public static Collection<Class<? extends ParkingSpot>> ParkingSpotTypes = new ArrayList<>();
     public static Collection<Class<? extends Vehicle>> VehicleTypes = new ArrayList<>();
+    private Parking currentParking = null;
 
     static {
         ParkingSpotTypes.add(CarParkingSpot.class);
@@ -38,12 +37,34 @@ public class MainApplication extends Application {
         VehicleTypes.add(Carrier.class);
     }
 
+    private ParkingGrid parkingGrid;
+    private TopMenuBar menu;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
+        // create root
+        BorderPane pane = new BorderPane();
+
+        // create top menu
+        menu = new TopMenuBar(primaryStage);
+        menu.setOnChangeParking(this::setCurrentParking);
+
+        parkingGrid = new ParkingGrid(primaryStage);
+
+        pane.setTop(menu);
+        pane.setPrefHeight(menu.getHeight());
+        pane.setCenter(parkingGrid);
+
+        Scene scene = new Scene(pane);
+
+        primaryStage.setScene(scene);
+        primaryStage.sizeToScene();
+        primaryStage.setTitle("LesPatternsDuSwag - Parking qualitatif since 1889");
+        primaryStage.setOnCloseRequest(event -> Platform.exit());
 
         StartSplashStage splash = new StartSplashStage(primaryStage);
         splash.showAndWait();
@@ -51,7 +72,7 @@ public class MainApplication extends Application {
             case StartSplashStage.NEW:
                 NewParkingStage newParkingStage = new NewParkingStage(primaryStage);
                 newParkingStage.showAndWait();
-                newParkingStage.applyChanges();
+                setCurrentParking(newParkingStage.getParking());
                 break;
             case StartSplashStage.OPEN:
                 System.out.println(2);
@@ -61,35 +82,14 @@ public class MainApplication extends Application {
                 return;
         }
 
-        SimpleParkingSpotFactory parkingSpotFactory = new SimpleParkingSpotFactory();
-        parkingSpotFactory.setIdProvider(new FloorParkingSpotIdProvider());
-        parkingSpotFactory.setParkingSpotType("Car");
+        parkingGrid.updateGrid(1);
 
-//        try {
-//            ParkingManager.getInstance().newParking(1, "Parking 1").newParkingSpot(parkingSpotFactory, 10);
-//        } catch (ParkingExistsException e) {
-//            e.printStackTrace();
-//        }
-
-        ParkingGrid parkingGrid = new ParkingGrid(primaryStage);
-        parkingGrid.updateGrid(1, 1);
-
-        // create root
-        BorderPane pane = new BorderPane();
-
-        // create top menu
-        MenuBar menu = new TopMenuBar(primaryStage);
-
-        pane.setTop(menu);
-        pane.setPrefHeight(menu.getHeight());
-        pane.setCenter(parkingGrid);
-
-        Scene scene = new Scene(pane, 600, 400);
-
-        primaryStage.setScene(scene);
-        primaryStage.sizeToScene();
-        primaryStage.setTitle("LesPatternsDuSwag - Parking qualitatif since 1889");
-        primaryStage.setOnCloseRequest(event -> Platform.exit());
         primaryStage.show(); // show time !
+    }
+
+    private void setCurrentParking(Parking parking) {
+        this.currentParking = parking;
+        parkingGrid.observeParkingChange(parking);
+        menu.observeParkingChange(parking);
     }
 }

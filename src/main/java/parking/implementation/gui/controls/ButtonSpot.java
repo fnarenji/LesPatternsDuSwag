@@ -50,9 +50,7 @@ public class ButtonSpot extends MenuButton {
         this.parent = parent;
 
         setStyle("-fx-background-color: " + colors.get(parkingSpot.getClass()));
-        setMinSize(60, 50);
-        setMaxSize(60, 50);
-        setPrefSize(60, 50);
+        //setPrefSize(80, 60);
 
         createPark();
         createBook();
@@ -119,16 +117,12 @@ public class ButtonSpot extends MenuButton {
                 } else if (this.park.getText().equalsIgnoreCase("unpark")) {
                     parkingSpot.unpark();
 
-                    Alert alert = new Alert(
-                            Alert.AlertType.INFORMATION,
-                            "Place libérée."
-                    );
-                    alert.show();
+                    new Alert(Alert.AlertType.INFORMATION, "Place libérée.").show();
 
-                    if(client != null){
+                    if (client != null) {
                         long diffInMillis =  dateTimeEnd.getMillis() - DateTime.now().getMillis();
-                        parkingSpot.book(client,new DateTime(DateTime.now().plusMillis((int)diffInMillis)));
-                        this.park.setText("Park");
+                        parkingSpot.book(client, new DateTime(DateTime.now().plusMillis((int)diffInMillis)));
+                        park.setText("Park");
                     }
                 }
 
@@ -146,22 +140,11 @@ public class ButtonSpot extends MenuButton {
                             parkingSpot.unbook();
                             parkingSpot.park(parkStage.getVehicle());
                             updateState();
-                        } catch (SpotNotEmptyException e) {
-                            e.printStackTrace();
-                        } catch (SpotBookedException e) {
-                            e.printStackTrace();
-                        } catch (VehicleNotFitException e) {
-                            e.printStackTrace();
-                        } catch (UnknownVehicleException e) {
-                            e.printStackTrace();
-                        } catch (SpotNotBookedException e) {
+                        } catch (SpotNotEmptyException | SpotBookedException | UnknownVehicleException | SpotNotBookedException | VehicleNotFitException e) {
                             e.printStackTrace();
                         }
-                        Alert alert = new Alert(
-                                Alert.AlertType.INFORMATION,
-                                "Vehicule garrée."
-                        );
-                        alert.show();
+
+                        new Alert(Alert.AlertType.INFORMATION, "Vehicule garrée.").show();
                     }
                     else {
                         Alert alert = new Alert(

@@ -1,5 +1,6 @@
 package parking.api.business.parking;
 
+import parking.api.business.observer.BaseObservable;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.parkingspot.ParkingSpotFactory;
 import parking.api.business.parkingspot.ParkingSpotSelector;
@@ -16,7 +17,7 @@ import java.util.stream.Stream;
 /**
  * Created by SKNZ on 28/12/2014.
  */
-public class Parking implements Serializable, Iterable<ParkingSpot> {
+public class Parking extends BaseObservable implements Serializable, Iterable<ParkingSpot> {
     private final Integer id;
     private String name;
     private Map<Integer, ParkingSpot> parkingSpotsById = new HashMap<>();
@@ -90,6 +91,7 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
 
         parkingSpotsById.put(parkingSpot.getId(), parkingSpot);
 
+        notifyObservers();
         return parkingSpot;
     }
 
