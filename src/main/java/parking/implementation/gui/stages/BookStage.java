@@ -11,28 +11,28 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import parking.implementation.gui.ClientManager;
 import parking.implementation.business.Client;
+import parking.implementation.gui.ClientManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Created by loick on 14/01/15.
+ * Created by loic on 18/01/15.
  */
-public class ClientListStage extends Stage {
-
+public class BookStage extends Stage {
     private Collection<Client> clients = new ArrayList<>();
 
     private Label titleLabel;
     private Label label;
     private ChoiceBox<Client> clientChoiceBox;
+    private ChoiceBox<Integer> durationChoiceBox;
     private Button createButton;
     private Button submitButton;
     private Button cancelButton;
 
-    public ClientListStage(Window owner) {
+    public BookStage(Window owner) {
         this.initOwner(owner);
 
         init();
@@ -44,6 +44,7 @@ public class ClientListStage extends Stage {
         flowPane.getChildren().addAll(
                 titleLabel,
                 clientChoiceBox,
+                durationChoiceBox,
                 submitButton,
                 label,
                 createButton,
@@ -84,11 +85,12 @@ public class ClientListStage extends Stage {
         if (ClientManager.getInstance().count() != 0){
             Iterator<Client> clientIterator = ClientManager.getInstance().iterator();
             while (clientIterator.hasNext()){
-                clients.add(clientIterator.next());
+                Client tmp = clientIterator.next();
+                clientChoiceBox.getItems().add(tmp);
+                clients.add(tmp);
             }
-            clientChoiceBox.getItems().setAll(clients);
         }
-            
+
     }
 
     private void updateState() {
@@ -155,6 +157,14 @@ public class ClientListStage extends Stage {
         cancelButton.setTextFill(Color.WHITE);
     }
 
+    private void createDurationChoixBox() {
+        durationChoiceBox = new ChoiceBox<>();
+        Collection<Integer> during = new ArrayList<>();
+        for (int i = 1; i < 50; i++)
+            during.add(new Integer(i));
+        durationChoiceBox.getItems().setAll(during);
+    }
+
     private void init() {
         createTitle();
         createLabel();
@@ -162,10 +172,16 @@ public class ClientListStage extends Stage {
         createButtonSubmit();
         createButtonCreate();
         createButtonCancel();
+        createDurationChoixBox();
     }
 
     public Client getClient() {
         return this.clientChoiceBox.getValue();
     }
 
+    public Integer getDuration() {
+        return durationChoiceBox.getValue();
+
+    }
 }
+

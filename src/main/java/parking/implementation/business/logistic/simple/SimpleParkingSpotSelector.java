@@ -30,7 +30,8 @@ public class SimpleParkingSpotSelector implements ParkingSpotSelector {
         ParkingSpot selectedSpot = null;
         Iterator<Class> parkingSpotType = priorityMap.whereTo(vehicle.getClass());
 
-        parkingSpots = cleanAndSortSpotList(vehicle, parkingSpots);
+        //parkingSpots = cleanAndSortSpotList(vehicle, parkingSpots);
+        System.out.println("what "+parkingSpots);
 
         while (selectedSpot == null && parkingSpotType.hasNext()) {
             Class currentParkingSpotType = parkingSpotType.next();
