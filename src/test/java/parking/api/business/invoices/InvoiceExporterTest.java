@@ -2,8 +2,8 @@ package parking.api.business.invoices;
 
 import org.junit.Before;
 import org.junit.Test;
-import parking.implementation.business.invoices.EnglishExporter;
-import parking.implementation.business.invoices.FrenchExporter;
+import parking.implementation.business.invoices.languages.EnglishExporter;
+import parking.implementation.business.invoices.languages.FrenchExporter;
 
 import static org.junit.Assert.assertEquals;
 
