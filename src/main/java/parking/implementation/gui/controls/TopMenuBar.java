@@ -2,6 +2,8 @@ package parking.implementation.gui.controls;
 
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import parking.api.business.parking.ParkingManager;
+import parking.api.business.parking.ParkingManagerSerializer;
 import parking.implementation.gui.stages.ClientListStage;
 import parking.implementation.gui.ClientManager;
 import parking.implementation.gui.stages.ClientStage;
@@ -18,7 +20,7 @@ public class TopMenuBar extends MenuBar {
 
     public TopMenuBar(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        getMenus().addAll(createMenuClient(), createMenuParking(), createMenuSelector(), createMenuQuit());
+        getMenus().addAll(createFileMenu(), createMenuClient(), createMenuParking(), createMenuSelector(), createMenuQuit());
     }
 
     private Menu createMenuClient() {
@@ -93,5 +95,20 @@ public class TopMenuBar extends MenuBar {
         menuQuit.setGraphic(quitLabel);
 
         return menuQuit;
+    }
+
+    private Menu createFileMenu(){
+        Menu fileMenu = new Menu("File");
+
+        MenuItem save = new MenuItem("Save");
+        save.setOnAction(event -> {
+            ParkingManagerSerializer.serialize();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Parking sauvegardé");
+            alert.show();
+        });
+
+        fileMenu.getItems().addAll(save);
+
+        return fileMenu;
     }
 }
