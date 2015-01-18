@@ -46,7 +46,8 @@ public class TopMenuBar extends MenuBar {
         nouveau.setOnAction(event -> {
             ClientStage clientStage = new ClientStage(primaryStage);
             clientStage.showAndWait();
-            ClientManager.getInstance().addClient(clientStage.getClient());
+            if(!clientStage.getClient().getFirstName().equals(""))
+                ClientManager.getInstance().addClient(clientStage.getClient());
         });
 
         menuClient.getItems().addAll(

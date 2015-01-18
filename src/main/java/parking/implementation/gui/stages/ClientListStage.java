@@ -115,10 +115,10 @@ public class ClientListStage extends Stage {
         createButton.setOnAction(event -> {
             ClientStage clientStage = new ClientStage(this);
             clientStage.showAndWait();
-
             Client newClient = clientStage.getClient();
+            System.out.println("lol "+newClient);
 
-            if (newClient != null)
+            if (newClient != null && !newClient.getFirstName().equals(""))
                 clients.add(newClient);
 
             updateState();
