@@ -4,12 +4,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import parking.api.business.parking.Parking;
-import parking.api.business.parking.ParkingManager;
+import parking.api.business.parkingspot.ParkingSpot;
+import parking.api.business.parkingspot.ParkingSpotFactory;
+import parking.api.business.parkingspot.ParkingSpotIdProvider;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
-import parking.implementation.business.SerializeParkingManager;
+import parking.implementation.business.parkingspot.CarParkingSpot;
 
 import static org.junit.Assert.*;
 
@@ -85,8 +86,36 @@ public class ParkingManagerTest {
 
     @Test
     public void testSerializeParking() {
-        SerializeParkingManager.serialize(parkingManager);
+        try {
+            parkingManager.newParking(1, "Parking du SWAG");
+            try {
+                parkingManager.getParkingById(1).newParkingSpot(new ParkingSpotFactory() {
+                    int i = 0;
 
-        assertEquals(parkingManager, SerializeParkingManager.deserialize());
+                    @Override
+                    public void setIdProvider(ParkingSpotIdProvider provider) {
+
+                    }
+                    @Override
+                    public ParkingSpot createParkingSpot() {
+                        ParkingSpot parkingSpot = new CarParkingSpot(1);
+                        return parkingSpot;
+                    }
+                });
+            } catch (ParkingNotPresentException e) {
+                e.printStackTrace();
+            }
+        } catch (ParkingExistsException e) {
+            e.printStackTrace();
+        }
+        ParkingManagerSerializer.serialize();
+        ParkingManagerSerializer.deserialize();
+
+        assertEquals(ParkingManager.getInstance().containsParking(1), true);
+        try {
+            assertEquals(ParkingManager.getInstance().getParkingById(1).countParkingSpots() == 1, true);
+        } catch (ParkingNotPresentException e) {
+            e.printStackTrace();
+        }
     }
 }

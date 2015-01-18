@@ -4,8 +4,7 @@ import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
 
-import java.io.ObjectStreamException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,6 +15,7 @@ import java.util.function.Predicate;
  * Created by SKNZ on 28/12/2014.
  */
 public class ParkingManager implements Serializable, Iterable<Parking> {
+    public static final long serialVersionUID = 1L;
     private static ParkingManager instance = new ParkingManager();
     private String companyName;
     private Map<Integer, Parking> parkingsById = new HashMap<>();
@@ -197,4 +197,35 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         parkingsById.values().forEach(action);
     }
 
+    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
+        stream.writeObject(instance);
+        stream.writeObject(parkingsById);
+        stream.writeObject(companyName);
+    }
+
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        instance = (ParkingManager) stream.readObject();
+        parkingsById = (Map<Integer, Parking>) stream.readObject();
+        companyName = (String) stream.readObject();
+    }
+
+    public void write(ObjectOutputStream stream){
+        try {
+            writeObject(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void read(ObjectInputStream stream){
+        try {
+            readObject(stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

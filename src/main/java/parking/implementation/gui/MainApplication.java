@@ -6,6 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import parking.api.business.parking.Parking;
+import parking.api.business.parking.ParkingManager;
+import parking.api.business.parking.ParkingManagerSerializer;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
 import parking.implementation.business.logistic.floor.FloorParkingSpotIdProvider;
@@ -54,7 +57,7 @@ public class MainApplication extends Application {
                 newParkingStage.applyChanges();
                 break;
             case StartSplashStage.OPEN:
-                System.out.println(2);
+                ParkingManagerSerializer.deserialize();
                 break;
             case StartSplashStage.EXIT:
             default:
