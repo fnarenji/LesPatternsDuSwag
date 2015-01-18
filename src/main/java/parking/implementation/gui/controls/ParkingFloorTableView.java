@@ -1,10 +1,9 @@
 package parking.implementation.gui.controls;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -13,20 +12,13 @@ import javafx.util.converter.IntegerStringConverter;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.implementation.business.parkingspot.CarParkingSpot;
 import parking.implementation.gui.MainApplication;
-import parking.implementation.gui.Utils;
-
-import java.util.Collection;
+import parking.api.business.Utils;
 
 /**
  * Created by sknz on 1/18/15.
  */
 public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
-    private ObservableList<ParkingTableViewRow> data = FXCollections.observableArrayList();
-
     public ParkingFloorTableView() {
-        setItems(data);
-        addNewLine();
-
         TableColumn<ParkingTableViewRow, Integer> floorColumn = new TableColumn<>("Etage");
         TableColumn<ParkingTableViewRow, Integer> quantityColumn = new TableColumn<>("Nb. places");
         TableColumn<ParkingTableViewRow, Class<? extends ParkingSpot>> typeColumn = new TableColumn<>("Type");
@@ -51,6 +43,7 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
         getColumns().add(floorColumn);
         getColumns().add(quantityColumn);
         getColumns().add(typeColumn);
+
         setEditable(true);
     }
 
@@ -97,33 +90,33 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
         return field;
     }
 
-    public void addNewLine() {
-        int position = data.contains(getSelectionModel().getSelectedItem())
-                ? data.indexOf(getSelectionModel().getSelectedItem()) + 1
-                : data.size();
+    private CheckBoxTableCell<ParkingTableViewRow, Boolean> lockedCheckBoxTableCell() {
+        return new CheckBoxTableCell<>();
+    }
 
-        if (position + 1 < data.size()) {
-            ParkingTableViewRow nextItem = data.get(position + 1);
-            if (nextItem.isLocked())
+    public void addNewLine() {
+        int position = getItems().contains(getSelectionModel().getSelectedItem())
+                ? getItems().indexOf(getSelectionModel().getSelectedItem()) + 1
+                : getItems().size();
+
+        if (position + 1 < getItems().size()) {
+            ParkingTableViewRow nextItem = getItems().get(position + 1);
+            if (nextItem.getLocked())
             {
                 new Alert(Alert.AlertType.ERROR, "Vous ne pouvez que rajouter de nouvelles places à la fin.").show();
                 return;
             }
         }
 
-        data.add(position, new ParkingTableViewRow(1, 10, CarParkingSpot.class));
+        getItems().add(position, new ParkingTableViewRow(1, 10, CarParkingSpot.class, false));
     }
 
     public void removeSelectedLine() {
         ParkingTableViewRow selectedItem = getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
-            if (!selectedItem.isLocked())
-                data.remove(selectedItem);
+            if (!selectedItem.getLocked())
+                getItems().remove(selectedItem);
             else new Alert(Alert.AlertType.ERROR, "Vous ne pouvez que rajouter de nouvelles places à la fin.").show();
         }
-    }
-
-    public Collection<ParkingTableViewRow> getData() {
-        return data;
     }
 }

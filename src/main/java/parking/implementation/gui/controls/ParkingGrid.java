@@ -1,14 +1,15 @@
 package parking.implementation.gui.controls;
 
+import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import parking.api.business.parking.Parking;
-import parking.api.business.parking.ParkingManager;
 import parking.api.business.parkingspot.ParkingSpot;
-import parking.api.exceptions.ParkingNotPresentException;
+import parking.implementation.business.logistic.floor.FloorParkingSpotIdProvider;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * Created by sknz on 1/17/15.
@@ -17,33 +18,42 @@ import java.util.Map;
 public class ParkingGrid extends GridPane {
     private static final int MAX_LINE = 10;
     private Stage primaryStage;
-    private Map<Integer,ButtonSpot> buttonSpotMap = new HashMap<>();
+    private Parking currentParking;
+    private Map<Integer, ButtonSpot> buttonSpotMap = new TreeMap<>();
 
     public ParkingGrid(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    public void updateGrid(Integer parkingId, Integer floor) {
-        try {
-            int x = 0;
-            int y = 0;
+    private Integer x, y;
+    public void updateGrid(Integer floor) {
+        x = 0;
+        y = 0;
 
-            Parking parking = ParkingManager.getInstance().getParkingById(parkingId);
-            for (ParkingSpot parkingSpot : parking) {
+        for (ParkingSpot parkingSpot : currentParking) {
+            ButtonSpot buttonSpot = new ButtonSpot(parkingSpot, primaryStage);
+            buttonSpotMap.put(buttonSpot.getParkingSpot().getId(), buttonSpot);
+        }
+
+        buttonSpotMap.values().stream()
+            .filter(buttonSpot -> FloorParkingSpotIdProvider.ExtractFloor(buttonSpot.getParkingSpot().getId()) == floor)
+            .forEachOrdered(buttonSpot -> {
                 if (x == MAX_LINE) {
                     ++y;
                     x = 0;
                 }
-                ButtonSpot tmp = new ButtonSpot(parkingSpot, primaryStage);
-                add(tmp, x++, y);
-                buttonSpotMap.put(tmp.getParkingSpot().getId(),tmp);
-            }
-        } catch (ParkingNotPresentException e) {
-            e.printStackTrace();
-        }
+
+                GridPane.setMargin(buttonSpot, new Insets(8));
+                add(buttonSpot, x++, y);
+            });
     }
-    
-    public Map getButtonSpotMap(){
-        return buttonSpotMap;
+
+    public void observeParkingChange(Parking parking) {
+        currentParking = parking;
+        updateGrid(1);
+    }
+
+    public ButtonSpot highlightId(Integer id) {
+        return buttonSpotMap.get(id);
     }
 }

@@ -8,19 +8,15 @@ import parking.api.business.parkingspot.ParkingSpot;
  * Created by sknz on 1/18/15.
  */
 public class ParkingTableViewRow {
-    private boolean locked = false;
     private SimpleIntegerProperty floor = new SimpleIntegerProperty();
     private SimpleIntegerProperty quantity = new SimpleIntegerProperty();
     private SimpleObjectProperty<Class<? extends ParkingSpot>> parkingSpotType = new SimpleObjectProperty<>();
+    private Boolean locked;
 
-    public ParkingTableViewRow(Integer floor, Integer quantity, Class<? extends ParkingSpot> parkingSpotType) {
+    public ParkingTableViewRow(Integer floor, Integer quantity, Class<? extends ParkingSpot> parkingSpotType, Boolean locked) {
         setFloor(floor);
         setQuantity(quantity);
         setParkingSpotType(parkingSpotType);
-    }
-
-    public ParkingTableViewRow(Integer floor, Integer quantity, Class<? extends ParkingSpot> parkingSpotType, boolean locked) {
-        this(floor, quantity, parkingSpotType);
         this.locked = locked;
     }
 
@@ -48,7 +44,7 @@ public class ParkingTableViewRow {
         this.parkingSpotType.set(parkingSpotType);
     }
 
-    public boolean isLocked() {
+    public Boolean getLocked() {
         return locked;
     }
 }

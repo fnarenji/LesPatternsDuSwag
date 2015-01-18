@@ -1,5 +1,6 @@
 package parking.api.business.parking;
 
+import parking.api.business.Utils;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
@@ -10,6 +11,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+
+import static parking.api.business.Utils.uncheckedCast;
 
 /**
  * Created by SKNZ on 28/12/2014.
@@ -206,16 +209,14 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         instance = (ParkingManager) stream.readObject();
-        parkingsById = (Map<Integer, Parking>) stream.readObject();
+        parkingsById = Utils.<Map<Integer, Parking>>uncheckedCast(stream.readObject());
         companyName = (String) stream.readObject();
     }
 
     public void write(ObjectOutputStream stream){
         try {
             writeObject(stream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -223,9 +224,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
     public void read(ObjectInputStream stream){
         try {
             readObject(stream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

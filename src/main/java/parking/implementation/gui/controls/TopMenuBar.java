@@ -2,6 +2,7 @@ package parking.implementation.gui.controls;
 
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import parking.api.business.parking.Parking;
 import parking.api.business.parking.ParkingManager;
 import parking.api.business.parking.ParkingManagerSerializer;
 import parking.api.business.parkingspot.ParkingSpot;
@@ -11,13 +12,11 @@ import parking.implementation.business.logistic.simple.SimpleParkingSpotSelector
 import parking.implementation.business.vehicle.Car;
 import parking.implementation.business.vehicle.Carrier;
 import parking.implementation.business.vehicle.Motorbike;
-import parking.implementation.gui.stages.AutoSelectorStage;
-import parking.implementation.gui.stages.ClientListStage;
 import parking.implementation.gui.ClientManager;
-import parking.implementation.gui.stages.ClientStage;
-import parking.implementation.gui.stages.ParkingListStage;
+import parking.implementation.gui.stages.*;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Created by sknz on 1/17/15.
@@ -25,6 +24,7 @@ import java.util.Optional;
  */
 public class TopMenuBar extends MenuBar {
     private Stage primaryStage;
+    private Parking currentParking;
     private ParkingGrid parkingGrid;
     private  ButtonSpot tmpButton;
 
@@ -59,19 +59,23 @@ public class TopMenuBar extends MenuBar {
 
     private Menu createMenuParking() {
         Menu menuParking = new Menu("Parking");
-        MenuItem select = new MenuItem("Selectionner");
+        MenuItem modifyParkingMenuItem = new MenuItem("Modifier le parking");
+        MenuItem changeParkingMenuItem = new MenuItem("Changer de parking");
 
-        MenuItem nouveau = new MenuItem("Nouveau");
-
-        nouveau.setOnAction(event -> {
-            ParkingListStage parkingListStage = new ParkingListStage(primaryStage);
-            parkingListStage.showAndWait();
-            
+        modifyParkingMenuItem.setOnAction(event -> {
+            NewParkingStage newParkingStage = new NewParkingStage(primaryStage, currentParking);
+            newParkingStage.showAndWait();
+            parkingChangeListener.accept(newParkingStage.getParking());
         });
 
-        menuParking.getItems().addAll(
-                nouveau
-        );
+        changeParkingMenuItem.setOnAction(event -> {
+            ChangeParkingStage changeParkingStage = new ChangeParkingStage(primaryStage);
+            changeParkingStage.showAndWait();
+            Parking parking = changeParkingStage.getChoice();
+            parkingChangeListener.accept(parking);
+        });
+
+        menuParking.getItems().addAll(modifyParkingMenuItem, changeParkingMenuItem);
 
         return menuParking;
     }
@@ -82,51 +86,45 @@ public class TopMenuBar extends MenuBar {
         MenuItem undo = new MenuItem("Unselect place");
         
         find.setOnAction(event ->{
+            
             AutoSelectorStage autoSelectorStage = new AutoSelectorStage(primaryStage);
             autoSelectorStage.showAndWait();
-            SimpleParkingSpotSelector simpleParkingSpotSelector = new SimpleParkingSpotSelector();
-            Vehicle tmp = null;
+            
+            Vehicle vehicle = null;
+            
             switch (autoSelectorStage.getVehicleType()){
                 case "Moto":
-                    tmp = new Motorbike();
+                    vehicle = new Motorbike();
                     break;
                 case "Voiture":
-                    tmp = new Car();
+                    vehicle = new Car();
                     break;
                 case "Camion":
-                    tmp = new Carrier();
+                    vehicle = new Carrier();
                     break;
                 default:
                     break;
             }
+            
             ParkingSpot parkingSpot = null;
+            
             try {
-                parkingSpot = simpleParkingSpotSelector.select(tmp, ParkingManager.getInstance().getParkingById(1).getSpots());
-                tmpButton = (ButtonSpot) parkingGrid.getButtonSpotMap().get(parkingSpot.getId());
+                parkingSpot = currentParking.findAvailableParkingSpotForVehicle(vehicle);
+                tmpButton = parkingGrid.highlightId(parkingSpot.getId());
                 tmpButton.setStyle("-fx-background-color: #00ccff");
-            } catch (ParkingNotPresentException e) {
-                e.printStackTrace();
-            }catch(Exception e){
-                Alert alert = new Alert(
-                        Alert.AlertType.ERROR,
-                        "Pas de place disponible ou type non défini."
-                );
-                alert.show();
+            } catch (Exception e) {
+                new Alert(Alert.AlertType.ERROR, "Pas de place disponible ou type non défini.").show();
             }
+            
         });
 
-        menuSelector.getItems().addAll(
-                find,
-                undo
-        );
+        menuSelector.getItems().addAll(find, undo);
 
         undo.setOnAction(event ->{
             tmpButton.setStyle("-fx-background-color: #60ff05");
         });
         return menuSelector;
     }
-
-   
 
     private Menu createMenuQuit() {
         Menu menuQuit = new Menu();
@@ -146,14 +144,24 @@ public class TopMenuBar extends MenuBar {
         return menuQuit;
     }
 
+    private Consumer<Parking> parkingChangeListener;
+    public void setOnChangeParking(Consumer<Parking> parkingChangeListener) {
+        this.parkingChangeListener = parkingChangeListener;
+    }
+
+    public void observeParkingChange(Parking parking) {
+        System.out.println("MENUOLDPRK " + currentParking != null ? (currentParking.getId() + " " + currentParking.getName()) : null);
+        currentParking = parking;
+        System.out.println("MENUNEWPRK " + currentParking.getId() + " " + currentParking.getName());
+    }
+
     private Menu createFileMenu(){
         Menu fileMenu = new Menu("File");
 
         MenuItem save = new MenuItem("Save");
         save.setOnAction(event -> {
             ParkingManagerSerializer.serialize();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Parking sauvegardé");
-            alert.show();
+            new Alert(Alert.AlertType.INFORMATION, "Parking sauvegardé !").show();
         });
 
         fileMenu.getItems().addAll(save);
