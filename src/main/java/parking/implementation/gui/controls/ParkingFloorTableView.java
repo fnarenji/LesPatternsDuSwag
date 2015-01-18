@@ -99,7 +99,7 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
                 ? getItems().indexOf(getSelectionModel().getSelectedItem()) + 1
                 : getItems().size();
 
-        if (position + 1 <= getItems().size()) {
+        if (position + 1 < getItems().size()) {
             ParkingTableViewRow nextItem = getItems().get(position + 1);
             if (nextItem.getLocked())
             {

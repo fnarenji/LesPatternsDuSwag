@@ -105,12 +105,10 @@ public class TopMenuBar extends MenuBar {
             }
             ParkingSpot parkingSpot = null;
             try {
-                parkingSpot = simpleParkingSpotSelector.select(tmp, ParkingManager.getInstance().getParkingById(1).getSpots());
+                parkingSpot = currentParking.findAvailableParkingSpotForVehicle(tmp);
                 tmpButton = (ButtonSpot) parkingGrid.getButtonSpotMap().get(parkingSpot.getId());
                 tmpButton.setStyle("-fx-background-color: #00ccff");
-            } catch (ParkingNotPresentException e) {
-                e.printStackTrace();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Pas de place disponible ou type non défini.").show();
             }
             ButtonSpot tmpButton = parkingGrid.getButtonSpotMap().get(parkingSpot.getId());
@@ -124,8 +122,6 @@ public class TopMenuBar extends MenuBar {
         });
         return menuSelector;
     }
-
-   
 
     private Menu createMenuQuit() {
         Menu menuQuit = new Menu();
