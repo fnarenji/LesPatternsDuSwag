@@ -4,12 +4,16 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import parking.api.business.parking.Parking;
 import parking.api.business.parking.ParkingManager;
+import parking.api.business.parking.ParkingManagerSerializer;
+import parking.api.business.parkingspot.ParkingSpot;
+import parking.api.business.vehicle.Vehicle;
 import parking.api.exceptions.ParkingNotPresentException;
-import parking.implementation.gui.stages.ChangeParkingStage;
-import parking.implementation.gui.stages.ClientListStage;
+import parking.implementation.business.logistic.simple.SimpleParkingSpotSelector;
+import parking.implementation.business.vehicle.Car;
+import parking.implementation.business.vehicle.Carrier;
+import parking.implementation.business.vehicle.Motorbike;
 import parking.implementation.gui.ClientManager;
-import parking.implementation.gui.stages.ClientStage;
-import parking.implementation.gui.stages.NewParkingStage;
+import parking.implementation.gui.stages.*;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -21,10 +25,11 @@ import java.util.function.Consumer;
 public class TopMenuBar extends MenuBar {
     private Stage primaryStage;
     private Parking currentParking;
+    private ParkingGrid parkingGrid;
 
-    public TopMenuBar(Stage primaryStage) {
+    public TopMenuBar(Stage primaryStage, ParkingGrid parkingGrid) {
         this.primaryStage = primaryStage;
-        getMenus().addAll(createMenuClient(), createMenuParking(), createMenuSelector(), createMenuQuit());
+        getMenus().addAll(createFileMenu(), createMenuClient(), createMenuParking(), createMenuSelector(), createMenuQuit());
     }
 
     private Menu createMenuClient() {
@@ -77,6 +82,34 @@ public class TopMenuBar extends MenuBar {
         Menu menuSelector = new Menu("AutoSelector");
         MenuItem find = new MenuItem("Find a place");
         MenuItem undo = new MenuItem("Unselect place");
+        
+        find.setOnAction(event ->{
+            AutoSelectorStage autoSelectorStage = new AutoSelectorStage(primaryStage);
+            autoSelectorStage.showAndWait();
+            SimpleParkingSpotSelector simpleParkingSpotSelector = new SimpleParkingSpotSelector();
+            Vehicle tmp = null;
+            switch (autoSelectorStage.getVehicleType()){
+                case "Moto":
+                    tmp = new Motorbike();
+                    break;
+                case "Voiture":
+                    tmp = new Car();
+                    break;
+                default:
+                    tmp = new Carrier();
+                    break;
+            }
+            System.out.println(tmp.getClass());
+            ParkingSpot parkingSpot = null;
+            try {
+                System.out.println(ParkingManager.getInstance().getParkingById(1).getSpots());
+                parkingSpot = simpleParkingSpotSelector.select(tmp, ParkingManager.getInstance().getParkingById(1).getSpots());
+            } catch (ParkingNotPresentException e) {
+                e.printStackTrace();
+            }
+            ButtonSpot tmpButton = parkingGrid.getButtonSpotMap().get(parkingSpot.getId());
+            tmpButton.setStyle("-fx-background-color: #00ccff");
+        });
 
         menuSelector.getItems().addAll(find, undo);
 
@@ -107,6 +140,22 @@ public class TopMenuBar extends MenuBar {
     }
 
     public void observeParkingChange(Parking parking) {
-        this.currentParking = parking;
+        System.out.println("MENUOLDPRK " + currentParking != null ? (currentParking.getId() + " " + currentParking.getName()) : null);
+        currentParking = parking;
+        System.out.println("MENUNEWPRK " + currentParking.getId() + " " + currentParking.getName());
+    }
+
+    private Menu createFileMenu(){
+        Menu fileMenu = new Menu("File");
+
+        MenuItem save = new MenuItem("Save");
+        save.setOnAction(event -> {
+            ParkingManagerSerializer.serialize();
+            new Alert(Alert.AlertType.INFORMATION, "Parking sauvegardé !").show();
+        });
+
+        fileMenu.getItems().addAll(save);
+
+        return fileMenu;
     }
 }

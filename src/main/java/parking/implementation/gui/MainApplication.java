@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import parking.api.business.parking.Parking;
+import parking.api.business.parking.ParkingManager;
+import parking.api.business.parking.ParkingManagerSerializer;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
 import parking.implementation.business.parkingspot.CarParkingSpot;
@@ -49,11 +51,11 @@ public class MainApplication extends Application {
         // create root
         BorderPane pane = new BorderPane();
 
-        // create top menu
-        menu = new TopMenuBar(primaryStage);
-        menu.setOnChangeParking(this::setCurrentParking);
-
         parkingGrid = new ParkingGrid(primaryStage);
+
+        // create top menu
+        menu = new TopMenuBar(primaryStage, parkingGrid);
+        menu.setOnChangeParking(this::setCurrentParking);
 
         pane.setTop(menu);
         pane.setPrefHeight(menu.getHeight());
@@ -75,7 +77,7 @@ public class MainApplication extends Application {
                 setCurrentParking(newParkingStage.getParking());
                 break;
             case StartSplashStage.OPEN:
-                System.out.println(2);
+                ParkingManagerSerializer.deserialize();
                 break;
             case StartSplashStage.EXIT:
             default:

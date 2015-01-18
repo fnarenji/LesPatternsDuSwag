@@ -162,7 +162,7 @@ public class ClientStage extends Stage {
                 || firstname.getText() == null)
             return null;
         return new Client(
-                civility.getValue().toString(),
+                civility.getValue(),
                 lastname.getText(),
                 firstname.getText()
         );

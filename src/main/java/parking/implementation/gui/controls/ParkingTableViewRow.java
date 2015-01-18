@@ -1,8 +1,5 @@
 package parking.implementation.gui.controls;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import parking.api.business.parkingspot.ParkingSpot;

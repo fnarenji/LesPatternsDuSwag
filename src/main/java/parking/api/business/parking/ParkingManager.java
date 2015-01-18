@@ -1,24 +1,28 @@
 package parking.api.business.parking;
 
+import parking.api.business.Utils;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
 
-import java.io.ObjectStreamException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import static parking.api.business.Utils.uncheckedCast;
+
 /**
  * Created by SKNZ on 28/12/2014.
  */
 public class ParkingManager implements Serializable, Iterable<Parking> {
+    public static final long serialVersionUID = 1L;
     private static ParkingManager instance = new ParkingManager();
     private String companyName;
     private Map<Integer, Parking> parkingsById = new HashMap<>();
+    private Map<String, Object> config = new HashMap<>();
 
     private ParkingManager() {
 
@@ -197,4 +201,45 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         parkingsById.values().forEach(action);
     }
 
+    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
+        stream.writeObject(instance);
+        stream.writeObject(parkingsById);
+        stream.writeObject(companyName);
+    }
+
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        instance = (ParkingManager) stream.readObject();
+        parkingsById = Utils.<Map<Integer, Parking>>uncheckedCast(stream.readObject());
+        companyName = (String) stream.readObject();
+    }
+
+    public void write(ObjectOutputStream stream){
+        try {
+            writeObject(stream);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void read(ObjectInputStream stream){
+        try {
+            readObject(stream);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Object get(String key){ return config.get(key); }
+    public Integer getInt(String key){
+        return (Integer) config.get(key);
+    }
+    public Boolean getBool(String key){
+        return (Boolean) config.get(key);
+    }
+    public Double getDouble(String key){
+        return (Double) config.get(key);
+    }
+    public String getString(String key){
+        return (String) config.get(key);
+    }
 }

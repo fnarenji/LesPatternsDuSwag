@@ -12,7 +12,7 @@ import javafx.util.converter.IntegerStringConverter;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.implementation.business.parkingspot.CarParkingSpot;
 import parking.implementation.gui.MainApplication;
-import parking.implementation.gui.Utils;
+import parking.api.business.Utils;
 
 /**
  * Created by sknz on 1/18/15.
@@ -99,7 +99,7 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
                 ? getItems().indexOf(getSelectionModel().getSelectedItem()) + 1
                 : getItems().size();
 
-        if (position + 1 < getItems().size()) {
+        if (position + 1 <= getItems().size()) {
             ParkingTableViewRow nextItem = getItems().get(position + 1);
             if (nextItem.getLocked())
             {

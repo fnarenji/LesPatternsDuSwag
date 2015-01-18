@@ -1,4 +1,4 @@
-package parking.implementation.gui;
+package parking.api.business;
 
 /**
  * Created by sknz on 1/18/15.
