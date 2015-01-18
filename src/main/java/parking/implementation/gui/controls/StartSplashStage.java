@@ -15,6 +15,8 @@ import javafx.stage.Window;
 
 /**
  * Created by sknz on 1/17/15.
+ *
+ * This create a splash screen, which allow to pick up a scenario, select a new scenario or quit
  */
 public class StartSplashStage extends Stage {
     public static final int EXIT = 0;
