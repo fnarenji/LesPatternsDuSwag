@@ -3,12 +3,9 @@ package parking.implementation.gui.controls;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import parking.api.business.parking.Parking;
-import parking.api.business.parking.ParkingManager;
 import parking.api.business.parking.ParkingManagerSerializer;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
-import parking.api.exceptions.ParkingNotPresentException;
-import parking.implementation.business.logistic.simple.SimpleParkingSpotSelector;
 import parking.implementation.business.vehicle.Car;
 import parking.implementation.business.vehicle.Carrier;
 import parking.implementation.business.vehicle.Motorbike;
@@ -64,19 +61,22 @@ public class TopMenuBar extends MenuBar {
         MenuItem changeParkingMenuItem = new MenuItem("Changer de parking");
 
         modifyParkingMenuItem.setOnAction(event -> {
-            NewParkingStage newParkingStage = new NewParkingStage(primaryStage, currentParking);
-            newParkingStage.showAndWait();
-            parkingChangeListener.accept(newParkingStage.getParking());
+            new Alert(Alert.AlertType.INFORMATION, "Cette fonctionnalité n'est pas disponible : le code est présent mais n'est pas capable de gérer la totalité des cas possibles.").show();
+
+            /*EditParkingStage editParkingStage = new EditParkingStage(primaryStage, currentParking);
+            editParkingStage.showAndWait();
+            parkingChangeListener.accept(editParkingStage.getParking());*/
         });
 
         changeParkingMenuItem.setOnAction(event -> {
             ChangeParkingStage changeParkingStage = new ChangeParkingStage(primaryStage);
             changeParkingStage.showAndWait();
-            Parking parking = changeParkingStage.getChoice();
-            parkingChangeListener.accept(parking);
+            Parking newParking = changeParkingStage.getChoice();
+            if (newParking != null)
+                parkingChangeListener.accept(newParking);
         });
 
-        menuParking.getItems().addAll(modifyParkingMenuItem, changeParkingMenuItem);
+        menuParking.getItems().addAll(changeParkingMenuItem, modifyParkingMenuItem);
 
         return menuParking;
     }
@@ -151,12 +151,7 @@ public class TopMenuBar extends MenuBar {
     }
 
     public void observeParkingChange(Parking parking) {
-        if (currentParking != null)
-            System.out.println("MENUOLDPRK " + currentParking.getId() + " " + currentParking.getName());
-        else System.out.println("MENUOLDPRK NULL");
-
         currentParking = parking;
-        System.out.println("MENUNEWPRK " + currentParking.getId() + " " + currentParking.getName());
     }
 
     private Menu createFileMenu(){

@@ -30,6 +30,8 @@ public class ParkingGrid extends GridPane {
     public void updateGrid() {
         x = 0;
         y = 0;
+        getChildren().clear();
+        buttonSpotMap.clear();
 
         for (ParkingSpot parkingSpot : currentParking) {
             ButtonSpot buttonSpot = new ButtonSpot(parkingSpot, primaryStage);
@@ -47,10 +49,13 @@ public class ParkingGrid extends GridPane {
                 GridPane.setMargin(buttonSpot, new Insets(8));
                 add(buttonSpot, x++, y);
             });
+
+        primaryStage.sizeToScene();
     }
 
     public void observeParkingChange(Parking parking) {
         currentParking = parking;
+        floorOne();
         updateGrid();
     }
 
@@ -59,24 +64,33 @@ public class ParkingGrid extends GridPane {
     }
 
     public void floorDown() {
-        floor = Math.max(floor - 1, 1);
-        floorUp();
-        floorDown();
+        do {
+            floor = Math.max(floor - 1, 1);
+        } while (currentParking.stream().noneMatch(parkingSpot -> FloorParkingSpotIdProvider.ExtractFloor(parkingSpot.getId()) == floor) && floor > 0);
         updateGrid();
     }
 
     public void floorUp() {
-        int maxFloor = buttonSpotMap.keySet().stream()
+        Integer floorCount = floorCount();
+        do {
+            floor = Math.min(floor + 1, floorCount);
+        } while (currentParking.stream().noneMatch(parkingSpot -> FloorParkingSpotIdProvider.ExtractFloor(parkingSpot.getId()) == floor) && floor < floorCount);
+        updateGrid();
+    }
+
+    public Integer floorCount() {
+        return buttonSpotMap.keySet().stream()
                 .map(FloorParkingSpotIdProvider::ExtractFloor)
                 .max(Integer::compareTo)
                 .get();
-
-        floor = Math.min(floor + 1, maxFloor);
-        updateGrid();
     }
 
     public void floorOne() {
         floor = 1;
-        floorOne();
+        updateGrid();
+    }
+
+    public int getFloor() {
+        return floor;
     }
 }
