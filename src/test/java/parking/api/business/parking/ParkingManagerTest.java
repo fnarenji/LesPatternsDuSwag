@@ -109,7 +109,7 @@ public class ParkingManagerTest {
             e.printStackTrace();
         }
         ParkingManagerSerializer.serialize();
-        ParkingManagerSerializer.deserialize();
+        ParkingManagerSerializer.deserialize("save/parkinManager.ser");
 
         assertEquals(ParkingManager.getInstance().containsParking(1), true);
         try {

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import parking.api.business.parking.Parking;
 import parking.api.business.parking.ParkingManager;
@@ -20,6 +21,7 @@ import parking.implementation.gui.controls.StartSplashStage;
 import parking.implementation.gui.controls.TopMenuBar;
 import parking.implementation.gui.stages.NewParkingStage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -77,7 +79,13 @@ public class MainApplication extends Application {
                 setCurrentParking(newParkingStage.getParking());
                 break;
             case StartSplashStage.OPEN:
-                ParkingManagerSerializer.deserialize();
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Selectionner un Parking enregistré");
+                File file = fileChooser.showOpenDialog(primaryStage);
+
+                String fileName = (file == null) ? "save/parkingManager.ser" : String.valueOf(file);
+
+                ParkingManagerSerializer.deserialize(fileName);
                 break;
             case StartSplashStage.EXIT:
             default:

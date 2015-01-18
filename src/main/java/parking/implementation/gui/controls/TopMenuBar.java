@@ -86,33 +86,36 @@ public class TopMenuBar extends MenuBar {
         MenuItem undo = new MenuItem("Unselect place");
         
         find.setOnAction(event ->{
+            
             AutoSelectorStage autoSelectorStage = new AutoSelectorStage(primaryStage);
             autoSelectorStage.showAndWait();
-            SimpleParkingSpotSelector simpleParkingSpotSelector = new SimpleParkingSpotSelector();
-            Vehicle tmp = null;
+            
+            Vehicle vehicle = null;
+            
             switch (autoSelectorStage.getVehicleType()){
                 case "Moto":
-                    tmp = new Motorbike();
+                    vehicle = new Motorbike();
                     break;
                 case "Voiture":
-                    tmp = new Car();
+                    vehicle = new Car();
                     break;
                 case "Camion":
-                    tmp = new Carrier();
+                    vehicle = new Carrier();
                     break;
                 default:
                     break;
             }
+            
             ParkingSpot parkingSpot = null;
+            
             try {
-                parkingSpot = currentParking.findAvailableParkingSpotForVehicle(tmp);
-                tmpButton = (ButtonSpot) parkingGrid.getButtonSpotMap().get(parkingSpot.getId());
+                parkingSpot = currentParking.findAvailableParkingSpotForVehicle(vehicle);
+                tmpButton = parkingGrid.highlightId(parkingSpot.getId());
                 tmpButton.setStyle("-fx-background-color: #00ccff");
             } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Pas de place disponible ou type non défini.").show();
             }
-            ButtonSpot tmpButton = parkingGrid.getButtonSpotMap().get(parkingSpot.getId());
-            tmpButton.setStyle("-fx-background-color: #00ccff");
+            
         });
 
         menuSelector.getItems().addAll(find, undo);
