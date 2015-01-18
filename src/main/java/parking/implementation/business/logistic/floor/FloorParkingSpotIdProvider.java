@@ -21,4 +21,8 @@ public class FloorParkingSpotIdProvider implements ParkingSpotIdProvider {
     public Integer nextId() {
         return floor * 100 + ++i;
     }
+
+    public static int ExtractFloor(int id) {
+        return id / 100;
+    }
 }

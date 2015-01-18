@@ -15,11 +15,10 @@ import javafx.stage.Window;
 import parking.api.business.parking.Parking;
 import parking.api.business.parking.ParkingManager;
 import parking.api.business.parkingspot.ParkingSpot;
-import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
-import parking.implementation.gui.controls.ButtonSpot;
 import parking.implementation.business.Client;
 import parking.implementation.business.parkingspot.ParkingSpotFactory;
+import parking.implementation.gui.controls.ButtonSpot;
 
 import java.util.ArrayList;
 import java.util.Collection;

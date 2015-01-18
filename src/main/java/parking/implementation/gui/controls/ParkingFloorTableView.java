@@ -1,9 +1,9 @@
 package parking.implementation.gui.controls;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxTableCell;
@@ -11,25 +11,26 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
-import parking.api.business.parking.Parking;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.implementation.business.parkingspot.CarParkingSpot;
 import parking.implementation.gui.MainApplication;
 import parking.implementation.gui.Utils;
 
+import java.util.Collection;
+
 /**
  * Created by sknz on 1/18/15.
  */
-public class ParkingFloorTableView extends TableView<ParkingFloorTableView.ParkingTableRow> {
-    private ObservableList<ParkingTableRow> data = FXCollections.observableArrayList();
+public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
+    private ObservableList<ParkingTableViewRow> data = FXCollections.observableArrayList();
 
     public ParkingFloorTableView() {
         setItems(data);
-        data.add(new ParkingTableRow(1, 10, CarParkingSpot.class));
+        addNewLine();
 
-        TableColumn<ParkingTableRow, Integer> floorColumn = new TableColumn<>("Etage");
-        TableColumn<ParkingTableRow, Integer> quantityColumn = new TableColumn<>("Nb. places");
-        TableColumn<ParkingTableRow, Class<? extends ParkingSpot>> typeColumn = new TableColumn<>("Type");
+        TableColumn<ParkingTableViewRow, Integer> floorColumn = new TableColumn<>("Etage");
+        TableColumn<ParkingTableViewRow, Integer> quantityColumn = new TableColumn<>("Nb. places");
+        TableColumn<ParkingTableViewRow, Class<? extends ParkingSpot>> typeColumn = new TableColumn<>("Type");
 
         floorColumn.setCellValueFactory(new PropertyValueFactory<>("floor"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -41,8 +42,10 @@ public class ParkingFloorTableView extends TableView<ParkingFloorTableView.Parki
 
         floorColumn.setCellFactory(cell -> unsignedIntegerTextFieldTableCell());
         floorColumn.setOnEditCommit(event -> getItems().get(event.getTablePosition().getRow()).setFloor(event.getNewValue()));
+
         quantityColumn.setCellFactory(cell -> unsignedIntegerTextFieldTableCell());
         quantityColumn.setOnEditCommit(event -> getItems().get(event.getTablePosition().getRow()).setQuantity(event.getNewValue()));
+
         typeColumn.setCellFactory(cell -> parkingSpotClassComboBoxTableCell());
         typeColumn.setOnEditCommit(event -> getItems().get(event.getTablePosition().getRow()).setType(event.getNewValue()));
 
@@ -52,8 +55,8 @@ public class ParkingFloorTableView extends TableView<ParkingFloorTableView.Parki
         setEditable(true);
     }
 
-    private TextFieldTableCell<ParkingTableRow, Integer> unsignedIntegerTextFieldTableCell() {
-        TextFieldTableCell<ParkingTableRow, Integer> field = new TextFieldTableCell<>();
+    private TextFieldTableCell<ParkingTableViewRow, Integer> unsignedIntegerTextFieldTableCell() {
+        TextFieldTableCell<ParkingTableViewRow, Integer> field = new TextFieldTableCell<>();
         field.setConverter(new IntegerStringConverter() {
             @Override
             public Integer fromString(String value) {
@@ -70,8 +73,8 @@ public class ParkingFloorTableView extends TableView<ParkingFloorTableView.Parki
         return field;
     }
 
-    private ComboBoxTableCell<ParkingTableRow, Class<? extends ParkingSpot>> parkingSpotClassComboBoxTableCell() {
-        ComboBoxTableCell<ParkingTableRow, Class<? extends ParkingSpot>> field = new ComboBoxTableCell<>();
+    private ComboBoxTableCell<ParkingTableViewRow, Class<? extends ParkingSpot>> parkingSpotClassComboBoxTableCell() {
+        ComboBoxTableCell<ParkingTableViewRow, Class<? extends ParkingSpot>> field = new ComboBoxTableCell<>();
         field.getItems().addAll(MainApplication.ParkingSpotTypes);
         field.setConverter(new StringConverter<Class<? extends ParkingSpot>>() {
             @Override
@@ -95,39 +98,33 @@ public class ParkingFloorTableView extends TableView<ParkingFloorTableView.Parki
         return field;
     }
 
-    public class ParkingTableRow {
-        private SimpleIntegerProperty floor = new SimpleIntegerProperty();
-        private SimpleIntegerProperty quantity = new SimpleIntegerProperty();
-        private SimpleObjectProperty<Class<? extends ParkingSpot>> type = new SimpleObjectProperty<>();
+    public void addNewLine() {
+        int position = data.contains(getSelectionModel().getSelectedItem())
+                ? data.indexOf(getSelectionModel().getSelectedItem())
+                : data.size();
 
-        public ParkingTableRow(Integer floor, Integer quantity, Class<? extends ParkingSpot> type) {
-            setFloor(floor);
-            setQuantity(quantity);
-            setType(type);
+        if (position + 1 < data.size()) {
+            ParkingTableViewRow nextItem = data.get(position + 1);
+            if (nextItem.isLocked())
+            {
+                new Alert(Alert.AlertType.ERROR, "Vous ne pouvez que rajouter de nouvelles places à la fin.").show();
+                return;
+            }
         }
 
-        public int getFloor() {
-            return floor.get();
-        }
+        data.add(position, new ParkingTableViewRow(1, 10, CarParkingSpot.class));
+    }
 
-        public void setFloor(int floor) {
-            this.floor.set(floor);
+    public void removeSelectedLine() {
+        ParkingTableViewRow selectedItem = getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            if (!selectedItem.isLocked())
+                data.remove(selectedItem);
+            else new Alert(Alert.AlertType.ERROR, "Vous ne pouvez que rajouter de nouvelles places à la fin.").show();
         }
+    }
 
-        public int getQuantity() {
-            return quantity.get();
-        }
-
-        public void setQuantity(int quantity) {
-            this.quantity.set(quantity);
-        }
-
-        public Class<? extends ParkingSpot> getType() {
-            return type.get();
-        }
-
-        public void setType(Class<? extends ParkingSpot> type) {
-            this.type.set(type);
-        }
+    public Collection<ParkingTableViewRow> getData() {
+        return data;
     }
 }
