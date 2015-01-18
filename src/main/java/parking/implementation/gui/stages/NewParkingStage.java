@@ -18,11 +18,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import parking.api.business.parking.Parking;
-import parking.api.business.parking.ParkingManager;
+import parking.api.business.parking.ParkingApplicationManager;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.implementation.business.logistic.floor.FloorParkingSpotIdProvider;
 import parking.implementation.business.logistic.simple.SimpleParkingSpotFactory;
-import parking.implementation.business.logistic.simple.SimpleParkingSpotSelector;
+import parking.implementation.business.logistic.simple.SimpleVehicleParkingStrategy;
 import parking.implementation.gui.controls.ParkingFloorTableView;
 import parking.implementation.gui.controls.ParkingTableViewRow;
 
@@ -111,8 +111,10 @@ public class NewParkingStage extends Stage {
             parking.setName(getParkingName());
         }
         else {
-            parking = ParkingManager.getInstance().newParking(getParkingName());
-            parking.setParkingSpotSelector(new SimpleParkingSpotSelector());
+            parking = ParkingApplicationManager.getInstance().newParking(getParkingName());
+            SimpleVehicleParkingStrategy vehicleParkingStrategy = new SimpleVehicleParkingStrategy();
+            parking.setVehicleParkingStrategy(vehicleParkingStrategy);
+            parking.registerObserver(vehicleParkingStrategy::observe);
         }
 
         parkingFloorTableView.getItems().stream().filter(row -> !row.getLocked()).forEach(row -> {

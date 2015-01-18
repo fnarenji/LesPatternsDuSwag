@@ -2,8 +2,6 @@ package parking.api.business.parking;
 
 import org.junit.Before;
 import org.junit.Test;
-import parking.api.business.parking.Parking;
-import parking.api.business.parking.ParkingManager;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.parkingspot.ParkingSpotFactory;
 import parking.api.business.parkingspot.ParkingSpotIdProvider;
@@ -21,11 +19,11 @@ public class ParkingTest {
 
     @Before
     public void setUp() throws ParkingExistsException, ParkingBookedSpotsExceptions, ParkingNotPresentException {
-        ParkingManager parkingManager = ParkingManager.getInstance();
-        if (parkingManager.containsParking(1))
-            parkingManager.deleteParking(1);
+        ParkingApplicationManager parkingApplicationManager = ParkingApplicationManager.getInstance();
+        if (parkingApplicationManager.containsParking(1))
+            parkingApplicationManager.deleteParking(1);
 
-        parking = parkingManager.newParking(1, "Prk PARIS");
+        parking = parkingApplicationManager.newParking(1, "Prk PARIS");
     }
 
     @Test

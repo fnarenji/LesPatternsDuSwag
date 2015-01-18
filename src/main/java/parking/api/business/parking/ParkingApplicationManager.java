@@ -1,6 +1,7 @@
 package parking.api.business.parking;
 
 import parking.api.business.Utils;
+import parking.api.business.observer.BaseObservable;
 import parking.api.exceptions.ParkingBookedSpotsExceptions;
 import parking.api.exceptions.ParkingExistsException;
 import parking.api.exceptions.ParkingNotPresentException;
@@ -12,25 +13,22 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import static parking.api.business.Utils.uncheckedCast;
-
 /**
  * Created by SKNZ on 28/12/2014.
  */
-public class ParkingManager implements Serializable, Iterable<Parking> {
+public class ParkingApplicationManager extends BaseObservable<ParkingApplicationManager> implements Serializable, Iterable<Parking> {
     public static final long serialVersionUID = 1L;
-    private static ParkingManager instance = new ParkingManager();
+    private static ParkingApplicationManager instance = new ParkingApplicationManager();
     private String companyName;
     private Map<Integer, Parking> parkingsById = new HashMap<>();
     private Map<String, Object> config = new HashMap<>();
 
-    private ParkingManager() {
-
+    private ParkingApplicationManager() {
     }
 
     // For unit testing purposes only, PACKAGE LOCAL
     public static void resetSingleton() {
-        instance = new ParkingManager();
+        instance = new ParkingApplicationManager();
     }
 
     /**
@@ -38,7 +36,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
      *
      * @return The instance of the parking manager
      */
-    public static ParkingManager getInstance() {
+    public static ParkingApplicationManager getInstance() {
         return instance;
     }
 
@@ -93,6 +91,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         Parking parking = new Parking(id, name);
         parkingsById.put(id, parking);
 
+        notifyObservers();
         return parking;
     }
 
@@ -112,6 +111,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
             throw new ParkingBookedSpotsExceptions(parking);
 
         parkingsById.remove(parking.getId());
+        notifyObservers();
     }
 
     /**
@@ -176,7 +176,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ParkingManager that = (ParkingManager) o;
+        ParkingApplicationManager that = (ParkingApplicationManager) o;
 
         if (companyName != null ? !companyName.equals(that.companyName) : that.companyName != null) return false;
         if (parkingsById != null ? !parkingsById.equals(that.parkingsById) : that.parkingsById != null) return false;
@@ -208,7 +208,7 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-        instance = (ParkingManager) stream.readObject();
+        instance = (ParkingApplicationManager) stream.readObject();
         parkingsById = Utils.<Map<Integer, Parking>>uncheckedCast(stream.readObject());
         companyName = (String) stream.readObject();
     }

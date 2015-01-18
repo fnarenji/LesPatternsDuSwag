@@ -3,7 +3,7 @@ package parking.api.business.parking;
 import parking.api.business.observer.BaseObservable;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.parkingspot.ParkingSpotFactory;
-import parking.api.business.parkingspot.ParkingSpotSelector;
+import parking.api.business.parkingspot.VehicleParkingStrategy;
 import parking.api.business.vehicle.Vehicle;
 import parking.api.exceptions.*;
 
@@ -17,11 +17,11 @@ import java.util.stream.Stream;
 /**
  * Created by SKNZ on 28/12/2014.
  */
-public class Parking extends BaseObservable implements Serializable, Iterable<ParkingSpot> {
+public class Parking extends BaseObservable<Parking> implements Serializable, Iterable<ParkingSpot> {
     private final Integer id;
     private String name;
     private Map<Integer, ParkingSpot> parkingSpotsById = new HashMap<>();
-    private ParkingSpotSelector parkingSpotSelector;
+    private VehicleParkingStrategy vehicleParkingStrategy;
 
     /**
      * Create a parking
@@ -136,11 +136,11 @@ public class Parking extends BaseObservable implements Serializable, Iterable<Pa
 
     /**
      * Set the new parkingSpotSelector to use
-     * @param parkingSpotSelector the new parkingSpotSelector to use
+     * @param vehicleParkingStrategy the new parkingSpotSelector to use
      */
 
-    public void setParkingSpotSelector(ParkingSpotSelector parkingSpotSelector) {
-        this.parkingSpotSelector = parkingSpotSelector;
+    public void setVehicleParkingStrategy(VehicleParkingStrategy vehicleParkingStrategy) {
+        this.vehicleParkingStrategy = vehicleParkingStrategy;
     }
 
     // Undefined behaviour if vehicle already parked
@@ -161,34 +161,7 @@ public class Parking extends BaseObservable implements Serializable, Iterable<Pa
         if (availableParkingSpots.isEmpty())
             throw new NoSpotAvailableException();
 
-        return parkingSpotSelector.select(vehicle, availableParkingSpots);
-    }
-
-    /**
-     * Reorganize the parking and optimise it
-     * @throws ReorganizationException Raised if no spot empty or if the vehicle doesn't match with the spot or if the spot is booked
-     */
-    public void reorganizeParking() throws ReorganizationException {
-        try {
-            parkingSpotsById.values().stream()
-                    .filter(parkingSpot -> parkingSpot.isVehicleParked() && !parkingSpotSelector.isOptimalParkingSpotForVehicle(parkingSpot, parkingSpot.getVehicle()))
-                    .forEach(parkingSpot -> {
-                        Vehicle vehicle = parkingSpot.unpark();
-                        try {
-                            ParkingSpot optimalParkingSpot = findAvailableParkingSpotForVehicle(vehicle);
-                            optimalParkingSpot.park(vehicle);
-                        } catch (NoSpotAvailableException e) {
-                            e.printStackTrace();
-                        } catch (SpotNotEmptyException | VehicleNotFitException | SpotBookedException | ParkingNoSelectorException e) {
-                            throw new RuntimeException(new ReorganizationException(e));
-                        }
-                    });
-        } catch (RuntimeException e) {
-            if (e.getCause() instanceof ReorganizationException)
-                throw (ReorganizationException) e.getCause();
-
-            throw e;
-        }
+        return vehicleParkingStrategy.select(vehicle, availableParkingSpots);
     }
 
     public Stream<ParkingSpot> stream() {

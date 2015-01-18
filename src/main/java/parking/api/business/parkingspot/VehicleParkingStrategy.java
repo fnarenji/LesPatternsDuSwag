@@ -9,7 +9,7 @@ import java.util.Collection;
  * Created by SKNZ on 30/12/2014.
  */
 
-public interface ParkingSpotSelector extends Serializable {
+public interface VehicleParkingStrategy extends Serializable {
     /**
      * Select a compatible spot for the vehicle passed as parameter into the collection of spot also passed as parameter
      *

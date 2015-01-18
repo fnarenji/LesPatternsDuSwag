@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import parking.api.business.parking.Parking;
-import parking.api.business.parking.ParkingManager;
+import parking.api.business.parking.ParkingApplicationManager;
 import parking.api.business.parking.ParkingManagerSerializer;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
@@ -140,10 +140,10 @@ public class MainApplication extends Application {
                 String fileName = (file == null) ? "save/parkingManager.ser" : String.valueOf(file);
                 ParkingManagerSerializer.deserialize(fileName);
                 try {
-                    if (ParkingManager.getInstance().count() == 0)
+                    if (ParkingApplicationManager.getInstance().count() == 0)
                         throw new ParkingNotPresentException(0);
 
-                    parkingChangeHandler(ParkingManager.getInstance().getParkingById(1));
+                    parkingChangeHandler(ParkingApplicationManager.getInstance().getParkingById(1));
                 } catch (ParkingNotPresentException e) {
                     new Alert(Alert.AlertType.ERROR, "Le fichier ne contenait pas de parking valide.");
                 }

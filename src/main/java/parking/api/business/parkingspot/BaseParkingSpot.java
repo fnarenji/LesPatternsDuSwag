@@ -56,6 +56,7 @@ public abstract class BaseParkingSpot extends BaseObservable<ParkingSpot> implem
 
         this.vehicle = vehicle;
         enteredHour = DateTime.now();
+        notifyObservers();
     }
 
     @Override

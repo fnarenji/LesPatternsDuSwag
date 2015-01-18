@@ -9,14 +9,14 @@ public interface Observable<T extends Observable> {
      *
      * @param observer the observer to register
      */
-    public void registerObserver(Observer<Observable<T>> observer);
+    public void registerObserver(Observer<T> observer);
 
     /**
      * Unregister an observer. The observer won't be notified of changes.
      *
      * @param observer the observer to remove
      */
-    public void unregisterObserver(Observer<Observable<T>> observer);
+    public void unregisterObserver(Observer<T> observer);
 
     /**
      * Send a notification to all the observers.

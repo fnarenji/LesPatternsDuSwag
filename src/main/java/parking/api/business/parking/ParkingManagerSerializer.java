@@ -29,7 +29,7 @@ public class ParkingManagerSerializer {
             e.printStackTrace();
         }
 
-        ParkingManager.getInstance().read(ois);
+        ParkingApplicationManager.getInstance().read(ois);
     }
 
     /**
@@ -43,7 +43,7 @@ public class ParkingManagerSerializer {
             OutputStream file = new ObjectOutputStream(new FileOutputStream("save/parkingManager.ser"));
             oos = new ObjectOutputStream(file);
 
-            ParkingManager.getInstance().write(oos);
+            ParkingApplicationManager.getInstance().write(oos);
             oos.flush();
 
         } catch (FileNotFoundException | NotSerializableException e) {

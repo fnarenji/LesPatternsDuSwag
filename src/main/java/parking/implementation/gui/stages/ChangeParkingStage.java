@@ -18,7 +18,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import javafx.util.StringConverter;
 import parking.api.business.parking.Parking;
-import parking.api.business.parking.ParkingManager;
+import parking.api.business.parking.ParkingApplicationManager;
 import parking.api.exceptions.ParkingNotPresentException;
 
 /**
@@ -96,7 +96,7 @@ public class ChangeParkingStage extends Stage {
 
     private void refreshChoices() {
         parkingNumberChoiceBox.getItems().clear();
-        ParkingManager.getInstance().forEach(parking -> parkingNumberChoiceBox.getItems().add(parking));
+        ParkingApplicationManager.getInstance().forEach(parking -> parkingNumberChoiceBox.getItems().add(parking));
     }
 
     public Parking getChoice() {
@@ -118,7 +118,7 @@ public class ChangeParkingStage extends Stage {
                 Integer id = Integer.valueOf(string.substring(1, string.indexOf(')')));
 
                 try {
-                    return ParkingManager.getInstance().getParkingById(id);
+                    return ParkingApplicationManager.getInstance().getParkingById(id);
                 } catch (ParkingNotPresentException e) {
                     new Alert(Alert.AlertType.ERROR, "Vous avez sélectionné un parking inexistant. \n" + e);
                 }

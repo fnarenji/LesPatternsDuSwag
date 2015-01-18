@@ -14,82 +14,82 @@ import parking.implementation.business.parkingspot.CarParkingSpot;
 
 import static org.junit.Assert.*;
 
-public class ParkingManagerTest {
+public class ParkingApplicationManagerTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private ParkingManager parkingManager;
+    private ParkingApplicationManager parkingApplicationManager;
 
     @Before
     public void resetSingleton() {
-        ParkingManager.resetSingleton();
-        parkingManager = ParkingManager.getInstance();
+        ParkingApplicationManager.resetSingleton();
+        parkingApplicationManager = ParkingApplicationManager.getInstance();
     }
 
     @Test
     public void testGetInstance() {
-        assertNotNull(parkingManager);
+        assertNotNull(parkingApplicationManager);
     }
 
     @Test
     public void testGetSetCompanyName() {
         final String companyName = "MY COMPANY NAME é@uø";
-        parkingManager.setCompanyName(companyName);
-        assertEquals(companyName, parkingManager.getCompanyName());
+        parkingApplicationManager.setCompanyName(companyName);
+        assertEquals(companyName, parkingApplicationManager.getCompanyName());
     }
 
     @Test
     public void testNewParking() throws ParkingExistsException, ParkingNotPresentException {
-        parkingManager.newParking(1, "Prk MARSEILLE");
+        parkingApplicationManager.newParking(1, "Prk MARSEILLE");
         thrown.expect(ParkingExistsException.class);
-        parkingManager.newParking(1, "Prk MARSEILLE2");
+        parkingApplicationManager.newParking(1, "Prk MARSEILLE2");
     }
 
     @Test
     public void testDeleteParking() throws ParkingExistsException, ParkingNotPresentException, ParkingBookedSpotsExceptions {
-        Parking parking = parkingManager.newParking(1, "Prk AIX-EN-PCE");
+        Parking parking = parkingApplicationManager.newParking(1, "Prk AIX-EN-PCE");
 
         // @todo Add booking tests.
-        parkingManager.deleteParking(parking.getId());
+        parkingApplicationManager.deleteParking(parking.getId());
 
         try {
-            parkingManager.getParkingById(parking.getId());
+            parkingApplicationManager.getParkingById(parking.getId());
             fail("Exception not thrown");
         } catch (ParkingNotPresentException e) {
         }
 
         try {
-            parkingManager.deleteParking(parking.getId());
+            parkingApplicationManager.deleteParking(parking.getId());
             fail("Exception not thrown");
         } catch (ParkingNotPresentException e) {
         }
 
-        parking = parkingManager.newParking(1, "Prk GAP");
-        assertEquals(parkingManager.getParkingById(1), parking);
+        parking = parkingApplicationManager.newParking(1, "Prk GAP");
+        assertEquals(parkingApplicationManager.getParkingById(1), parking);
     }
 
     @Test
     public void testContainsParking() throws Exception {
-        assertFalse(parkingManager.containsParking(1));
-        parkingManager.newParking(1, "Prk AIX-EN-PCE");
-        assertTrue(parkingManager.containsParking(1));
+        assertFalse(parkingApplicationManager.containsParking(1));
+        parkingApplicationManager.newParking(1, "Prk AIX-EN-PCE");
+        assertTrue(parkingApplicationManager.containsParking(1));
     }
 
     @Test
     public void testGetParkingById() throws ParkingNotPresentException, ParkingExistsException {
-        Parking parking = parkingManager.newParking(1, "Prk AVIGNON");
-        assertEquals(parking, parkingManager.getParkingById(1));
+        Parking parking = parkingApplicationManager.newParking(1, "Prk AVIGNON");
+        assertEquals(parking, parkingApplicationManager.getParkingById(1));
 
         thrown.expect(ParkingNotPresentException.class);
-        parkingManager.getParkingById(Integer.MAX_VALUE);
+        parkingApplicationManager.getParkingById(Integer.MAX_VALUE);
     }
 
     @Test
     public void testSerializeParking() {
         try {
-            parkingManager.newParking(1, "Parking du SWAG");
+            parkingApplicationManager.newParking(1, "Parking du SWAG");
             try {
-                parkingManager.getParkingById(1).newParkingSpot(new ParkingSpotFactory() {
+                parkingApplicationManager.getParkingById(1).newParkingSpot(new ParkingSpotFactory() {
                     int i = 0;
 
                     @Override
@@ -111,9 +111,9 @@ public class ParkingManagerTest {
         ParkingManagerSerializer.serialize();
         ParkingManagerSerializer.deserialize("save/parkingManager.ser");
 
-        assertEquals(ParkingManager.getInstance().containsParking(1), true);
+        assertEquals(ParkingApplicationManager.getInstance().containsParking(1), true);
         try {
-            assertEquals(ParkingManager.getInstance().getParkingById(1).countParkingSpots() == 1, true);
+            assertEquals(ParkingApplicationManager.getInstance().getParkingById(1).countParkingSpots() == 1, true);
         } catch (ParkingNotPresentException e) {
             e.printStackTrace();
         }
