@@ -17,8 +17,9 @@ import javafx.stage.Window;
 import parking.api.business.vehicle.Vehicle;
 import parking.api.exceptions.UnknownVehicleException;
 import parking.implementation.business.Client;
+import parking.implementation.business.logistic.simple.SimpleVehicleFactory;
 import parking.implementation.gui.ClientManager;
-import parking.implementation.gui.VehicleFactory;
+import parking.implementation.business.logistic.simple.VehicleFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -196,7 +197,7 @@ public class VehicleStage extends Stage {
                 || modelField.getText() == null)
             return null;
 
-        VehicleFactory vehicleFactory = new parking.implementation.business.vehicle.VehicleFactory();
+        VehicleFactory vehicleFactory = new SimpleVehicleFactory();
 
         Vehicle vehicle = vehicleFactory.createVehicle(vehicleChoiceBox.getValue().toString());
         vehicle.setPlate(plateField.getText());

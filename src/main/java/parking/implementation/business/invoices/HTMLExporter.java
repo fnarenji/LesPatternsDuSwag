@@ -23,7 +23,7 @@ public class HTMLExporter implements InvoiceExporter {
         StringTokenizer st = new StringTokenizer(translatedExporter.export());
         String toExport = "";
 
-        List<String> document = new ArrayList<String>();
+        List<String> document = new ArrayList<>();
 
         while(st.hasMoreTokens()){
             document.add(st.nextToken());

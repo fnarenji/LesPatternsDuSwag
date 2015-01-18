@@ -91,16 +91,12 @@ public class ParkingFloorListStage extends Stage {
 
         //create parking
         if (nbCar != 0 || nbCarrier != 0) {
-            try {
-                parkingManager = ParkingManager.getInstance();
-                parkingSpotFactory = new ParkingSpotFactory();
+            parkingManager = ParkingManager.getInstance();
+            parkingSpotFactory = new ParkingSpotFactory();
 
-                parkingManager.setCompanyName("SWAG COMPANY");
-                int idParking = parkingManager.count();
-                parkingManager.newParking("Parking " + ++idParking);
-            } catch (ParkingExistsException e) {
-                e.printStackTrace();
-            }
+            parkingManager.setCompanyName("SWAG COMPANY");
+            int idParking = parkingManager.count();
+            parkingManager.newParking("Parking " + ++idParking);
 
             Collection<String> vehicleTypes = new ArrayList<>();
             Map<String, Integer> vehicleCountByType = new HashMap<>();

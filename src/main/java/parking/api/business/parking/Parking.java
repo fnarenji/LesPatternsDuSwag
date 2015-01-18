@@ -148,7 +148,10 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
      * @return A parking spot available for the vehicle
      * @throws NoSpotAvailableException Raised when no spot available
      */
-    public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle) throws NoSpotAvailableException {
+    public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle) throws NoSpotAvailableException, ParkingNoSelectorException {
+        if (parkingSpotsById == null)
+            throw new ParkingNoSelectorException();
+
         List<ParkingSpot> availableParkingSpots = parkingSpotsById.values().stream()
                 .filter(parkingSpot -> parkingSpot.fits(vehicle) && !parkingSpot.isVehicleParked())
                 .collect(Collectors.toList());
@@ -174,8 +177,8 @@ public class Parking implements Serializable, Iterable<ParkingSpot> {
                             optimalParkingSpot.park(vehicle);
                         } catch (NoSpotAvailableException e) {
                             e.printStackTrace();
-                        } catch (SpotNotEmptyException | VehicleNotFitException | SpotBookedException e) {
-                            throw new RuntimeException(new ReorganizationException());
+                        } catch (SpotNotEmptyException | VehicleNotFitException | SpotBookedException | ParkingNoSelectorException e) {
+                            throw new RuntimeException(new ReorganizationException(e));
                         }
                     });
         } catch (RuntimeException e) {

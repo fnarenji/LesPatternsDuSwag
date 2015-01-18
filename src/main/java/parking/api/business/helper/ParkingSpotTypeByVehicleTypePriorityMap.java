@@ -15,6 +15,8 @@ public class ParkingSpotTypeByVehicleTypePriorityMap {
     }
 
     public InnerHelper buildFor(Class vehicleClass) {
+        parkingSpotPriorityMap.putIfAbsent(vehicleClass, new ArrayList<>());
+
         return new InnerHelper(parkingSpotPriorityMap.get(vehicleClass));
     }
 

@@ -6,14 +6,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import parking.api.business.parking.Parking;
 import parking.api.business.parking.ParkingManager;
 import parking.api.exceptions.ParkingExistsException;
-import parking.implementation.gui.controls.MainSplash;
-import parking.implementation.gui.controls.ParkingGrid;
-import parking.implementation.gui.controls.TopMenuBar;
 import parking.implementation.business.logistic.floor.FloorParkingSpotIdProvider;
+import parking.implementation.business.logistic.simple.SimpleParkingSpotSelector;
 import parking.implementation.business.parkingspot.ParkingSpotFactory;
+import parking.implementation.gui.controls.ParkingGrid;
+import parking.implementation.gui.controls.StartSplashStage;
+import parking.implementation.gui.controls.TopMenuBar;
+import parking.implementation.gui.stages.NewParkingStage;
 
 //Created by on 30/12/14.
 
@@ -24,32 +26,32 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("LesPatternsDuSwag - Parking qualitatif since 1889");
-        primaryStage.setOnCloseRequest(event -> Platform.exit());
 
-        MainSplash splash = new MainSplash(primaryStage);
+        StartSplashStage splash = new StartSplashStage(primaryStage);
         splash.showAndWait();
         switch (splash.getResult()) {
-            case 1:
-                System.out.println(1);
+            case StartSplashStage.NEW:
+                NewParkingStage newParkingStage = new NewParkingStage(primaryStage);
+                newParkingStage.showAndWait();
+                newParkingStage.applyChanges();
                 break;
-            case 2:
+            case StartSplashStage.OPEN:
                 System.out.println(2);
                 break;
+            case StartSplashStage.EXIT:
             default:
-                System.out.println("CASSOS !");
-                break;
+                return;
         }
 
         ParkingSpotFactory parkingSpotFactory = new ParkingSpotFactory();
         parkingSpotFactory.setIdProvider(new FloorParkingSpotIdProvider());
         parkingSpotFactory.setNextVehicleType("Car");
 
-        try {
-            ParkingManager.getInstance().newParking(1, "Parking 1").newParkingSpot(parkingSpotFactory, 10);
-        } catch (ParkingExistsException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            ParkingManager.getInstance().newParking(1, "Parking 1").newParkingSpot(parkingSpotFactory, 10);
+//        } catch (ParkingExistsException e) {
+//            e.printStackTrace();
+//        }
 
         ParkingGrid parkingGrid = new ParkingGrid(primaryStage);
         parkingGrid.updateGrid(1, 1);
@@ -68,6 +70,8 @@ public class MainApplication extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
+        primaryStage.setTitle("LesPatternsDuSwag - Parking qualitatif since 1889");
+        primaryStage.setOnCloseRequest(event -> Platform.exit());
         primaryStage.show(); // show time !
     }
 }

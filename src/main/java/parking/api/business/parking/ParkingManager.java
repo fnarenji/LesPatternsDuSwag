@@ -63,9 +63,15 @@ public class ParkingManager implements Serializable, Iterable<Parking> {
      * @return the new parking
      * @throws ParkingExistsException raised if such a parking already exist
      */
-    public Parking newParking(String name) throws ParkingExistsException {
+    public Parking newParking(String name) {
         int id = this.count();
-        return this.newParking(++id, name);
+        for (;;) {
+            try {
+                return this.newParking(++id, name);
+            } catch (ParkingExistsException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
