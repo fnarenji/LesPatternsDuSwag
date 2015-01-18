@@ -54,11 +54,9 @@ public class BaseVehicle implements Vehicle {
 
     @Override
     public String toString() {
-        return "BaseVehicle{" +
-                "plate='" + plate + '\'' +
-                ", brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                '}';
+        return "Plate : " + plate + ' ' +
+                ", Brand : " + brand + ' ' +
+                ", Model : " + model + ' ';
     }
 
     @Override

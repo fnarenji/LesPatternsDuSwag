@@ -81,7 +81,7 @@ public class MainApplication extends Application {
         BorderPane pane = new BorderPane();
 
         // create top menu
-        MenuBar menu = new TopMenuBar(primaryStage);
+        MenuBar menu = new TopMenuBar(primaryStage,parkingGrid);
 
         pane.setTop(menu);
         pane.setPrefHeight(menu.getHeight());

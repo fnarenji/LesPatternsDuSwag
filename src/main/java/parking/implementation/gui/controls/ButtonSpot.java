@@ -6,13 +6,14 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Window;
 import org.joda.time.DateTime;
+import parking.api.business.invoices.Invoice;
+import parking.api.business.invoices.InvoiceStrategy;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.exceptions.*;
 import parking.implementation.business.Client;
+import parking.implementation.business.logistic.simple.SimpleInvoiceStrategy;
 import parking.implementation.gui.ClientManager;
-import parking.implementation.gui.stages.ClientListStage;
-import parking.implementation.gui.stages.SpotStage;
-import parking.implementation.gui.stages.VehicleStage;
+import parking.implementation.gui.stages.*;
 import parking.implementation.business.parkingspot.CarParkingSpot;
 import parking.implementation.business.parkingspot.CarrierParkingSpot;
 
@@ -33,7 +34,7 @@ public class ButtonSpot extends MenuButton {
 
     private ParkingSpot parkingSpot;
     private String type;
-
+    
     private DateTime dateTimeEnd = null;
     private Client client = null;
 
@@ -115,10 +116,16 @@ public class ButtonSpot extends MenuButton {
                 if (this.park.getText().equalsIgnoreCase("park")) {
                     parkStage = new VehicleStage(parent);
                     parkStage.showAndWait();
-                    parkingSpot.park(parkStage.getVehicle());
+                    if(!parkStage.getVehicle().getBrand().equals(""))
+                        parkingSpot.park(parkStage.getVehicle());
                 } else if (this.park.getText().equalsIgnoreCase("unpark")) {
+                    
+                    InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
+                    Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(),parkingSpot,5);
+                    InvoiceStage  test = new InvoiceStage(parent,parkingSpot,invoice);
+                    test.showAndWait();
+                    
                     parkingSpot.unpark();
-
                     Alert alert = new Alert(
                             Alert.AlertType.INFORMATION,
                             "Place libérée."
@@ -191,12 +198,12 @@ public class ButtonSpot extends MenuButton {
         book.setOnAction(event -> {
             try {
                 if (this.book.getText().equalsIgnoreCase("book")) {
-                    ClientListStage clientListStage = new ClientListStage(parent);
-                    clientListStage.showAndWait();
-                    if (clientListStage.getClient() != null){
-                        dateTimeEnd = new DateTime(DateTime.now().plusDays(clientListStage.getDuration()));
-                        client = clientListStage.getClient();
-                        parkingSpot.book(clientListStage.getClient(),new DateTime(DateTime.now().plusDays(clientListStage.getDuration())));
+                    BookStage bookStage = new BookStage(parent);
+                    bookStage.showAndWait();
+                    if (bookStage.getClient() != null){
+                        dateTimeEnd = new DateTime(DateTime.now().plusDays(bookStage.getDuration()));
+                        client = bookStage.getClient();
+                        parkingSpot.book(bookStage.getClient(),new DateTime(DateTime.now().plusDays(bookStage.getDuration())));
                     }
                 } else if (this.book.getText().equalsIgnoreCase("unbook")) {
                     this.parkingSpot.unbook();
