@@ -2,6 +2,7 @@ package parking.api.business.invoices;
 
 import org.junit.Before;
 import org.junit.Test;
+import parking.implementation.business.invoices.HTMLExporter;
 import parking.implementation.business.invoices.languages.EnglishExporter;
 import parking.implementation.business.invoices.languages.FrenchExporter;
 
@@ -40,5 +41,18 @@ public class InvoiceExporterTest {
         assertEquals(invoiceExported.toLowerCase().contains("" + invoice.getInvoicePrice()), true);
         assertEquals(invoiceExported.toLowerCase().contains("invoice"), true);
         assertEquals(invoiceExported.toLowerCase().contains("price"), true);
+    }
+    @Test
+    public void testHTMLExport(){
+        InvoiceExporter exporter = new HTMLExporter(new EnglishExporter(invoice));
+
+        String invoiceExported = exporter.export();
+
+        assertEquals(invoiceExported.toLowerCase().contains("" + invoice.getInvoiceNumber()), true);
+        assertEquals(invoiceExported.toLowerCase().contains("" + invoice.getInvoicePrice()), true);
+        assertEquals(invoiceExported.toLowerCase().contains("invoice"), true);
+        assertEquals(invoiceExported.toLowerCase().contains("price"), true);
+        assertEquals(invoiceExported.toLowerCase().contains("<h1>"), true);
+        assertEquals(invoiceExported.toLowerCase().contains("</h2>"), true);
     }
 }

@@ -22,9 +22,9 @@ public abstract class TranslatedExporter implements InvoiceExporter {
     }
 
     protected String translate(String invoiceName, String priceName){
-        String toExport = "#" + invoiceName + " n°" + getInvoice().getInvoiceNumber();
+        String toExport = "# " + invoiceName + " n°" + getInvoice().getInvoiceNumber();
         toExport += "\n";
-        toExport += "##" + priceName + " : " + getInvoice().getInvoicePrice();
+        toExport += "## " + priceName + " : " + getInvoice().getInvoicePrice();
 
         return toExport;
     }
