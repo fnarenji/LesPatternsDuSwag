@@ -20,6 +20,8 @@ import java.util.Iterator;
 
 /**
  * Created by loick on 14/01/15.
+ *
+ * Group all the functions related to the management of the registred clients
  */
 public class ClientListStage extends Stage {
 
