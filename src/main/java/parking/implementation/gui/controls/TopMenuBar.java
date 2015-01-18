@@ -26,9 +26,11 @@ public class TopMenuBar extends MenuBar {
     private Stage primaryStage;
     private Parking currentParking;
     private ParkingGrid parkingGrid;
+    private  ButtonSpot tmpButton;
 
     public TopMenuBar(Stage primaryStage, ParkingGrid parkingGrid) {
         this.primaryStage = primaryStage;
+        this.parkingGrid = parkingGrid;
         getMenus().addAll(createFileMenu(), createMenuClient(), createMenuParking(), createMenuSelector(), createMenuQuit());
     }
 
@@ -95,17 +97,21 @@ public class TopMenuBar extends MenuBar {
                 case "Voiture":
                     tmp = new Car();
                     break;
-                default:
+                case "Camion":
                     tmp = new Carrier();
                     break;
+                default:
+                    break;
             }
-            System.out.println(tmp.getClass());
             ParkingSpot parkingSpot = null;
             try {
-                System.out.println(ParkingManager.getInstance().getParkingById(1).getSpots());
                 parkingSpot = simpleParkingSpotSelector.select(tmp, ParkingManager.getInstance().getParkingById(1).getSpots());
+                tmpButton = (ButtonSpot) parkingGrid.getButtonSpotMap().get(parkingSpot.getId());
+                tmpButton.setStyle("-fx-background-color: #00ccff");
             } catch (ParkingNotPresentException e) {
                 e.printStackTrace();
+            }catch (Exception e) {
+                new Alert(Alert.AlertType.ERROR, "Pas de place disponible ou type non défini.").show();
             }
             ButtonSpot tmpButton = parkingGrid.getButtonSpotMap().get(parkingSpot.getId());
             tmpButton.setStyle("-fx-background-color: #00ccff");
@@ -113,8 +119,13 @@ public class TopMenuBar extends MenuBar {
 
         menuSelector.getItems().addAll(find, undo);
 
+        undo.setOnAction(event ->{
+            tmpButton.setStyle("-fx-background-color: #60ff05");
+        });
         return menuSelector;
     }
+
+   
 
     private Menu createMenuQuit() {
         Menu menuQuit = new Menu();

@@ -6,9 +6,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import javafx.stage.Window;
@@ -28,6 +30,14 @@ public class AutoSelectorStage extends Stage {
     private ChoiceBox<String> vehicleChoiceBox;
     
     private Button submitButton;
+    private Label title;
+
+    private void createTitle() {
+        title = new Label("Select type of vehicle");
+        title.setFont(Font.font("Arial", 30));
+        title.setTextFill(Color.BLACK);
+        title.alignmentProperty().setValue(Pos.CENTER);
+    }
 
     private void createChoiceBoxVehicle() {
         vehicleChoiceBox = new ChoiceBox<String>();
@@ -51,12 +61,14 @@ public class AutoSelectorStage extends Stage {
     }
     
     private void init(){
+        vehicles.add("Aucun");
         vehicles.add("Voiture");
         vehicles.add("Moto");
         vehicles.add("Camion");
 
         createButtonCreate();
         createChoiceBoxVehicle();
+        createTitle();
     }
 
     public AutoSelectorStage(Window owner) {
@@ -69,6 +81,7 @@ public class AutoSelectorStage extends Stage {
 
         //add Nodes to FlowPane
         flowPane.getChildren().addAll(
+                title,
                 vehicleChoiceBox,
                 submitButton
         );

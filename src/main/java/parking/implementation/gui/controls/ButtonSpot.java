@@ -68,12 +68,12 @@ public class ButtonSpot extends MenuButton {
     }
 
     private void setAvailable() {
-        this.setStyle("-fx-background-color: " + colors.get(type));
+        this.setStyle("-fx-background-color: " + colors.get(parkingSpot.getClass()));
         this.park.setText("Park");
     }
 
     private void setAvailableBook() {
-        this.setStyle("-fx-background-color: " + colors.get(type));
+        this.setStyle("-fx-background-color: " + colors.get(parkingSpot.getClass()));
         this.book.setText("Book");
     }
 
@@ -89,9 +89,8 @@ public class ButtonSpot extends MenuButton {
 
     private void createClientCollection(){
         clientCollection = new ArrayList<>();
-        Iterator<Client> iteratorClient = ClientManager.getInstance().iterator();
-        while (iteratorClient.hasNext()){
-            clientCollection.add(iteratorClient.next());
+        for (Client client1 : ClientManager.getInstance()) {
+            clientCollection.add(client1);
         }
     }
 
@@ -120,8 +119,8 @@ public class ButtonSpot extends MenuButton {
                     if(client == null) {
                         InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
                         Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(), parkingSpot, 5);
-                        InvoiceStage test = new InvoiceStage(parent, parkingSpot, invoice);
-                        test.showAndWait();
+                        InvoiceStage invoiceStage = new InvoiceStage(parent, parkingSpot, invoice);
+                        invoiceStage.showAndWait();
                     }
                     
                     parkingSpot.unpark();
@@ -193,8 +192,8 @@ public class ButtonSpot extends MenuButton {
                     if(client != null) {
                         InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
                         Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(), parkingSpot, 5);
-                        InvoiceStage test = new InvoiceStage(parent, parkingSpot, invoice);
-                        test.showAndWait();
+                        InvoiceStage invoiceStage = new InvoiceStage(parent, parkingSpot, invoice);
+                        invoiceStage.showAndWait();
                     }
                     this.parkingSpot.unbook();
                     dateTimeEnd = null;

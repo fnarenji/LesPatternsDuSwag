@@ -18,6 +18,7 @@ public class HTMLExporter implements InvoiceExporter {
         this.translatedExporter = translatedExporter;
     }
 
+    public TranslatedExporter getTranslatedExporter(){ return translatedExporter; }
     @Override
     public String export(){
         StringTokenizer st = new StringTokenizer(translatedExporter.export());
