@@ -38,7 +38,7 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
             if (row.getLocked())
                 new Alert(Alert.AlertType.ERROR, "Vous ne pouvez modifier une place déjà existante.").show();
 
-            row.setFloor(event.getNewValue());
+            row.setFloor(row.getLocked() ? event.getOldValue() : event.getNewValue());
         });
 
         quantityColumn.setCellFactory(cell -> unsignedIntegerTextFieldTableCell());
@@ -48,7 +48,7 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
             if (row.getLocked())
                 new Alert(Alert.AlertType.ERROR, "Vous ne pouvez modifier une place déjà existante.").show();
 
-            row.setQuantity(event.getNewValue());
+            row.setQuantity(row.getLocked() ? event.getOldValue() : event.getNewValue());
         });
 
         typeColumn.setCellFactory(cell -> parkingSpotClassComboBoxTableCell());
@@ -58,7 +58,7 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
             if (row.getLocked())
                 new Alert(Alert.AlertType.ERROR, "Vous ne pouvez modifier une place déjà existante.").show();
 
-            row.setParkingSpotType(event.getNewValue());
+            row.setParkingSpotType(row.getLocked() ? event.getOldValue() : event.getNewValue());
         });
 
         getColumns().add(floorColumn);
