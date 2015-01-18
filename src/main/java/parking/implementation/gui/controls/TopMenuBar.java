@@ -33,24 +33,16 @@ public class TopMenuBar extends MenuBar {
 
     private Menu createMenuClient() {
         Menu menuClient = new Menu("Client");
-        MenuItem list = new MenuItem("Selectionner");
-        list.setOnAction(event -> {
-            ClientListStage clientListStage = new ClientListStage(primaryStage);
-            clientListStage.showAndWait();
-        });
 
         MenuItem nouveau = new MenuItem("Nouveau");
         nouveau.setOnAction(event -> {
             ClientStage clientStage = new ClientStage(primaryStage);
             clientStage.showAndWait();
-            if(!clientStage.getClient().getFirstName().equals(""))
+            if (!clientStage.getClient().getFirstName().equals(""))
                 ClientManager.getInstance().addClient(clientStage.getClient());
         });
 
-        menuClient.getItems().addAll(
-                list,
-                nouveau
-        );
+        menuClient.getItems().add(nouveau);
 
         return menuClient;
     }
@@ -111,8 +103,7 @@ public class TopMenuBar extends MenuBar {
             
             try {
                 parkingSpot = currentParking.findAvailableParkingSpotForVehicle(vehicle);
-                tmpButton = parkingGrid.highlightButton(parkingSpot.getId());
-                tmpButton.setStyle("-fx-background-color: #00ccff");
+                parkingGrid.highlightButton(parkingSpot.getId());
             } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Pas de place disponible ou type non défini.").show();
             }
@@ -131,10 +122,7 @@ public class TopMenuBar extends MenuBar {
         Menu menuQuit = new Menu();
         Label quitLabel = new Label("Quit");
         quitLabel.setOnMouseClicked(event -> {
-            Alert confirm = new Alert(
-                    Alert.AlertType.CONFIRMATION,
-                    "Êtes vous sûr de vouloir quitter ?"
-            );
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Êtes vous sûr de vouloir quitter ?");
             Optional<ButtonType> result = confirm.showAndWait();
             if (result.get() == ButtonType.OK)
                 primaryStage.close();
