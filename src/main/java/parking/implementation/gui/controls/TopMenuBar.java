@@ -6,9 +6,7 @@ import parking.api.business.parking.Parking;
 import parking.api.business.parking.ParkingManagerSerializer;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
-import parking.implementation.business.vehicle.Car;
-import parking.implementation.business.vehicle.Carrier;
-import parking.implementation.business.vehicle.Motorbike;
+import parking.api.exceptions.*;
 import parking.implementation.gui.ClientManager;
 import parking.implementation.gui.stages.*;
 
@@ -79,42 +77,28 @@ public class TopMenuBar extends MenuBar {
         MenuItem undo = new MenuItem("Unselect place");
         
         find.setOnAction(event ->{
-            
-            AutoSelectorStage autoSelectorStage = new AutoSelectorStage(primaryStage);
-            autoSelectorStage.showAndWait();
-            
+            VehicleStage vehicleStage = new VehicleStage(primaryStage);
+            vehicleStage.showAndWait();
+
             Vehicle vehicle = null;
-            
-            switch (autoSelectorStage.getVehicleType()){
-                case "Moto":
-                    vehicle = new Motorbike();
-                    break;
-                case "Voiture":
-                    vehicle = new Car();
-                    break;
-                case "Camion":
-                    vehicle = new Carrier();
-                    break;
-                default:
-                    break;
-            }
-            
+            vehicle = vehicleStage.getVehicle();
+
             ParkingSpot parkingSpot = null;
-            
             try {
                 parkingSpot = currentParking.findAvailableParkingSpotForVehicle(vehicle);
-                parkingGrid.highlightButton(parkingSpot.getId());
-            } catch (Exception e) {
-                new Alert(Alert.AlertType.ERROR, "Pas de place disponible ou type non défini.").show();
+                parkingSpot.park(vehicle);
+            } catch (NoSpotAvailableException e) {
+                new Alert(Alert.AlertType.ERROR, "Pas de place disponible.").show();
+            } catch (ParkingNoVehicleParkingStrategyException e) {
+                new Alert(Alert.AlertType.ERROR, "Pas de VehicleParkingStrategy configuré.").show();
+            } catch (SpotNotEmptyException | VehicleNotFitException | SpotBookedException e) {
+                new Alert(Alert.AlertType.ERROR, "Erreur interne: " + e).show();
             }
-            
         });
 
         menuSelector.getItems().addAll(find, undo);
 
-        undo.setOnAction(event ->{
-            tmpButton.setStyle("-fx-background-color: #60ff05");
-        });
+        undo.setOnAction(event -> tmpButton.setStyle("-fx-background-color: #60ff05"));
         return menuSelector;
     }
 

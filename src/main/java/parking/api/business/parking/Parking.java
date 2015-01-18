@@ -150,9 +150,9 @@ public class Parking extends BaseObservable<Parking> implements Serializable, It
      * @return A parking spot available for the vehicle
      * @throws NoSpotAvailableException Raised when no spot available
      */
-    public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle) throws NoSpotAvailableException, ParkingNoSelectorException {
+    public ParkingSpot findAvailableParkingSpotForVehicle(Vehicle vehicle) throws NoSpotAvailableException, ParkingNoVehicleParkingStrategyException {
         if (parkingSpotsById == null)
-            throw new ParkingNoSelectorException();
+            throw new ParkingNoVehicleParkingStrategyException();
 
         List<ParkingSpot> availableParkingSpots = parkingSpotsById.values().stream()
                 .filter(parkingSpot -> parkingSpot.fits(vehicle) && !parkingSpot.isVehicleParked())

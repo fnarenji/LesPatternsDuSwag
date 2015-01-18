@@ -1,7 +1,5 @@
 package parking.implementation.gui.stages;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,12 +10,16 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import javafx.stage.Window;
+import javafx.util.StringConverter;
+import parking.api.business.Utils;
 import parking.api.business.parkingspot.ParkingSpot;
+import parking.api.business.vehicle.Vehicle;
 import parking.implementation.business.Client;
+import parking.implementation.business.vehicle.Car;
+import parking.implementation.business.vehicle.Carrier;
+import parking.implementation.business.vehicle.Motorbike;
 import parking.implementation.gui.ClientManager;
-import parking.implementation.gui.controls.ButtonSpot;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,9 +32,9 @@ import java.util.Iterator;
  */
 public class AutoSelectorStage extends Stage {
 
-    private Collection<String> vehicles = new ArrayList<>();
+    private Collection<Class<? extends Vehicle>> vehicles = new ArrayList<>();
     
-    private ChoiceBox<String> vehicleChoiceBox;
+    private ChoiceBox<Class<? extends Vehicle>> vehicleChoiceBox;
     
     private Button submitButton;
     private Label title;
@@ -47,16 +49,35 @@ public class AutoSelectorStage extends Stage {
     }
 
     private void createChoiceBoxVehicle() {
-        vehicleChoiceBox = new ChoiceBox<String>();
+        vehicleChoiceBox = new ChoiceBox<>();
+        vehicleChoiceBox.setConverter(new StringConverter<Class<? extends Vehicle>>() {
+            @Override
+            public String toString(Class<? extends Vehicle> object) {
+                return object.getSimpleName().replace("ParkingSpot", "");
+            }
+
+            @Override
+            public Class<? extends Vehicle> fromString(String string) {
+                try {
+                    Class type = Class.forName(string + "ParkingSpot");
+                    if (ParkingSpot.class.isAssignableFrom(type))
+                        return Utils.<Class<? extends Vehicle>>uncheckedCast(type);
+                } catch (ClassNotFoundException e) {
+                    return null;
+                }
+
+                return null;
+            }
+        });
+
         vehicleChoiceBox.getItems().addAll(vehicles);
         vehicleChoiceBox.setValue(vehicles.iterator().next());
     }
     
     private void createChoiceBoxClient() {
-        clientChoiceBox = new ChoiceBox<Client>();
-        Iterator<Client> clientIterator = ClientManager.getInstance().iterator();
-        while (clientIterator.hasNext()){
-            clientChoiceBox.getItems().add(clientIterator.next());
+        clientChoiceBox = new ChoiceBox<>();
+        for (Client client : ClientManager.getInstance()) {
+            clientChoiceBox.getItems().add(client);
         }
     }
 
@@ -65,9 +86,7 @@ public class AutoSelectorStage extends Stage {
         submitButton.setText("Create");
 
         //add action
-        submitButton.setOnAction(event->{
-            this.close();
-        });
+        submitButton.setOnAction(event-> this.close());
 
         //style
         submitButton.setStyle("-fx-background-color: green");
@@ -75,10 +94,9 @@ public class AutoSelectorStage extends Stage {
     }
     
     private void init(){
-        vehicles.add("Aucun");
-        vehicles.add("Voiture");
-        vehicles.add("Moto");
-        vehicles.add("Camion");
+        vehicles.add(Car.class);
+        vehicles.add(Motorbike.class);
+        vehicles.add(Carrier.class);
 
         createButtonCreate();
         createChoiceBoxVehicle();
@@ -94,29 +112,22 @@ public class AutoSelectorStage extends Stage {
         BorderPane borderPane = new BorderPane();
         FlowPane flowPane = new FlowPane();
 
-        //add Nodes to FlowPane
-        flowPane.getChildren().addAll(
-                title,
-                vehicleChoiceBox,
-                clientChoiceBox,
-                submitButton
-        );
+        // add Nodes to FlowPane
+        flowPane.getChildren().addAll(title, vehicleChoiceBox, clientChoiceBox, submitButton);
 
-        flowPane.setMaxSize(200, 400);
-
-        //add FlowPane
+        // add FlowPane
         flowPane.alignmentProperty().setValue(Pos.CENTER);
         borderPane.setCenter(flowPane);
 
-        //create scene
-        Scene scene = new Scene(borderPane, 300, 200);
+        // create scene
+        Scene scene = new Scene(borderPane);
 
         setResizable(false);
         setScene(scene);
         setTitle("AutoSelector");
     }
     
-    public String getVehicleType(){
+    public Class<? extends Vehicle> getVehicleType(){
         return vehicleChoiceBox.getValue();
     }
     

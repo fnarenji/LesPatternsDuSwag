@@ -8,7 +8,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
 import parking.api.business.parkingspot.ParkingSpot;
 
@@ -19,37 +21,37 @@ import parking.api.business.parkingspot.ParkingSpot;
  */
 public class SpotStage extends Stage {
     private ParkingSpot parkingSpot;
-    private Label title;
-    private Label id;
-    private Label state;
-    private Label booking;
-    private Button ok;
+    private Label titleLabel;
+    private Label idLabel;
+    private Label stateLabel;
+    private Label bookingLabel;
+    private Button okButton;
 
     public SpotStage(Window owner, ParkingSpot parkingSpot) {
-        this.initOwner(owner);
+        initOwner(owner);
+        initModality(Modality.APPLICATION_MODAL);
+        initStyle(StageStyle.UTILITY);
         this.parkingSpot = parkingSpot;
 
-        init();
+        createTitle();
+        createID();
+        createState();
+        createBooking();
+
+        createButtonOK();
 
         BorderPane borderPane = new BorderPane();
         FlowPane flowPane = new FlowPane();
 
         //add Nodes to FlowPane
-        flowPane.getChildren().addAll(
-                title,
-                state,
-                booking,
-                ok
-        );
-
-        flowPane.setMaxSize(200, 400);
+        flowPane.getChildren().addAll(titleLabel, stateLabel, bookingLabel, okButton);
 
         //add FlowPane
         flowPane.alignmentProperty().setValue(Pos.CENTER);
         borderPane.setCenter(flowPane);
 
         //create scene
-        Scene scene = new Scene(borderPane, 300, 200);
+        Scene scene = new Scene(borderPane);
 
         this.setResizable(false);
         this.setScene(scene);
@@ -57,71 +59,62 @@ public class SpotStage extends Stage {
     }
 
     private void createTitle() {
-        title = new Label("Parking Spot");
-        title.setFont(Font.font("Arial", 30));
-        title.setTextFill(Color.BLACK);
-        title.alignmentProperty().setValue(Pos.CENTER);
+        titleLabel = new Label("Parking Spot");
+        titleLabel.setFont(Font.font("Arial", 30));
+        titleLabel.setTextFill(Color.BLACK);
+        titleLabel.alignmentProperty().setValue(Pos.CENTER);
     }
 
     private void createID() {
-        id = new Label();
+        idLabel = new Label();
 
         //set text
-        id.setText("ID : " + parkingSpot.getId());
+        idLabel.setText("ID : " + parkingSpot.getId());
 
-        id.alignmentProperty().setValue(Pos.CENTER);
+        idLabel.alignmentProperty().setValue(Pos.CENTER);
     }
 
     private void createState() {
-        state = new Label();
+        stateLabel = new Label();
 
         //set text
         if (parkingSpot.isVehicleParked()) {
-            state.setText("Place Occupée");
-            state.setTextFill(Color.RED);
+            stateLabel.setText("Place Occupée");
+            stateLabel.setTextFill(Color.RED);
         } else {
-            state.setText("Place Libre");
-            state.setTextFill(Color.GREEN);
+            stateLabel.setText("Place Libre");
+            stateLabel.setTextFill(Color.GREEN);
         }
 
-        state.alignmentProperty().setValue(Pos.CENTER);
+        stateLabel.alignmentProperty().setValue(Pos.CENTER);
     }
 
     private void createBooking() {
-        booking = new Label();
+        bookingLabel = new Label();
 
         //set text
         if (parkingSpot.isBooked()) {
-            booking.setText("Place Réservée");
-            booking.setPrefWidth(200);
-            booking.setTextFill(Color.RED);
+            bookingLabel.setText("Place Réservée");
+            bookingLabel.setPrefWidth(200);
+            bookingLabel.setTextFill(Color.RED);
         } else {
-            booking.setText("Place Non Réservée");
-            booking.setPrefWidth(200);
-            booking.setTextFill(Color.GREEN);
+            bookingLabel.setText("Place Non Réservée");
+            bookingLabel.setPrefWidth(200);
+            bookingLabel.setTextFill(Color.GREEN);
         }
 
-        booking.alignmentProperty().setValue(Pos.CENTER);
+        bookingLabel.alignmentProperty().setValue(Pos.CENTER);
     }
 
     private void createButtonOK() {
-        ok = new Button();
-        ok.setText("OK");
+        okButton = new Button();
+        okButton.setText("OK");
 
         //add action
-        ok.setOnAction(event -> close());
+        okButton.setOnAction(event -> close());
 
         //style
-        ok.setStyle("-fx-background-color: green");
-        ok.setTextFill(Color.WHITE);
-    }
-
-    private void init() {
-        createTitle();
-        createID();
-        createState();
-        createBooking();
-
-        createButtonOK();
+        okButton.setStyle("-fx-background-color: green");
+        okButton.setTextFill(Color.WHITE);
     }
 }

@@ -60,7 +60,7 @@ public class ParkingGrid extends GridPane {
     }
 
     public void highlightButton(Integer id) {
-        buttonSpotMap.get(id).setStyle("-fx-background-color: #00ccff");
+        buttonSpotMap.get(id).highlight();
         floor = FloorParkingSpotIdProvider.ExtractFloor(id);
         updateGrid();
     }

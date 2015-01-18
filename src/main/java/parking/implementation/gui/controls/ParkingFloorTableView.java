@@ -113,10 +113,6 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
         return field;
     }
 
-    private CheckBoxTableCell<ParkingTableViewRow, Boolean> lockedCheckBoxTableCell() {
-        return new CheckBoxTableCell<>();
-    }
-
     public void addNewLine() {
         int position = getItems().contains(getSelectionModel().getSelectedItem())
                 ? getItems().indexOf(getSelectionModel().getSelectedItem()) + 1
