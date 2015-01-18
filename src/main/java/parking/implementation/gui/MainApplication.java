@@ -47,6 +47,7 @@ public class MainApplication extends Application {
 
     private ParkingGrid parkingGrid;
     private TopMenuBar menu;
+    private Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -54,6 +55,7 @@ public class MainApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         // create root
         BorderPane pane = new BorderPane();
 
@@ -98,6 +100,7 @@ public class MainApplication extends Application {
 
         parkingGrid.updateGrid(1);
 
+        primaryStage.setResizable(false);
         primaryStage.show(); // show time !
     }
 
@@ -105,5 +108,6 @@ public class MainApplication extends Application {
         this.currentParking = parking;
         parkingGrid.observeParkingChange(parking);
         menu.observeParkingChange(parking);
+        primaryStage.sizeToScene();
     }
 }
