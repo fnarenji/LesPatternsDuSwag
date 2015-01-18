@@ -19,7 +19,7 @@ public class HTMLExporter implements InvoiceExporter {
     }
 
     @Override
-    public String export() {
+    public String export(){
         StringTokenizer st = new StringTokenizer(translatedExporter.export());
         String toExport = "";
 
@@ -30,6 +30,7 @@ public class HTMLExporter implements InvoiceExporter {
         }
 
         Iterator<String> it = document.iterator();
+
         int hValue = 0;
         while(it.hasNext()){
             String s = it.next();
