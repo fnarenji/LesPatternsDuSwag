@@ -1,6 +1,7 @@
 package parking.implementation.business.invoices;
 
 import com.jcraft.jsch.*;
+import parking.api.business.invoices.Invoice;
 import parking.api.business.invoices.InvoiceExporter;
 
 import java.io.*;
@@ -9,7 +10,7 @@ import java.io.*;
  * Created by Thomas on 18/01/2015.
  */
 public class SFTPUploader implements InvoiceExporter {
-    private HTMLExporter htmlExporter;
+    private InvoiceExporter invoiceExporter;
 
     private String password = "javainvoiceparking2015";
     private String server = "unicorn.ovh";
@@ -46,8 +47,8 @@ public class SFTPUploader implements InvoiceExporter {
         this.port = port;
     }
 
-    public SFTPUploader(HTMLExporter htmlExporter){
-        this.htmlExporter = htmlExporter;
+    public SFTPUploader(InvoiceExporter invoiceExporter){
+        this.invoiceExporter = invoiceExporter;
     }
 
     private void upload(String filename){
@@ -82,10 +83,12 @@ public class SFTPUploader implements InvoiceExporter {
      */
     @Override
     public String export() {
-        String content = htmlExporter.export();
-        int invoiceNumber = htmlExporter.getTranslatedExporter().getInvoice().getInvoiceNumber();
+        String content = invoiceExporter.export();
+        int invoiceNumber = invoiceExporter.getInvoice().getInvoiceNumber();
 
-        String fileName = "save/invoices/" + invoiceNumber + ".html";
+        String extension = (content.contains("html")) ? ".html" : ".txt";
+
+        String fileName = "save/invoices/" + invoiceNumber + extension;
         OutputStream os = null;
 
         try {
@@ -111,5 +114,10 @@ public class SFTPUploader implements InvoiceExporter {
         }
         String url = "http://" + server + "/" + workingDirectory + invoiceNumber + ".html";
         return url;
+    }
+
+    @Override
+    public Invoice getInvoice() {
+        return invoiceExporter.getInvoice();
     }
 }

@@ -2,8 +2,7 @@ package parking.implementation.gui.stages;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
@@ -29,6 +28,11 @@ public class InvoiceStage extends Stage {
     private Label info;
     private Button ok;
 
+    private RadioButton radioButtonTypeChoiceHTML;
+    private RadioButton radioButtonTypeChoiceMarkdown;
+    private CheckBox uploadCheckBox;
+    private Label choice;
+
     public InvoiceStage(Window owner, ParkingSpot parkingSpot, Invoice invoice) {
         this.initOwner(owner);
         this.parkingSpot = parkingSpot;
@@ -45,6 +49,10 @@ public class InvoiceStage extends Stage {
                 invoiceNumber,
                 price,
                 info,
+                choice,
+                radioButtonTypeChoiceHTML,
+                radioButtonTypeChoiceMarkdown,
+                uploadCheckBox,
                 ok
         );
 
@@ -66,6 +74,7 @@ public class InvoiceStage extends Stage {
         createTitle();
         createInvoice();
         createInfos();
+        createExportChoice();
         createButtonOK();
     }
 
@@ -98,6 +107,26 @@ public class InvoiceStage extends Stage {
         info.alignmentProperty().setValue(Pos.CENTER);
     }
 
+    private void createExportChoice() {
+
+        choice = new Label();
+
+        choice.setText("Selectionner le type d'export");
+
+        ToggleGroup typeChoiceGroup = new ToggleGroup();
+
+        radioButtonTypeChoiceHTML = new RadioButton("HTML");
+        radioButtonTypeChoiceHTML.setToggleGroup(typeChoiceGroup);
+        radioButtonTypeChoiceHTML.setSelected(true);
+
+
+        radioButtonTypeChoiceMarkdown = new RadioButton("Markdown");
+        radioButtonTypeChoiceMarkdown.setToggleGroup(typeChoiceGroup);
+
+        uploadCheckBox = new CheckBox("Envoyer sur Internet");
+
+        choice.alignmentProperty().setValue(Pos.CENTER);
+    }
     private void createButtonOK() {
         ok = new Button();
         ok.setText("Payer");
@@ -109,5 +138,6 @@ public class InvoiceStage extends Stage {
         ok.setStyle("-fx-background-color: green");
         ok.setTextFill(Color.WHITE);
     }
-    
+
+
 }
