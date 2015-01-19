@@ -18,15 +18,6 @@ public class SimpleParkingSpotFactory implements ParkingSpotFactory {
         this.idProvider = provider;
     }
 
-    public void setParkingSpotType(String parkingSpotType) {
-        if (parkingSpotType.equals("Car"))
-            this.setParkingSpotType(CarParkingSpot.class);
-        else if (parkingSpotType.equals("Carrier"))
-            this.setParkingSpotType(CarrierParkingSpot.class);
-        else
-            this.setParkingSpotType(ParkingSpot.class);
-    }
-
     public void setParkingSpotType(Class<? extends ParkingSpot> nextParkingSpotType) {
         this.parkingSpotType = nextParkingSpotType;
     }

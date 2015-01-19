@@ -10,7 +10,7 @@ public class VehicleNotFitException extends Exception {
     /**
      * Raised when try to park a vehicle in a spot which do not correspond to vehicle type
      *
-     * @param spot spot to park the car
+     * @param spot    spot to park the car
      * @param vehicle vehicle to park
      */
     public VehicleNotFitException(ParkingSpot spot, Vehicle vehicle) {

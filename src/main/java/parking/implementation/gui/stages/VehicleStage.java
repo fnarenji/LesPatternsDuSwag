@@ -15,14 +15,13 @@ import javafx.util.StringConverter;
 import parking.api.business.Utils;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
-import parking.api.exceptions.UnknownVehicleException;
 import parking.implementation.business.Client;
 import parking.implementation.gui.ClientManager;
 import parking.implementation.gui.MainApplication;
 
 /**
  * Created by loick on 14/01/15.
- *
+ * <p>
  * Enter information when park a vehicle
  */
 public class VehicleStage extends Stage {
@@ -76,12 +75,13 @@ public class VehicleStage extends Stage {
 
     private void createClientChoiceBox() {
         clientChoiceBox = new ChoiceBox<>();
-        if (ClientManager.getInstance().count() != 0){
-            for(Client client : ClientManager.getInstance())
+        if (ClientManager.getInstance().count() != 0) {
+            for (Client client : ClientManager.getInstance())
                 clientChoiceBox.getItems().add(client);
         }
 
     }
+
     private void createTitle() {
         titleLabel = new Label("New Vehicle");
         titleLabel.setFont(Font.font("Arial", 30));
@@ -213,12 +213,13 @@ public class VehicleStage extends Stage {
         assert vehicle != null;
         vehicle.setPlate(plateField.getText());
         vehicle.setBrand(brandField.getText());
-        vehicle.setModel(brandField.getText());
+        vehicle.setModel(modelField.getText());
+        vehicle.setOwner(getClient());
 
         return vehicle;
     }
-    
-    public Client getClient(){
+
+    public Client getClient() {
         return clientChoiceBox.getValue();
     }
 

@@ -9,6 +9,7 @@ import parking.api.exceptions.SpotNotBookedException;
 import parking.api.exceptions.SpotNotEmptyException;
 import parking.api.exceptions.VehicleNotFitException;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -82,7 +83,7 @@ public abstract class BaseParkingSpot extends BaseObservable<ParkingSpot> implem
     }
 
     @Override
-    public void book(Object owner, DateTime until) throws SpotBookedException, SpotNotEmptyException {
+    public void book(Serializable owner, DateTime until) throws SpotBookedException, SpotNotEmptyException {
         if (isBooked())
             throw new SpotBookedException(this);
 

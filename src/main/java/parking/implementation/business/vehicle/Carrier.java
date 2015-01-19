@@ -19,6 +19,7 @@ public class Carrier extends BaseVehicle {
 
     /**
      * Set the weight of the vehicle
+     *
      * @param weight weight of the vehicle
      */
     public void setWeight(double weight) {

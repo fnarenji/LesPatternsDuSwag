@@ -6,5 +6,6 @@ package parking.api.business.invoices;
  */
 public interface InvoiceExporter {
     public String export();
+
     public Invoice getInvoice();
 }

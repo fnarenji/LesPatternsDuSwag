@@ -1,9 +1,11 @@
 package parking.implementation.business;
 
+import java.io.Serializable;
+
 /**
  * Created by  on 14/01/15.
  */
-public class Client {
+public class Client implements Serializable {
 
     private String civility;
     private String lastName;
@@ -12,8 +14,8 @@ public class Client {
     /**
      * Construct a client
      *
-     * @param civility civility of a client
-     * @param lastName lastName of a client
+     * @param civility  civility of a client
+     * @param lastName  lastName of a client
      * @param firstName firstName of a client
      */
     public Client(String civility, String lastName, String firstName) {

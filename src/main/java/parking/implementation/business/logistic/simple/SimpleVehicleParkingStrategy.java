@@ -2,12 +2,11 @@ package parking.implementation.business.logistic.simple;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import parking.api.business.observer.Observer;
+import parking.api.business.helper.ParkingSpotTypeByVehicleTypePriorityMap;
 import parking.api.business.parking.Parking;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.parkingspot.VehicleParkingStrategy;
 import parking.api.business.vehicle.Vehicle;
-import parking.api.business.helper.ParkingSpotTypeByVehicleTypePriorityMap;
 import parking.api.exceptions.SpotBookedException;
 import parking.api.exceptions.SpotNotEmptyException;
 import parking.api.exceptions.VehicleNotFitException;
@@ -90,6 +89,7 @@ public class SimpleVehicleParkingStrategy implements VehicleParkingStrategy {
     }
 
     private Set<ParkingSpot> suboptimallyParkedParkingSpots = new HashSet<>();
+
     private void observeParkingSpot(ParkingSpot parkingSpot) {
         if (parkingSpot.isVehicleParked()) {
             if (!isOptimalParkingSpotForVehicle(parkingSpot, parkingSpot.getVehicle())) {

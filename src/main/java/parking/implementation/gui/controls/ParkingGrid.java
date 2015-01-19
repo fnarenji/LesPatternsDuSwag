@@ -9,7 +9,6 @@ import parking.implementation.business.logistic.floor.FloorParkingSpotIdProvider
 
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 /**
  * Created by sknz on 1/17/15.
@@ -27,6 +26,7 @@ public class ParkingGrid extends GridPane {
     }
 
     private Integer x, y;
+
     public void updateGrid() {
         x = 0;
         y = 0;
@@ -39,16 +39,16 @@ public class ParkingGrid extends GridPane {
         }
 
         buttonSpotMap.values().stream()
-            .filter(buttonSpot -> FloorParkingSpotIdProvider.ExtractFloor(buttonSpot.getParkingSpot().getId()) == floor)
-            .forEachOrdered(buttonSpot -> {
-                if (x == MAX_LINE) {
-                    ++y;
-                    x = 0;
-                }
+                .filter(buttonSpot -> FloorParkingSpotIdProvider.ExtractFloor(buttonSpot.getParkingSpot().getId()) == floor)
+                .forEachOrdered(buttonSpot -> {
+                    if (x == MAX_LINE) {
+                        ++y;
+                        x = 0;
+                    }
 
-                GridPane.setMargin(buttonSpot, new Insets(8));
-                add(buttonSpot, x++, y);
-            });
+                    GridPane.setMargin(buttonSpot, new Insets(8));
+                    add(buttonSpot, x++, y);
+                });
 
         primaryStage.sizeToScene();
     }
@@ -62,7 +62,8 @@ public class ParkingGrid extends GridPane {
     public void floorDown() {
         do {
             floor = Math.max(floor - 1, 1);
-        } while (currentParking.stream().noneMatch(parkingSpot -> FloorParkingSpotIdProvider.ExtractFloor(parkingSpot.getId()) == floor) && floor > 0);
+        }
+        while (currentParking.stream().noneMatch(parkingSpot -> FloorParkingSpotIdProvider.ExtractFloor(parkingSpot.getId()) == floor) && floor > 0);
         updateGrid();
     }
 
@@ -70,7 +71,8 @@ public class ParkingGrid extends GridPane {
         Integer floorCount = floorCount();
         do {
             floor = Math.min(floor + 1, floorCount);
-        } while (currentParking.stream().noneMatch(parkingSpot -> FloorParkingSpotIdProvider.ExtractFloor(parkingSpot.getId()) == floor) && floor < floorCount);
+        }
+        while (currentParking.stream().noneMatch(parkingSpot -> FloorParkingSpotIdProvider.ExtractFloor(parkingSpot.getId()) == floor) && floor < floorCount);
         updateGrid();
     }
 

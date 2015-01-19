@@ -3,10 +3,10 @@ package parking.implementation.business.logistic.simple;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import parking.api.business.invoices.Invoice;
+import parking.api.business.invoices.InvoiceStrategy;
 import parking.api.business.parkingspot.BaseParkingSpot;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
-import parking.api.business.invoices.InvoiceStrategy;
 import parking.implementation.business.vehicle.Carrier;
 
 
@@ -17,9 +17,18 @@ public class SimpleInvoiceStrategy implements InvoiceStrategy {
 
     static int countInvoice = 0;
     final double TVA = 0.196;
+    private int priceHour;
+
+    public SimpleInvoiceStrategy(int priceHour) {
+        setPriceHour(priceHour);
+    }
+
+    public void setPriceHour(int priceHour) {
+        this.priceHour = priceHour;
+    }
 
     @Override
-    public Invoice computeInvoice(Vehicle vehicle, ParkingSpot parkingSpot, double priceHour) {
+    public Invoice computeInvoice(Vehicle vehicle, ParkingSpot parkingSpot) {
         double htPrice = 0;
 
         if (vehicle instanceof Carrier)

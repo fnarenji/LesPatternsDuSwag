@@ -9,7 +9,10 @@ import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.vehicle.Vehicle;
 import parking.api.exceptions.*;
 import parking.implementation.gui.ClientManager;
-import parking.implementation.gui.stages.*;
+import parking.implementation.gui.stages.BookStage;
+import parking.implementation.gui.stages.ChangeParkingStage;
+import parking.implementation.gui.stages.ClientStage;
+import parking.implementation.gui.stages.VehicleStage;
 
 import java.io.File;
 import java.util.Optional;
@@ -23,7 +26,7 @@ public class TopMenuBar extends MenuBar {
     private Stage primaryStage;
     private Parking currentParking;
     private ParkingGrid parkingGrid;
-    private  ButtonSpot tmpButton;
+    private ButtonSpot tmpButton;
 
     public TopMenuBar(Stage primaryStage, ParkingGrid parkingGrid) {
         this.primaryStage = primaryStage;
@@ -77,8 +80,8 @@ public class TopMenuBar extends MenuBar {
         Menu menuSelector = new Menu("EasySelector");
         MenuItem find = new MenuItem("AutoPark");
         MenuItem book = new MenuItem("AutoBook");
-        
-        find.setOnAction(event ->{
+
+        find.setOnAction(event -> {
             VehicleStage vehicleStage = new VehicleStage(primaryStage);
             vehicleStage.showAndWait();
 
@@ -148,6 +151,7 @@ public class TopMenuBar extends MenuBar {
     }
 
     private Consumer<Parking> parkingChangeListener;
+
     public void setOnChangeParking(Consumer<Parking> parkingChangeListener) {
         this.parkingChangeListener = parkingChangeListener;
     }
@@ -156,7 +160,7 @@ public class TopMenuBar extends MenuBar {
         currentParking = parking;
     }
 
-    private Menu createFileMenu(){
+    private Menu createFileMenu() {
         Menu fileMenu = new Menu("File");
 
         MenuItem save = new MenuItem("Save");
@@ -166,7 +170,8 @@ public class TopMenuBar extends MenuBar {
 
         return fileMenu;
     }
-    private void chooseFileToSave(){
+
+    private void chooseFileToSave() {
         String path;
         File selectedDirectory = null;
 
@@ -180,7 +185,7 @@ public class TopMenuBar extends MenuBar {
         alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeDefault);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypeOne){
+        if (result.get() == buttonTypeOne) {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             selectedDirectory = directoryChooser.showDialog(primaryStage);
             path = selectedDirectory.getAbsolutePath() + "/parkingManager.ser";
@@ -189,7 +194,7 @@ public class TopMenuBar extends MenuBar {
             path = "save/parkingManager.ser";
         }
 
-            ParkingManagerSerializer.serialize(path);
-            new Alert(Alert.AlertType.INFORMATION, "Parking sauvegardé !").show();
+        ParkingManagerSerializer.serialize(path);
+        new Alert(Alert.AlertType.INFORMATION, "Parking sauvegardé !").show();
     }
 }

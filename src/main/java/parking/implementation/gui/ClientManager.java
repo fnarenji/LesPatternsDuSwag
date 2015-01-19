@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 /**
  * Created by sknz on 1/17/15.
- *
+ * <p>
  * Groups all the functions which manage the clients
  */
 public class ClientManager implements Iterable<Client> {
@@ -32,7 +32,9 @@ public class ClientManager implements Iterable<Client> {
         clients.remove(e);
     }
 
-    public int count() { return clients.size(); }
+    public int count() {
+        return clients.size();
+    }
 
     @Override
     public Iterator<Client> iterator() {

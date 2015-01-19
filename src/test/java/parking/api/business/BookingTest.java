@@ -3,7 +3,6 @@ package parking.api.business;
 import org.joda.time.DateTime;
 import org.joda.time.Seconds;
 import org.junit.Test;
-import parking.api.business.Booking;
 
 import static org.junit.Assert.assertTrue;
 

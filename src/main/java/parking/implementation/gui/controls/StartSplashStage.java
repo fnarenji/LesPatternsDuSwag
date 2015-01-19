@@ -15,7 +15,7 @@ import javafx.stage.Window;
 
 /**
  * Created by sknz on 1/17/15.
- *
+ * <p>
  * This create a splash screen, which allow to pick up a scenario, select a new scenario or quit
  */
 public class StartSplashStage extends Stage {
@@ -32,9 +32,9 @@ public class StartSplashStage extends Stage {
         initStyle(StageStyle.UTILITY);
 
         Text windowTitle = new Text("LPDS Parking");
-        Hyperlink openLink = new Hyperlink ("Open scenario");
-        Hyperlink newLink = new Hyperlink ("New scenario");
-        Hyperlink exitLink = new Hyperlink ("Exit");
+        Hyperlink openLink = new Hyperlink("Open scenario");
+        Hyperlink newLink = new Hyperlink("New scenario");
+        Hyperlink exitLink = new Hyperlink("Exit");
 
         windowTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         exitLink.setOnAction(event -> setResult(0));

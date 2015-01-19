@@ -3,20 +3,19 @@ package parking.implementation.gui.controls;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
+import parking.api.business.Utils;
 import parking.api.business.parkingspot.ParkingSpot;
 import parking.implementation.business.parkingspot.CarParkingSpot;
 import parking.implementation.gui.MainApplication;
-import parking.api.business.Utils;
 
 /**
  * Created by sknz on 1/18/15.
- *
+ * <p>
  * This class groups the table which print the floor of a parking with the type  of the vehicle and the amount of vehicles inside it
  */
 public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
@@ -120,8 +119,7 @@ public class ParkingFloorTableView extends TableView<ParkingTableViewRow> {
 
         if (position + 1 < getItems().size()) {
             ParkingTableViewRow nextItem = getItems().get(position + 1);
-            if (nextItem.getLocked())
-            {
+            if (nextItem.getLocked()) {
                 new Alert(Alert.AlertType.ERROR, "Vous ne pouvez que rajouter de nouvelles places à la fin.").show();
                 return;
             }

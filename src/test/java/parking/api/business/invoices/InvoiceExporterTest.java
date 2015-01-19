@@ -16,12 +16,12 @@ public class InvoiceExporterTest {
     private Invoice invoice;
 
     @Before
-    public void setInvoice(){
+    public void setInvoice() {
         invoice = new Invoice(42, 18.92, new Object());
     }
 
     @Test
-    public void testFrenchExport(){
+    public void testFrenchExport() {
         InvoiceExporter exporter = new FrenchExporter(invoice);
 
         String invoiceExported = exporter.export();
@@ -33,7 +33,7 @@ public class InvoiceExporterTest {
     }
 
     @Test
-    public void testEnglishExport(){
+    public void testEnglishExport() {
         InvoiceExporter exporter = new EnglishExporter(invoice);
 
         String invoiceExported = exporter.export();
@@ -43,8 +43,9 @@ public class InvoiceExporterTest {
         assertEquals(invoiceExported.toLowerCase().contains("invoice"), true);
         assertEquals(invoiceExported.toLowerCase().contains("price"), true);
     }
+
     @Test
-    public void testHTMLExport(){
+    public void testHTMLExport() {
         InvoiceExporter exporter = new HTMLExporter(new EnglishExporter(invoice));
 
         String invoiceExported = exporter.export();
@@ -58,7 +59,7 @@ public class InvoiceExporterTest {
     }
 
     @Test
-    public void testUpload(){
+    public void testUpload() {
         InvoiceExporter exporter = new SFTPUploader(new HTMLExporter(new EnglishExporter(invoice)));
 
         String invoiceExported = exporter.export();

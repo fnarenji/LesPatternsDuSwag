@@ -5,7 +5,8 @@ import parking.api.business.parkingspot.ParkingSpot;
 import parking.api.business.parkingspot.ParkingSpotFactory;
 import parking.api.business.parkingspot.VehicleParkingStrategy;
 import parking.api.business.vehicle.Vehicle;
-import parking.api.exceptions.*;
+import parking.api.exceptions.NoSpotAvailableException;
+import parking.api.exceptions.ParkingNoVehicleParkingStrategyException;
 
 import java.io.Serializable;
 import java.util.*;
@@ -115,7 +116,8 @@ public class Parking extends BaseObservable<Parking> implements Serializable, It
     }
 
     /**
-     *Get the spot corresponding to the id passed as parameter
+     * Get the spot corresponding to the id passed as parameter
+     *
      * @param parkingSpotId Id of the spot we want to get the spot
      * @return the spot corresponding to the id passed as parameter
      */
@@ -125,6 +127,7 @@ public class Parking extends BaseObservable<Parking> implements Serializable, It
 
     /**
      * Get the spot of the vehicle which had the plate passed as parameter
+     *
      * @param plate Plate of the vehicle to search
      * @return The the spot of the vehicle which had the plate passed as parameter
      */
@@ -136,6 +139,7 @@ public class Parking extends BaseObservable<Parking> implements Serializable, It
 
     /**
      * Set the new parkingSpotSelector to use
+     *
      * @param vehicleParkingStrategy the new parkingSpotSelector to use
      */
 
@@ -144,8 +148,10 @@ public class Parking extends BaseObservable<Parking> implements Serializable, It
     }
 
     // Undefined behaviour if vehicle already parked
+
     /**
-     *Find a place for a vehicle passed as parameter
+     * Find a place for a vehicle passed as parameter
+     *
      * @param vehicle
      * @return A parking spot available for the vehicle
      * @throws NoSpotAvailableException Raised when no spot available

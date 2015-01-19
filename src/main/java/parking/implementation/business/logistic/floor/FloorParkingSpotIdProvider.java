@@ -14,6 +14,7 @@ public class FloorParkingSpotIdProvider implements ParkingSpotIdProvider {
 
     /**
      * Set the floor
+     *
      * @param floor floor to set
      */
     public void setFloor(int floor) {
@@ -29,6 +30,7 @@ public class FloorParkingSpotIdProvider implements ParkingSpotIdProvider {
 
     /**
      * Computes the floor associated with the id
+     *
      * @param id the id of the parking spot
      * @return the floor
      */

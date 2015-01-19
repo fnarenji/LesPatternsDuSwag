@@ -67,7 +67,7 @@ public class ParkingApplicationManager extends BaseObservable<ParkingApplication
      */
     public Parking newParking(String name) {
         int id = this.count();
-        for (;;) {
+        for (; ; ) {
             try {
                 return this.newParking(++id, name);
             } catch (ParkingExistsException e) {
@@ -164,6 +164,7 @@ public class ParkingApplicationManager extends BaseObservable<ParkingApplication
 
     /**
      * readResolve() is used for replacing the object read from the stream (for the serialization)
+     *
      * @return the instance
      * @throws ObjectStreamException
      */
@@ -213,7 +214,7 @@ public class ParkingApplicationManager extends BaseObservable<ParkingApplication
         companyName = (String) stream.readObject();
     }
 
-    public void write(ObjectOutputStream stream){
+    public void write(ObjectOutputStream stream) {
         try {
             writeObject(stream);
         } catch (IOException | ClassNotFoundException e) {
@@ -221,7 +222,7 @@ public class ParkingApplicationManager extends BaseObservable<ParkingApplication
         }
     }
 
-    public void read(ObjectInputStream stream){
+    public void read(ObjectInputStream stream) {
         try {
             readObject(stream);
         } catch (IOException | ClassNotFoundException e) {
@@ -229,17 +230,23 @@ public class ParkingApplicationManager extends BaseObservable<ParkingApplication
         }
     }
 
-    public Object get(String key){ return config.get(key); }
-    public Integer getInt(String key){
+    public Object get(String key) {
+        return config.get(key);
+    }
+
+    public Integer getInt(String key) {
         return (Integer) config.get(key);
     }
-    public Boolean getBool(String key){
+
+    public Boolean getBool(String key) {
         return (Boolean) config.get(key);
     }
-    public Double getDouble(String key){
+
+    public Double getDouble(String key) {
         return (Double) config.get(key);
     }
-    public String getString(String key){
+
+    public String getString(String key) {
         return (String) config.get(key);
     }
 }
