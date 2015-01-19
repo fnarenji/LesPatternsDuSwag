@@ -8,6 +8,6 @@ import parking.api.business.vehicle.Vehicle;
  */
 public interface InvoiceStrategy {
 
-    public Invoice computeInvoice(Vehicle baseVehicle, ParkingSpot baseParkingSpot, double priceHour);
+    public Invoice computeInvoice(Vehicle baseVehicle, ParkingSpot baseParkingSpot);
 
 }

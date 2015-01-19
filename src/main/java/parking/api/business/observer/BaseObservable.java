@@ -1,7 +1,5 @@
 package parking.api.business.observer;
 
-import parking.api.business.Utils;
-
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -23,6 +21,6 @@ public class BaseObservable<T extends Observable> implements Observable<T> {
 
     @Override
     public void notifyObservers() {
-        observers.forEach(observer -> observer.observe((T)(this)));
+        observers.forEach(observer -> observer.observe((T) (this)));
     }
 }

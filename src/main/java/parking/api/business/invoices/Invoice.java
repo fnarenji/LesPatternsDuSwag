@@ -1,7 +1,5 @@
 package parking.api.business.invoices;
 
-import java.io.Serializable;
-
 /**
  * Created by loic on 17/01/15.
  */
@@ -25,5 +23,7 @@ public class Invoice {
         return invoicePrice;
     }
 
-    public Object getOwner(){ return owner; }
+    public Object getOwner() {
+        return owner;
+    }
 }

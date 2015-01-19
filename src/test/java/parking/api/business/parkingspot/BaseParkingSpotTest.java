@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import parking.api.business.Booking;
 import parking.api.business.vehicle.Vehicle;
-import parking.api.business.parkingspot.BaseParkingSpot;
 import parking.api.exceptions.SpotBookedException;
 import parking.api.exceptions.SpotNotBookedException;
 import parking.api.exceptions.SpotNotEmptyException;

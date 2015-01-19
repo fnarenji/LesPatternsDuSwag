@@ -31,7 +31,7 @@ import java.util.Map;
 
 /**
  * Created by sknz on 1/18/15.
- *
+ * <p>
  * Form for the creation/edition of parkings
  */
 public class NewParkingStage extends Stage {
@@ -109,8 +109,7 @@ public class NewParkingStage extends Stage {
 
         if (parking != null) {
             parking.setName(getParkingName());
-        }
-        else {
+        } else {
             parking = ParkingApplicationManager.getInstance().newParking(getParkingName());
             SimpleVehicleParkingStrategy vehicleParkingStrategy = new SimpleVehicleParkingStrategy();
             parking.setVehicleParkingStrategy(vehicleParkingStrategy);
@@ -140,10 +139,9 @@ public class NewParkingStage extends Stage {
             int floor = FloorParkingSpotIdProvider.ExtractFloor(parkingSpot.getId());
 
             if (floor == previousParkingSpotFloor && parkingSpot.getClass().equals(previousParkingSpotType)) {
-                    ParkingTableViewRow row = items.get(items.size() - 1);
-                    row.setQuantity(row.getQuantity() + 1);
-            }
-            else {
+                ParkingTableViewRow row = items.get(items.size() - 1);
+                row.setQuantity(row.getQuantity() + 1);
+            } else {
                 items.add(new ParkingTableViewRow(floor, 1, parkingSpot.getClass(), true));
             }
 

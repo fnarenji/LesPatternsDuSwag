@@ -23,7 +23,7 @@ import parking.api.exceptions.ParkingNotPresentException;
 
 /**
  * Created by loick on 14/01/15.
- *
+ * <p>
  * Change the current parking
  */
 public class ChangeParkingStage extends Stage {

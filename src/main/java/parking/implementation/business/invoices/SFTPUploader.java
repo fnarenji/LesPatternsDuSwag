@@ -1,6 +1,9 @@
 package parking.implementation.business.invoices;
 
-import com.jcraft.jsch.*;
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
 import parking.api.business.invoices.Invoice;
 import parking.api.business.invoices.InvoiceExporter;
 
@@ -22,37 +25,45 @@ public class SFTPUploader implements InvoiceExporter {
     public String getLogin() {
         return login;
     }
+
     public Integer getPort() {
         return port;
     }
+
     public String getWorkingDirectory() {
         return workingDirectory;
     }
+
     public String getServer() {
         return server;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
     public void setServer(String server) {
         this.server = server;
     }
+
     public void setLogin(String login) {
         this.login = login;
     }
+
     public void setPort(Integer port) {
         this.port = port;
     }
 
-    public SFTPUploader(InvoiceExporter invoiceExporter){
+    public SFTPUploader(InvoiceExporter invoiceExporter) {
         this.invoiceExporter = invoiceExporter;
     }
 
-    private void upload(String filename){
-        try{
+    private void upload(String filename) {
+        try {
             JSch jsch = new JSch();
             Session session = jsch.getSession(login, server, port);
             session.setPassword(password);
@@ -64,7 +75,7 @@ public class SFTPUploader implements InvoiceExporter {
 
             Channel channel = session.openChannel("sftp");
             channel.connect();
-            ChannelSftp channelSftp = (ChannelSftp)channel;
+            ChannelSftp channelSftp = (ChannelSftp) channel;
             channelSftp.cd(workingDirectory);
             File f = new File(filename);
 
@@ -72,13 +83,14 @@ public class SFTPUploader implements InvoiceExporter {
 
             f.delete();
 
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     /**
      * Export (in HTML) the invoice and upload it on a server.
+     *
      * @return String url : the url of the invoice
      */
     @Override

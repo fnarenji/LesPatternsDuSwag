@@ -7,12 +7,12 @@ import parking.implementation.business.invoices.TranslatedExporter;
 /**
  * Created by Thomas on 18/01/2015.
  */
-public class FrenchExporter extends TranslatedExporter implements InvoiceExporter{
-    public FrenchExporter(Invoice invoice){
+public class FrenchExporter extends TranslatedExporter implements InvoiceExporter {
+    public FrenchExporter(Invoice invoice) {
         super(invoice);
     }
 
     public String export() {
-       return super.translate("Facture", "Prix");
+        return super.translate("Facture", "Prix");
     }
 }

@@ -2,8 +2,8 @@ package parking.api.business.parkingspot;
 
 import org.joda.time.DateTime;
 import parking.api.business.Booking;
-import parking.api.business.vehicle.Vehicle;
 import parking.api.business.observer.Observable;
+import parking.api.business.vehicle.Vehicle;
 import parking.api.exceptions.SpotBookedException;
 import parking.api.exceptions.SpotNotBookedException;
 import parking.api.exceptions.SpotNotEmptyException;
@@ -74,7 +74,7 @@ public interface ParkingSpot extends Serializable, Observable<ParkingSpot> {
      * @throws parking.api.exceptions.SpotBookedException   if the spot is already booked
      * @throws parking.api.exceptions.SpotNotEmptyException if the spot is not empty
      */
-    public void book(Object owner, DateTime until) throws SpotNotEmptyException, SpotBookedException;
+    void book(Serializable owner, DateTime until) throws SpotBookedException, SpotNotEmptyException;
 
     /**
      * Removes the current booking.

@@ -8,15 +8,24 @@ import org.joda.time.DateTime;
 import parking.api.business.invoices.Invoice;
 import parking.api.business.invoices.InvoiceStrategy;
 import parking.api.business.parkingspot.ParkingSpot;
-import parking.api.exceptions.*;
+import parking.api.exceptions.SpotBookedException;
+import parking.api.exceptions.SpotNotBookedException;
+import parking.api.exceptions.SpotNotEmptyException;
+import parking.api.exceptions.VehicleNotFitException;
 import parking.implementation.business.Client;
 import parking.implementation.business.logistic.simple.SimpleInvoiceStrategy;
-import parking.implementation.gui.ClientManager;
-import parking.implementation.gui.stages.*;
 import parking.implementation.business.parkingspot.CarParkingSpot;
 import parking.implementation.business.parkingspot.CarrierParkingSpot;
+import parking.implementation.gui.ClientManager;
+import parking.implementation.gui.stages.BookStage;
+import parking.implementation.gui.stages.InvoiceStage;
+import parking.implementation.gui.stages.SpotStage;
+import parking.implementation.gui.stages.VehicleStage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by on 14/01/15.
@@ -33,12 +42,12 @@ public class ButtonSpot extends MenuButton {
 
     private ParkingSpot parkingSpot;
     private String type;
-    
+
     private DateTime dateTimeEnd = null;
     private Client client = null;
 
     private Collection<Client> clientCollection;
-    
+
     private Window parent;
     private MenuItem park;
     private MenuItem book;
@@ -58,6 +67,7 @@ public class ButtonSpot extends MenuButton {
         createClientCollection();
 
         parkingSpot.registerObserver(observable -> updateState());
+        updateState();
 
         getItems().addAll(park, book, infos);
     }
@@ -76,13 +86,13 @@ public class ButtonSpot extends MenuButton {
         this.setStyle("-fx-background-color: #fcff00");
         this.book.setText("Unbook");
     }
-    
+
     private void setBusy() {
         this.setStyle("-fx-background-color: #ff0030");
         this.park.setText("Unpark");
     }
 
-    private void createClientCollection(){
+    private void createClientCollection() {
         clientCollection = new ArrayList<>();
         for (Client client1 : ClientManager.getInstance()) {
             clientCollection.add(client1);
@@ -90,14 +100,14 @@ public class ButtonSpot extends MenuButton {
     }
 
     private void updateState() {
-        if (this.parkingSpot.isVehicleParked())
-            this.setBusy();
-        else if (this.parkingSpot.isBooked())
-            this.setBooked();
-        else if (!this.parkingSpot.isVehicleParked())
-            this.setAvailable();
+        if (parkingSpot.isVehicleParked())
+            setBusy();
+        else if (parkingSpot.isBooked())
+            setBooked();
+        else if (!parkingSpot.isVehicleParked())
+            setAvailable();
         else
-            this.setAvailableBook();
+            setAvailableBook();
     }
 
     private void createPark() {
@@ -105,26 +115,26 @@ public class ButtonSpot extends MenuButton {
         this.park.setOnAction(event -> {
             VehicleStage vehicleStage = null;
             try {
-                if (this.park.getText().equalsIgnoreCase("park")) {
+                if (!parkingSpot.isVehicleParked()) {
                     vehicleStage = new VehicleStage(parent);
                     vehicleStage.showAndWait();
 
-                    if(vehicleStage.getVehicle() != null)
+                    if (vehicleStage.getVehicle() != null)
                         parkingSpot.park(vehicleStage.getVehicle());
-                } else if (this.park.getText().equalsIgnoreCase("unpark")) {
-                    if(client == null) {
-                        InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
-                        Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(), parkingSpot, 5);
+                } else if (parkingSpot.isVehicleParked()) {
+                    if (client == null) {
+                        InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy(5);
+                        Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(), parkingSpot);
                         InvoiceStage invoiceStage = new InvoiceStage(parent, parkingSpot, invoice);
                         invoiceStage.showAndWait();
                     }
-                    
+
                     parkingSpot.unpark();
                     new Alert(Alert.AlertType.INFORMATION, "Place libérée.").show();
 
                     if (client != null) {
-                        long diffInMillis =  dateTimeEnd.getMillis() - DateTime.now().getMillis();
-                        parkingSpot.book(client, new DateTime(DateTime.now().plusMillis((int)diffInMillis)));
+                        long diffInMillis = dateTimeEnd.getMillis() - DateTime.now().getMillis();
+                        parkingSpot.book(client, new DateTime(DateTime.now().plusMillis((int) diffInMillis)));
                         park.setText("Park");
                     }
                 }
@@ -134,24 +144,23 @@ public class ButtonSpot extends MenuButton {
             } catch (SpotNotEmptyException e1) {
                 new Alert(Alert.AlertType.ERROR, "La place est déjà prise.").show();
             } catch (SpotBookedException e1) {
-                    if(vehicleStage.getClient().equals(parkingSpot.getCurrentBooking().getOwner())) {
-                        try {
-                            parkingSpot.unbook();
-                            parkingSpot.park(vehicleStage.getVehicle());
-                            updateState();
-                        } catch (SpotNotEmptyException | SpotBookedException | SpotNotBookedException | VehicleNotFitException e) {
-                            e.printStackTrace();
-                        }
+                if (vehicleStage.getClient().equals(parkingSpot.getCurrentBooking().getOwner())) {
+                    try {
+                        parkingSpot.unbook();
+                        parkingSpot.park(vehicleStage.getVehicle());
+                        updateState();
+                    } catch (SpotNotEmptyException | SpotBookedException | SpotNotBookedException | VehicleNotFitException e) {
+                        e.printStackTrace();
+                    }
 
-                        new Alert(Alert.AlertType.INFORMATION, "Vehicule garrée.").show();
-                    }
-                    else {
-                        Alert alert = new Alert(
-                                Alert.AlertType.ERROR,
-                                "Place reservée."
-                        );
-                        alert.show();
-                    }
+                    new Alert(Alert.AlertType.INFORMATION, "Vehicule garrée.").show();
+                } else {
+                    Alert alert = new Alert(
+                            Alert.AlertType.ERROR,
+                            "Place reservée."
+                    );
+                    alert.show();
+                }
             } catch (VehicleNotFitException e1) {
                 new Alert(Alert.AlertType.ERROR, "Place incorrecte.").show();
             }
@@ -162,23 +171,23 @@ public class ButtonSpot extends MenuButton {
         this.book = new MenuItem("Book");
         book.setOnAction(event -> {
             try {
-                if (this.book.getText().equalsIgnoreCase("book")) {
+                if (!parkingSpot.isBooked()) {
                     BookStage bookStage = new BookStage(parent, false);
                     bookStage.showAndWait();
-                    if (bookStage.getClient() != null){
+                    if (bookStage.getClient() != null) {
                         dateTimeEnd = bookStage.getDuration();
                         client = bookStage.getClient();
                         parkingSpot.book(bookStage.getClient(), dateTimeEnd);
                     }
-                } else if (this.book.getText().equalsIgnoreCase("unbook")) {
-                    if(client != null) {
-                        InvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy();
-                        Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(), parkingSpot, 5);
+                } else if (parkingSpot.isBooked()) {
+                    if (client != null) {
+                        SimpleInvoiceStrategy invoiceStrategy = new SimpleInvoiceStrategy(5);
+                        Invoice invoice = invoiceStrategy.computeInvoice(parkingSpot.getVehicle(), parkingSpot);
                         InvoiceStage invoiceStage = new InvoiceStage(parent, parkingSpot, invoice);
                         invoiceStage.showAndWait();
                     }
 
-                    this.parkingSpot.unbook();
+                    parkingSpot.unbook();
                     dateTimeEnd = null;
                     client = null;
 

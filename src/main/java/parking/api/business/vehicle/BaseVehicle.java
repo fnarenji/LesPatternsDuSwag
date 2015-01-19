@@ -1,13 +1,15 @@
 package parking.api.business.vehicle;
 
+import java.io.Serializable;
+
 /**
  * Created by SKNZ on 31/12/2014.
  */
-public class BaseVehicle implements Vehicle {
+public class BaseVehicle implements Vehicle{
     private String plate;
     private String brand;
     private String model;
-    private Object owner;
+    private Serializable owner;
 
 
     @Override
@@ -43,12 +45,12 @@ public class BaseVehicle implements Vehicle {
     }
 
     @Override
-    public Object getOwner() {
+    public Serializable getOwner() {
         return owner;
     }
 
     @Override
-    public void setOwner(Object owner) {
+    public void setOwner(Serializable owner) {
         this.owner = owner;
     }
 

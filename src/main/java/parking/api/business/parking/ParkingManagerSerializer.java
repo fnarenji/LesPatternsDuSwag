@@ -10,6 +10,7 @@ public class ParkingManagerSerializer {
 
     /**
      * Deserialize a ParkingManager object stored in save/parkingManager.ser
+     *
      * @return ParkingManager contained in save/parkingManager.ser
      */
     public static void deserialize(String filename) {
@@ -34,6 +35,7 @@ public class ParkingManagerSerializer {
 
     /**
      * Serialize a Parking Manager
+     *
      * @param
      */
     public static void serialize(String filename) {

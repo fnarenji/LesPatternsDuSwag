@@ -4,7 +4,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -20,14 +22,13 @@ import parking.implementation.gui.ClientManager;
 import parking.implementation.gui.MainApplication;
 
 import java.time.LocalDate;
-import java.time.temporal.TemporalField;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 /**
  * Created by loic on 18/01/15.
- *
+ * <p>
  * This class groups all the functions to create a booking
  */
 public class BookStage extends Stage {
@@ -114,9 +115,9 @@ public class BookStage extends Stage {
 
     private void createSelect() {
         clientChoiceBox = new ChoiceBox<>();
-        if (ClientManager.getInstance().count() != 0){
+        if (ClientManager.getInstance().count() != 0) {
             Iterator<Client> clientIterator = ClientManager.getInstance().iterator();
-            while (clientIterator.hasNext()){
+            while (clientIterator.hasNext()) {
                 Client tmp = clientIterator.next();
                 clientChoiceBox.getItems().add(tmp);
                 clients.add(tmp);

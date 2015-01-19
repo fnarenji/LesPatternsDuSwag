@@ -4,12 +4,14 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.MutableInterval;
 
+import java.io.Serializable;
+
 /**
  * Created by SKNZ on 29/12/2014.
  */
-public class Booking {
+public class Booking implements Serializable {
     private static final DateTime INFINITE = new DateTime().year().withMaximumValue();
-    private Object owner;
+    private Serializable owner;
     private Interval interval;
 
     /**
@@ -18,7 +20,7 @@ public class Booking {
      * @param owner owner of the booking
      * @param until end date of the booking
      */
-    public Booking(Object owner, DateTime until) {
+    public Booking(Serializable owner, DateTime until) {
         this.owner = owner;
 
         if (until == null)
@@ -57,7 +59,7 @@ public class Booking {
      *
      * @return the owner of the booking
      */
-    public Object getOwner() {
+    public Serializable getOwner() {
         return owner;
     }
 
@@ -66,7 +68,7 @@ public class Booking {
      *
      * @param owner the person which own the booking
      */
-    public void setOwner(Object owner) {
+    public void setOwner(Serializable owner) {
         this.owner = owner;
     }
 

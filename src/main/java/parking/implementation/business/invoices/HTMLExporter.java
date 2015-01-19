@@ -15,36 +15,39 @@ public class HTMLExporter implements InvoiceExporter {
 
     private InvoiceExporter invoiceExporter;
 
-    public HTMLExporter(InvoiceExporter invoiceExporter){
+    public HTMLExporter(InvoiceExporter invoiceExporter) {
         this.invoiceExporter = invoiceExporter;
     }
 
-    public InvoiceExporter getTranslatedExporter(){ return invoiceExporter; }
+    public InvoiceExporter getTranslatedExporter() {
+        return invoiceExporter;
+    }
+
     @Override
-    public String export(){
+    public String export() {
         StringTokenizer st = new StringTokenizer(invoiceExporter.export());
         String toExport = "<html>\n";
         toExport += "<body>\n";
 
         List<String> document = new ArrayList<>();
 
-        while(st.hasMoreTokens()){
+        while (st.hasMoreTokens()) {
             document.add(st.nextToken());
         }
 
         Iterator<String> it = document.iterator();
 
         int hValue = 0;
-        while(it.hasNext()){
+        while (it.hasNext()) {
             String s = it.next();
 
-            if(s.contains("#")){
-                if(hValue != 0){
+            if (s.contains("#")) {
+                if (hValue != 0) {
                     toExport += "</h" + hValue + ">\n";
                 }
                 toExport += "<h" + s.length() + ">";
                 hValue = s.length();
-            }else{
+            } else {
                 toExport += s + " ";
             }
         }

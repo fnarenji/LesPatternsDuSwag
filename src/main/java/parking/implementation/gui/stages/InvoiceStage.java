@@ -1,4 +1,5 @@
 package parking.implementation.gui.stages;
+
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,7 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.controlsfx.dialog.Dialogs;
 import parking.api.business.invoices.Invoice;
 import parking.api.business.invoices.InvoiceExporter;
 import parking.api.business.parkingspot.ParkingSpot;
@@ -21,13 +21,13 @@ import parking.implementation.business.invoices.languages.FrenchExporter;
 
 /**
  * Created by loic on 18/01/15.
- *
+ * <p>
  * This class groups the functions required to create bills
  */
 public class InvoiceStage extends Stage {
     private ParkingSpot parkingSpot;
     private Invoice invoice;
-    
+
     private Label title;
     private Label price;
     private Label invoiceNumber;
@@ -84,8 +84,8 @@ public class InvoiceStage extends Stage {
         this.setScene(scene);
         this.setTitle("Invoice");
     }
-    
-    private void init(){
+
+    private void init() {
         createTitle();
         createInvoice();
         createInfos();
@@ -100,22 +100,22 @@ public class InvoiceStage extends Stage {
         title.setTextFill(Color.BLACK);
         title.alignmentProperty().setValue(Pos.CENTER);
     }
-    
-    private void createInvoice(){
+
+    private void createInvoice() {
         price = new Label();
         invoiceNumber = new Label();
 
         invoiceNumber.setText("Invoice Number : " + invoice.getInvoiceNumber() + '\n');
         price.setText(" - Price : " + invoice.getInvoicePrice() + '\n');
-        
+
         price.alignmentProperty().setValue(Pos.CENTER);
         invoiceNumber.alignmentProperty().setValue(Pos.CENTER);
     }
-    
-    private void createInfos(){
+
+    private void createInfos() {
         info = new Label();
-        
-        if(parkingSpot.getVehicle() == null)
+
+        if (parkingSpot.getVehicle() == null)
             info.setText("Information : " + " non disponible " + '\n');
         else
             info.setText("Information : " + parkingSpot.getVehicle() + '\n');
@@ -143,6 +143,7 @@ public class InvoiceStage extends Stage {
 
         choice.alignmentProperty().setValue(Pos.CENTER);
     }
+
     private void createButtonOK() {
         ok = new Button();
         ok.setText("Payer");
@@ -163,7 +164,7 @@ public class InvoiceStage extends Stage {
         languageChoiceGroup = new ToggleGroup();
 
         radioButtonLanguageFrench = new RadioButton("Français");
-        radioButtonLanguageFrench .setToggleGroup(languageChoiceGroup);
+        radioButtonLanguageFrench.setToggleGroup(languageChoiceGroup);
         radioButtonLanguageFrench.setSelected(true);
 
 
@@ -177,17 +178,17 @@ public class InvoiceStage extends Stage {
     private void export() {
         InvoiceExporter invoiceExporter;
 
-        if(languageChoiceGroup.getSelectedToggle() == radioButtonLanguageFrench){
-           invoiceExporter = new FrenchExporter(invoice);
+        if (languageChoiceGroup.getSelectedToggle() == radioButtonLanguageFrench) {
+            invoiceExporter = new FrenchExporter(invoice);
         } else {
             invoiceExporter = new EnglishExporter(invoice);
         }
 
-        if(typeChoiceGroup.getSelectedToggle() == radioButtonTypeChoiceHTML){
+        if (typeChoiceGroup.getSelectedToggle() == radioButtonTypeChoiceHTML) {
             invoiceExporter = new HTMLExporter(invoiceExporter);
         }
 
-        if(uploadCheckBox.isSelected()) {
+        if (uploadCheckBox.isSelected()) {
             SFTPUploader sftpUploader = new SFTPUploader(invoiceExporter);
             String url = sftpUploader.export();
 

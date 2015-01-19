@@ -53,12 +53,12 @@ public interface Vehicle extends Serializable {
      *
      * @return the owner
      */
-    Object getOwner();
+    Serializable getOwner();
 
     /**
      * Sets the owner.
      *
      * @param owner The owner of the vehicle
      */
-    void setOwner(Object owner);
+    void setOwner(Serializable owner);
 }

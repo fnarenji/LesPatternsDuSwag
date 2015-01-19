@@ -11,7 +11,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -19,14 +18,13 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import parking.implementation.business.Client;
-import parking.implementation.gui.ClientManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Created by loick on 14/01/15.
- *
+ * <p>
  * Groups all the functions related to the creation of clients
  */
 public class ClientStage extends Stage {
@@ -53,7 +51,7 @@ public class ClientStage extends Stage {
         for (Node node : hBox.getChildren()) {
             HBox.setMargin(node, new Insets(8));
         }
-        
+
         vBox.alignmentProperty().setValue(Pos.CENTER);
         for (Node node : vBox.getChildren()) {
             VBox.setMargin(node, new Insets(10));

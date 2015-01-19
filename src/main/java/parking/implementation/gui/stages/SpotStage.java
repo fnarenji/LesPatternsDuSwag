@@ -16,7 +16,7 @@ import parking.api.business.parkingspot.ParkingSpot;
 
 /**
  * Created by loick on 14/01/15.
- *
+ * <p>
  * Give information about a spot (reserved or parked)
  */
 public class SpotStage extends Stage {

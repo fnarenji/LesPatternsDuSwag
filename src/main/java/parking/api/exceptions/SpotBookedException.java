@@ -7,7 +7,7 @@ import parking.api.business.parkingspot.ParkingSpot;
  */
 public class SpotBookedException extends ParkingException {
     /**
-     *Raised when spot already booked
+     * Raised when spot already booked
      *
      * @param parkingSpot parking spot which is already booked
      */

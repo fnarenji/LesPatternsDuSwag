@@ -96,6 +96,7 @@ public class ParkingApplicationManagerTest {
                     public void setIdProvider(ParkingSpotIdProvider provider) {
 
                     }
+
                     @Override
                     public ParkingSpot createParkingSpot() {
                         ParkingSpot parkingSpot = new CarParkingSpot(1);
